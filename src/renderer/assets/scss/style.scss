@@ -23,6 +23,7 @@ $tabs-link-color: #9e9d9d;
 $tabs-link-hover-border-bottom-color: #9e9d9d;
 $tabs-link-hover-color: #FFFFFF;
 
+$dropdown-menu-min-width: 9rem;
 
 .user-miniature{
     .user-icon{
@@ -133,4 +134,12 @@ body {
     border-radius: 2em;
     overflow: hidden;
     background-color: rgba($color: #000000, $alpha: 0.0);
+}
+
+.dropdown{
+    .dropdown-trigger{
+        button{
+            min-width: $dropdown-menu-min-width;
+        }
+    }
 }

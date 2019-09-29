@@ -7,6 +7,8 @@
         </figure>
         
         <SideBar/>
+        
+        <UserMiniature/>
       </div>
       <div class="column">
         <WindowsController/>
@@ -22,6 +24,7 @@
   import SideBar from './components/SideBar.vue';
   import WindowsController from './components/WindowsController.vue';
   import GameViewTabs from './components/GameViewTabs.vue';
+  import UserMiniature from './components/UserMiniature.vue';
 
   export default {
     name: 'evopeons-launcher',
@@ -29,7 +32,8 @@
       TopBar,
       SideBar,
       WindowsController,
-      GameViewTabs
+      GameViewTabs,
+      UserMiniature
     }
   }
 </script>
