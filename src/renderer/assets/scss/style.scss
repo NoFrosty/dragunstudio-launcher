@@ -1,0 +1,136 @@
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+
+$navbar-height: 6rem;
+$navbar-background-color: rgba($color: #000000, $alpha: 0.2);
+$navbar-item-color: #9e9d9d;
+$navbar-item-hover-color: #FFFFFF;
+$navbar-item-hover-background-color: transparent;
+$navbar-item-active-color: #FFFFFF;
+$navbar-item-active-background-color: transparent;
+
+
+
+$menu-item-color: #9e9d9d;
+$menu-item-hover-color: #FFFFFF;
+$menu-item-active-color: #FFFFFF;
+$menu-item-hover-background-color: rgba($color: #333333,$alpha: 0.2);
+$menu-item-active-background-color: rgba($color: #333333,$alpha: 0.2);
+
+$menu-list-line-height: 3;
+$tabs-border-bottom-color: transparent;
+$tabs-link-color: #9e9d9d;
+$tabs-link-hover-border-bottom-color: #9e9d9d;
+$tabs-link-hover-color: #FFFFFF;
+
+
+.user-miniature{
+    .user-icon{
+        border-style: solid;
+        border-width: 5px;
+        border-color: #00aeff;
+    }
+}
+.logo{
+    padding: 2em;
+}
+.windows-controller{
+    
+    display: flex;
+    //flex-direction: row-reverse;
+    height: 2rem;
+    a{
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+    }
+    .draggable{
+        -webkit-app-region:drag;
+    }
+    .windows-controller-btn{
+        text-align: right;
+    }
+}
+#app{
+    background-image: url('./assets/Untitled-1.jpg');
+    background-image: url('./assets/Background.jpg');
+    background-size: cover;
+} 
+.is-sidebar-menu {
+    background-color: rgba($color: #000000, $alpha: 0.2);
+}
+
+.columns {
+    &.is-fullheight {
+        &:not(:last-child) {
+          margin-bottom: 0;
+        }
+        min-height: 100vh;
+        max-height: 100vh;
+        height: 100vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: stretch;
+        margin: 0;
+        &.is-without-navbar {
+          min-height: 100vh;
+          max-height: 100vh;
+          height: 100vh;
+        }
+      
+        //.column {
+        //  overflow-y: auto;
+        //}
+      }
+}
+
+
+  
+
+
+// Import Bulma and Buefy styles
+@import "~bulma/bulma";
+@import "~buefy/src/scss/buefy";
+a.navbar-item, .navbar-link{
+    padding: 0.5rem 1.75rem;
+    font-size: 2rem;
+}
+
+.menu-list {
+    li{
+        margin-top: 2em;
+        margin-bottom: 2em;
+    }
+    a{
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+        display: -webkit-inline-box;
+        vertical-align: middle;
+
+    }
+    img{
+        display: -webkit-inline-box;
+        max-width: 20%;
+        vertical-align: middle;
+    }
+}
+
+.columns:last-child {
+    margin-bottom: 0rem;
+}
+
+.sidebar{
+    &.column{
+        padding: 0rem;
+    }
+}
+
+html {
+    background-color: rgba($color: #000000, $alpha: 0.0);
+    overflow: hidden;
+}
+body {
+    -ms-overflow-style: scrollbar;
+    border-radius: 2em;
+    overflow: hidden;
+    background-color: rgba($color: #000000, $alpha: 0.0);
+}
