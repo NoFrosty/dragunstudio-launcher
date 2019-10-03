@@ -39,13 +39,17 @@ $dropdown-menu-min-width: 9rem;
     
     display: flex;
     //flex-direction: row-reverse;
+    justify-content: flex-end;
     height: 2rem;
+    margin-right: 1rem;
+
     a{
         margin-left: 0.5em;
         margin-right: 0.5em;
     }
     .draggable{
         -webkit-app-region:drag;
+        flex-grow: 1;
     }
     .windows-controller-btn{
         text-align: right;
@@ -140,6 +144,39 @@ body {
     .dropdown-trigger{
         button{
             min-width: $dropdown-menu-min-width;
+        }
+    }
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    .b-tabs{
+        &:not(:last-child){
+            margin-bottom: 0;
+        }
+        &.block{
+            display: flex;
+            flex-grow: 1;
+            flex-direction: column;
+        }
+        .tab-content{
+            flex-grow: 1;
+            .tab-item{
+                flex-grow: 1;
+                display: flex;
+                .overview{
+                    display: flex;
+                    flex-direction: column;
+                    flex-grow: 1;
+                    .overview-panel{
+                        display: flex;
+                        flex-direction: row;
+                        flex-grow: 1;
+                    }
+                }
+            }
         }
     }
 }

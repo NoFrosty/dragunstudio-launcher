@@ -10,7 +10,7 @@
         
         <UserMiniature/>
       </div>
-      <div class="column">
+      <div class="content">
         <WindowsController/>
         <GameViewTabs/>
         <router-view></router-view>
