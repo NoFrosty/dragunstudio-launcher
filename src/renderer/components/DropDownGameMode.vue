@@ -2,11 +2,11 @@
     <b-dropdown class="is-up" v-model="gameMode" aria-role="list">
         <button class="button is-primary" type="button" slot="trigger">
             <template v-if="gameMode == 0">
-                <b-icon icon="earth"></b-icon>
+                <b-icon pack="fas" icon="globe-europe"></b-icon>
                 <span>Public</span>
             </template>
             <template v-if="gameMode == 1">
-                <b-icon icon="account-multiple"></b-icon>
+                <b-icon pack="fas" icon="flask"></b-icon>
                 <span>Beta</span>
             </template>
             <template v-if="gameMode == 2">
@@ -22,7 +22,7 @@
 
         <b-dropdown-item :value="0" aria-role="listitem">
             <div class="media">
-                <b-icon class="media-left" icon="earth"></b-icon>
+                <b-icon class="media-left" pack="fas" icon="globe-europe"></b-icon>
                 <div class="media-content">
                     <h3>Public</h3>
                     <small>Version : 1.2.2</small>
@@ -32,7 +32,7 @@
 
         <b-dropdown-item :value="1" aria-role="listitem">
             <div class="media">
-                <b-icon class="media-left" icon="account-multiple"></b-icon>
+                <b-icon class="media-left" pack="fas" icon="flask"></b-icon>
                 <div class="media-content">
                     <h3>Beta</h3>
                     <small>Version : 1.2.3-Beta</small>
@@ -41,7 +41,7 @@
         </b-dropdown-item>
         <b-dropdown-item :value="2" aria-role="listitem">
             <div class="media">
-                <b-icon class="media-left" icon="account-multiple"></b-icon>
+                <b-icon class="media-left" pack="fas" icon="tint"></b-icon>
                 <div class="media-content">
                     <h3>Alpha</h3>
                     <small>Version : 1.3.0-Alpha</small>
@@ -50,7 +50,7 @@
         </b-dropdown-item>
         <b-dropdown-item :value="3" aria-role="listitem">
             <div class="media">
-                <b-icon class="media-left" icon="account-multiple"></b-icon>
+                <b-icon class="media-left" pack="fas" icon="shield-alt"></b-icon>
                 <div class="media-content">
                     <h3>Pre-Alpha</h3>
                     <small>Prototype</small>

@@ -22,11 +22,11 @@ function createWindow () {
     width: 1600,
     frame: false,
     transparent: true, 
-    resizable: false,
+    resizable: true,
     fullscreenable:false,
     
   })
-  mainWindow.openDevTools();
+  mainWindow.closeDevTools();
   mainWindow.loadURL(winURL)
 
   mainWindow.on('closed', () => {
