@@ -1,8 +1,8 @@
 <template>
-    <div class="columns windows-controller">
-        <div class="column auto  draggable">
+    <div class="windows-controller">
+        <div class="draggable">
         </div>
-        <div class="column is-2 windows-controller-btn">
+        <div class="windows-controller-btn">
             <a id="open-dev-tool-btn"><b-icon pack="fas" icon="code" size="is-small"></b-icon></a>
             <a><b-icon pack="fas" icon="cogs" size="is-small"></b-icon></a>
             <a id="min-btn"><b-icon pack="fas" icon="window-minimize" size="is-small"></b-icon></a>
