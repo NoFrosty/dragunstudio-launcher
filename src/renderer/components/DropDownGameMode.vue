@@ -10,12 +10,12 @@
                 <span>Beta</span>
             </template>
             <template v-if="gameMode == 2">
-                <b-icon icon="account-multiple"></b-icon>
+                <b-icon pack="fas" icon="tint"></b-icon>
                 <span>Alpha</span>
             </template>
             <template v-if="gameMode == 3">
-                <b-icon icon="account-multiple"></b-icon>
-                <span>PreAlpha</span>
+                <b-icon pack="fas" icon="shield-alt"></b-icon>
+                <span>Pre-Alpha</span>
             </template>
             <b-icon icon="menu-down"></b-icon>
         </button>
