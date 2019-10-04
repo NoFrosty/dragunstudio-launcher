@@ -3,10 +3,10 @@
         <div class="draggable">
         </div>
         <div class="windows-controller-btn">
-            <a id="open-dev-tool-btn"><b-icon pack="fas" icon="code" size="is-small"></b-icon></a>
-            <a><b-icon pack="fas" icon="cogs" size="is-small"></b-icon></a>
-            <a id="min-btn"><b-icon pack="fas" icon="window-minimize" size="is-small"></b-icon></a>
-            <a id="close-btn"><b-icon pack="fas" icon="times" size="is-small"></b-icon></a>
+            <a id="open-dev-tool-btn"><b-icon pack="fas" icon="code" size="is-small" type="is-primary"></b-icon></a>
+            <a><b-icon pack="fas" icon="cogs" size="is-small" type="is-primary"></b-icon></a>
+            <a id="min-btn"><b-icon pack="fas" icon="window-minimize" size="is-small" type="is-primary"></b-icon></a>
+            <a id="close-btn"><b-icon pack="fas" icon="times" size="is-small" type="is-primary"></b-icon></a>
         </div>
     </div>
 </template>
