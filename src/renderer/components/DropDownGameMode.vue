@@ -1,59 +1,19 @@
 <template>
-    <b-dropdown class="is-up" v-model="gameMode" aria-role="list">
+    <b-dropdown class="is-up" v-model="currentGameMode" aria-role="list" v-bind:value="value" v-on:change="onChange">
         <button class="button is-primary" type="button" slot="trigger">
-            <template v-if="gameMode == 0">
-                <b-icon pack="fas" icon="globe-europe"></b-icon>
-                <span>Public</span>
-            </template>
-            <template v-if="gameMode == 1">
-                <b-icon pack="fas" icon="flask"></b-icon>
-                <span>Beta</span>
-            </template>
-            <template v-if="gameMode == 2">
-                <b-icon pack="fas" icon="tint"></b-icon>
-                <span>Alpha</span>
-            </template>
-            <template v-if="gameMode == 3">
-                <b-icon pack="fas" icon="shield-alt"></b-icon>
-                <span>Pre-Alpha</span>
+            <template>
+                <b-icon pack="fas" :icon="GAME_MODE_ICONS[currentGameMode]"></b-icon>
+                <span>{{GAME_MODE_NAME[currentGameMode]}}</span>
             </template>
             <b-icon icon="menu-down"></b-icon>
         </button>
 
-        <b-dropdown-item :value="0" aria-role="listitem">
+        <b-dropdown-item v-for="mode in GameModeKeys" :key="mode" :value="GAME_MODE[mode]" aria-role="listitem">
             <div class="media">
-                <b-icon class="media-left" pack="fas" icon="globe-europe"></b-icon>
+                <b-icon class="media-left" pack="fas" :icon="GAME_MODE_ICONS[GAME_MODE[mode]]"></b-icon>
                 <div class="media-content">
-                    <h3>Public</h3>
+                    <h3>{{GAME_MODE_NAME[GAME_MODE[mode]]}}</h3>
                     <small>Version : 1.2.2</small>
-                </div>
-            </div>
-        </b-dropdown-item>
-
-        <b-dropdown-item :value="1" aria-role="listitem">
-            <div class="media">
-                <b-icon class="media-left" pack="fas" icon="flask"></b-icon>
-                <div class="media-content">
-                    <h3>Beta</h3>
-                    <small>Version : 1.2.3-Beta</small>
-                </div>
-            </div>
-        </b-dropdown-item>
-        <b-dropdown-item :value="2" aria-role="listitem">
-            <div class="media">
-                <b-icon class="media-left" pack="fas" icon="tint"></b-icon>
-                <div class="media-content">
-                    <h3>Alpha</h3>
-                    <small>Version : 1.3.0-Alpha</small>
-                </div>
-            </div>
-        </b-dropdown-item>
-        <b-dropdown-item :value="3" aria-role="listitem">
-            <div class="media">
-                <b-icon class="media-left" pack="fas" icon="shield-alt"></b-icon>
-                <div class="media-content">
-                    <h3>Pre-Alpha</h3>
-                    <small>Prototype</small>
                 </div>
             </div>
         </b-dropdown-item>
@@ -61,17 +21,28 @@
 </template>
 
 <script>
-var GameModeEnum = {
-    PUBLIC: 0,
-    BETA: 1,
-    ALPHA: 2,
-    PREALPHA: 3,
-};
+    import { GAME_MODE, GAME_MODE_ICONS, GAME_MODE_NAME } from '~services/constants.js'
+
     export default {
-        props:{
-            gameMode: {
-                default: 0
+        props: {
+            value: null
+        },
+        computed: {
+            GAME_MODE: () => GAME_MODE,
+            GAME_MODE_ICONS: () => GAME_MODE_ICONS,
+            GAME_MODE_NAME: () => GAME_MODE_NAME,
+            GameModeKeys: () => Object.keys(GAME_MODE)
+        },
+        data() {
+            return {
+                currentGameMode: this.value
             }
         },
+        methods: {
+            onChange: function(value) {
+                this.$emit('input', value)
+                this.$emit('game-mode-changed', value)
+            }
+        }
     }
 </script>

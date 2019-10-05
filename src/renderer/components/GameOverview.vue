@@ -69,7 +69,7 @@
                     <nav class="level">
                         <!-- Left side -->
                         <div class="level-left">
-                            <DropDownGameMode class="level-item"/>
+                            <DropDownGameMode class="level-item" v-model="gameMode"/>
                             <DropDownGameMode class="level-item"/>
                         </div>
 
@@ -86,8 +86,15 @@
     </div>
 </template>
 <script>
+    import { GAME_MODE } from '~services/constants.js'
     import DropDownGameMode from './DropDownGameMode.vue';
+    
     export default {
+        data() {
+            return {
+                gameMode: GAME_MODE.PUBLIC
+            }
+        },
         components: {
             DropDownGameMode
         }
