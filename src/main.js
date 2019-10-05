@@ -14,9 +14,8 @@ Vue.use(Buefy)
 
 /* eslint-disable no-new */
 new Vue({
-  components: { App },
   router,
   store,
-  template: '<App/>',
+  render: h => h(App),
   defaultIconPack: 'fas',
 }).$mount('#app')
