@@ -1,34 +1,48 @@
 <template>
     <div>
+        <section>
+            <b-modal :active.sync="isComponentModalActive" class="news-details">
+               <FullNews/>
+            </b-modal>
+        </section>
         <div class="overview-panel">
             <div class="overview-panel-left">
                 <div class="scrollable">
                     <p class="title is-3">News</p>
-                    <a>
+                    <a @click="isComponentModalActive = true">
                         <article class="content">
                             <p class="title is-4">News Sample : This is a test</p>
-                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum, pharetra consectetur dui pharetra.</p>
+                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
+                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
+                                pharetra consectetur dui pharetra.</p>
                             <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                         </article>
                     </a>
-                    <a>
+
+                    <a @click="isComponentModalActive = true">
                         <article class="content">
                             <p class="title is-4">News Sample : This is a test</p>
-                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum, pharetra consectetur dui pharetra.</p>
+                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
+                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
+                                pharetra consectetur dui pharetra.</p>
                             <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                         </article>
                     </a>
-                    <a>
+                    <a @click="isComponentModalActive = true">
                         <article class="content">
                             <p class="title is-4">News Sample : This is a test</p>
-                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum, pharetra consectetur dui pharetra.</p>
+                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
+                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
+                                pharetra consectetur dui pharetra.</p>
                             <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                         </article>
                     </a>
-                    <a>
+                    <a @click="isComponentModalActive = true">
                         <article class="content">
                             <p class="title is-4">News Sample : This is a test</p>
-                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum, pharetra consectetur dui pharetra.</p>
+                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
+                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
+                                pharetra consectetur dui pharetra.</p>
                             <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                         </article>
                     </a>
@@ -69,11 +83,11 @@
                     <nav class="level">
                         <!-- Left side -->
                         <div class="level-left">
-                            <DropDownGameMode class="level-item" v-model="gameMode"/>
+                            <DropDownGameMode class="level-item" v-model="gameMode" />
                             <b-dropdown aria-role="list" class="is-up">
                                 <button class="button is-primary is-auto" slot="trigger">
                                     <span>Options</span>
-                                    <b-icon pack="fas" icon="caret-down" ></b-icon>
+                                    <b-icon pack="fas" icon="caret-down"></b-icon>
                                 </button>
                                 <b-dropdown-item aria-role="listitem">Settings</b-dropdown-item>
                                 <b-dropdown-item aria-role="listitem">Uninstall</b-dropdown-item>
@@ -93,17 +107,22 @@
     </div>
 </template>
 <script>
-    import { GAME_MODE } from '@/services/constants.js'
+    import {
+        GAME_MODE
+    } from '@/services/constants.js'
     import DropDownGameMode from './DropDownGameMode.vue';
-    
+    import FullNews from './FullNews.vue'
+
     export default {
         data() {
             return {
-                gameMode: GAME_MODE.PUBLIC
+                gameMode: GAME_MODE.PUBLIC,
+                isComponentModalActive: false,
             }
         },
         components: {
-            DropDownGameMode
+            DropDownGameMode,
+            FullNews
         }
     }
 </script>
