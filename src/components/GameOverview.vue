@@ -86,7 +86,7 @@
     </div>
 </template>
 <script>
-    import { GAME_MODE } from '~services/constants.js'
+    import { GAME_MODE } from '@/services/constants.js'
     import DropDownGameMode from './DropDownGameMode.vue';
     
     export default {
