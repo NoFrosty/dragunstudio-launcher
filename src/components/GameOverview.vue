@@ -70,10 +70,10 @@
                         <!-- Left side -->
                         <div class="level-left">
                             <DropDownGameMode class="level-item" v-model="gameMode"/>
-                            <b-dropdown aria-role="list">
-                                <button class="button is-primary" slot="trigger">
+                            <b-dropdown aria-role="list" class="is-up">
+                                <button class="button is-primary is-auto" slot="trigger">
                                     <span>Options</span>
-                                    <b-icon icon="menu-down"></b-icon>
+                                    <b-icon pack="fas" icon="caret-down" ></b-icon>
                                 </button>
                                 <b-dropdown-item aria-role="listitem">Settings</b-dropdown-item>
                                 <b-dropdown-item aria-role="listitem">Uninstall</b-dropdown-item>

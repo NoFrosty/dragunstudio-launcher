@@ -146,6 +146,10 @@ a.navbar-item, .navbar-link{
     .dropdown-trigger{
         button{
             min-width: $dropdown-menu-min-width;
+            &.is-auto{
+                min-width: auto;
+            }
+            
         }
     }
 }
