@@ -46,6 +46,42 @@
                             <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                         </article>
                     </a>
+                    <a @click="isComponentModalActive = true">
+                        <article class="content">
+                            <p class="title is-4">News Sample : This is a test</p>
+                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
+                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
+                                pharetra consectetur dui pharetra.</p>
+                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                        </article>
+                    </a>
+                    <a @click="isComponentModalActive = true">
+                        <article class="content">
+                            <p class="title is-4">News Sample : This is a test</p>
+                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
+                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
+                                pharetra consectetur dui pharetra.</p>
+                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                        </article>
+                    </a>
+                    <a @click="isComponentModalActive = true">
+                        <article class="content">
+                            <p class="title is-4">News Sample : This is a test</p>
+                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
+                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
+                                pharetra consectetur dui pharetra.</p>
+                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                        </article>
+                    </a>
+                    <a @click="isComponentModalActive = true">
+                        <article class="content">
+                            <p class="title is-4">News Sample : This is a test</p>
+                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
+                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
+                                pharetra consectetur dui pharetra.</p>
+                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                        </article>
+                    </a>
                 </div>
             </div>
             <div class="overview-panel-right">
