@@ -1,5 +1,5 @@
 <template>
-    <div class="overview">
+    <div>
         <div class="overview-panel">
             <div class="overview-panel-left">
                 <div class="scrollable">

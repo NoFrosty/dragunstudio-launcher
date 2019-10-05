@@ -1,25 +1,25 @@
-
-.user-miniature{
-    position: absolute;
-    left: 0;
-    bottom: 0;
-
-    .user-icon{
-        border-style: solid;
-        border-width: 5px;
-        border-color: #00aeff;
-    }
+html {
+    background-color: rgba($color: #000000, $alpha: 0.0);
+    overflow: hidden;
 }
-.logo{
-    padding: 2em;
+body {
+    border-radius: $window-border-radius;
+    overflow: hidden;
+    background-color: rgba($color: #000000, $alpha: 0.0);
 }
 
-.windows-controller{
+#app{
+    background-image: url('./assets/Untitled-1.jpg');
+    background-image: url('./assets/Background.jpg');
+    background-size: cover;
+} 
+
+.windows-controller {
     display: flex;
     //flex-direction: row-reverse;
     justify-content: flex-end;
     height: $window-bar-height;
-    margin-right: 1rem;
+    padding-right: 1rem;
     background-color: rgba($color: #000000, $alpha: 0.2);
 
     a{
@@ -35,11 +35,51 @@
         text-align: right;
     }
 }
-#app{
-    background-image: url('./assets/Untitled-1.jpg');
-    background-image: url('./assets/Background.jpg');
-    background-size: cover;
-} 
+
+.sidebar {
+    &.column{
+        padding: 0rem;
+    }
+}
+
+.main-panel {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .top-bar {
+        display: flex;
+
+        .game-tabs {
+            flex-grow: 1;
+            margin-bottom: 0;
+
+            .tab-content {
+                display: none;
+            }
+        }
+        .control-panel {
+            width: 20rem;
+        }
+    }
+    .content-container {
+        padding: 1rem;
+    }
+}
+
+.user-miniature{
+    .user-icon{
+        border-style: solid;
+        border-width: 5px;
+        border-color: #00aeff;
+    }
+}
+
+
+.logo{
+    padding: 2em;
+}
+
 .is-sidebar-menu {
     background-color: rgba($color: #000000, $alpha: 0.2);
 }
@@ -66,6 +106,11 @@
         //  overflow-y: auto;
         //}
       }
+}
+
+.content-container {
+    display: flex;
+    flex-grow: 1;
 }
 
 a.navbar-item, .navbar-link{
@@ -96,21 +141,7 @@ a.navbar-item, .navbar-link{
     margin-bottom: 0rem;
 }
 
-.sidebar{
-    &.column{
-        padding: 0rem;
-    }
-}
 
-html {
-    background-color: rgba($color: #000000, $alpha: 0.0);
-    overflow: hidden;
-}
-body {
-    border-radius: $window-border-radius;
-    overflow: hidden;
-    background-color: rgba($color: #000000, $alpha: 0.0);
-}
 
 .dropdown{
     .dropdown-trigger{
@@ -119,101 +150,119 @@ body {
         }
     }
 }
-.content{
-    padding-bottom: 2rem;
-    .article{
-        font-size: 0.9rem;
-        text-align: justify;
-    }
-}
+
 .scrollable{
     position: absolute;
     padding: 1rem;
 }
-.content{
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    .b-tabs{
-        &:not(:last-child){
-            margin-bottom: 0;
-        }
-        &.block{
+
+
+.content-container {
+    > .game-overview{
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        .overview-panel{
             display: flex;
+            flex-direction: row;
             flex-grow: 1;
-            flex-direction: column;
-        }
-        .tab-content{
-            flex-grow: 1;
-            .tab-item{
-                flex-grow: 1;
+            .overview-panel-left{
                 display: flex;
-                .overview{
+                flex: 1;
+                flex-direction: column;
+                overflow: auto;
+                position: relative;
+            }
+            .overview-panel-right{
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                overflow: auto;
+                position: relative;
+            }
+        }
+        .overview-download{
+            display: flex;
+            flex-direction: column;
+    
+            .overview-download-top{
+                display: flex;
+                flex-direction: row;
+                .overview-download-top-left{
+                    display: flex;
+                    flex-direction: column;
+                    flex-grow: 0.15;
+                    padding: 1rem;
+                }
+                .overview-download-top-right{
                     display: flex;
                     flex-direction: column;
                     flex-grow: 1;
-                    .overview-panel{
-                        display: flex;
-                        flex-direction: row;
-                        flex-grow: 1;
-                        .overview-panel-left{
-                            display: flex;
-                            flex: 1;
-                            flex-direction: column;
-                            overflow: auto;
-                            position: relative;
-                        }
-                        .overview-panel-right{
-                            display: flex;
-                            flex: 1;
-                            flex-direction: column;
-                            overflow: auto;
-                            position: relative;
-                        }
-                    }
-                    .overview-download{
-                        display: flex;
-                        flex-direction: column;
-                        padding: 1rem;
-                        .overview-download-top{
-                            display: flex;
-                            flex-direction: row;
-                            .overview-download-top-left{
-                                display: flex;
-                                flex-direction: column;
-                                flex-grow: 0.15;
-                                padding: 1rem;
-                            }
-                            .overview-download-top-right{
-                                display: flex;
-                                flex-direction: column;
-                                flex-grow: 1;
-                                align-items: flex-end;
-                                padding: 1rem;
-                            }
-                        }
-                        .overview-download-bottom{
-                            display: flex;
-                            flex-direction: row;
-                            .overview-download-bottom-left{
-                                display: flex;
-                                flex-direction: column;
-                                flex-grow: 0.15;
-                                padding: 1rem;
-                                .button{
-                                    flex: 1;
-                                }
-                            }
-                            .overview-download-bottom-right{
-                                display: flex;
-                                flex-direction: column;
-                                flex-grow: 1;
-                                padding: 1rem;
-                            }
-                        }
-                    }
+                    align-items: flex-end;
+                    padding: 1rem;
                 }
             }
+            .overview-download-bottom{
+                display: flex;
+                flex-direction: row;
+                .overview-download-bottom-left{
+                    display: flex;
+                    flex-direction: column;
+                    flex-grow: 0.15;
+                    padding: 1rem;
+                    .button{
+                        flex: 1;
+                    }
+                }
+                .overview-download-bottom-right{
+                    display: flex;
+                    flex-direction: column;
+                    flex-grow: 1;
+                    padding: 1rem;
+                }
+            }
+        }
+    }
+
+    > .game-activities {
+
+    }
+
+    > .game-achievements {
+
+    }
+
+    > .tab-content {
+        &:not(.active) {
+            display: none;
+        }
+    }
+}
+
+
+
+
+
+
+.article{
+    font-size: 0.9rem;
+    text-align: justify;
+}
+
+.b-tabs{
+    &:not(:last-child){
+        margin-bottom: 0;
+    }
+    &.block{
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+    }
+    .tab-content{
+        flex-grow: 1;
+        .tab-item{
+            flex-grow: 1;
+            display: flex;
         }
     }
 }
