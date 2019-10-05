@@ -123,7 +123,7 @@
                             <b-dropdown aria-role="list" class="is-up">
                                 <button class="button is-primary is-auto" slot="trigger">
                                     <span>Options</span>
-                                    <b-icon pack="fas" icon="caret-down"></b-icon>
+                                    <b-icon pack="fas" icon="caret-up"></b-icon>
                                 </button>
                                 <b-dropdown-item aria-role="listitem">Settings</b-dropdown-item>
                                 <b-dropdown-item aria-role="listitem">Uninstall</b-dropdown-item>
