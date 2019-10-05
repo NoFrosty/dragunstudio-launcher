@@ -17,7 +17,7 @@
             <b-tab-item label="Achievements" />
           </b-tabs>
           <div class="control-panel">
-            <UserMiniature/>
+            <UserPanel/>
           </div>
         </div>
         <div class="content-container">
@@ -48,11 +48,9 @@
     ACTIVITIES: 1,
     ACHIEVEMENTS: 2
   }
-  import TopBar from './components/TopBar.vue';
   import SideBar from './components/SideBar.vue';
   import WindowsController from './components/WindowsController.vue';
-  import GameViewTabs from './components/GameViewTabs.vue';
-  import UserMiniature from './components/UserMiniature.vue';
+  import UserPanel from './components/UserPanel.vue';
   import GameOverview from './components/GameOverview.vue';
 
   export default {
@@ -69,11 +67,9 @@
       }
     },
     components: {
-      TopBar,
       SideBar,
       WindowsController,
-      GameViewTabs,
-      UserMiniature,
+      UserPanel,
       GameOverview
     }
   }
