@@ -303,131 +303,139 @@ a.navbar-item, .navbar-link{
 
 ::-webkit-scrollbar {
     width: 0.15rem;
+    margin-top: $window-border-radius;
+    margin-bottom: $window-border-radius;
+
 }
  
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	border-radius: 10px;
-	background-color: rgba($color: #000000, $alpha: 0.3);
+    background-color: rgba($color: #000000, $alpha: 0.3);
+    margin-top: $window-border-radius;
+    margin-bottom: $window-border-radius;
 }
  
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-	background-color: $primary;
+    background-color: $primary;
+    margin-top: $window-border-radius;
+    margin-bottom: $window-border-radius;
 }
 
 .is-transparent{
     background-color: rgba($color: #000000, $alpha: 0.0);
     border: none;
 }
-.modal-background {
-    background-color: rgba(10, 10, 10, 0.86);
-    border-radius: $window-border-radius;
-}
+
 .modal .animation-content{
     z-index: 1;
-}
-.modal-view{
     padding: 105px 90px 91px;
     background-color: #000000a8;
-    border-radius: $window-border-radius;
-    label{
-        color: $text
+    border-radius: 1.5rem;
+    .modal-background {
+        background-color: rgba(10, 10, 10, 0.86);
+        border-radius: $window-border-radius;
     }
-    &.login{
-        button{
-            display: flex;
-            width: -webkit-fill-available;
+    .modal-view{
+        label{
+            color: $text
         }
-        
-    }
-    .modal-view-head{
-        margin: 0;
-        padding: 0;
-        .modal-view-subject{
-            font-size: 48px;
-            line-height: 60px;
-            text-align: center;
+        &.login{
+            button{
+                display: flex;
+                width: -webkit-fill-available;
+            }
+            
         }
-        .txt-time{
-            display: block;
-            padding-top: 35px;
-            text-align: center;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-    }
-    
-    .modal-view-news-body{
-        padding-top: 72px;
-        .cms-article{
+        .modal-view-head{
             margin: 0;
             padding: 0;
+            .modal-view-subject{
+                font-size: 48px;
+                line-height: 60px;
+                text-align: center;
+            }
+            .txt-time{
+                display: block;
+                padding-top: 35px;
+                text-align: center;
+                font-size: 16px;
+                line-height: 1.5;
+            }
         }
-        p{
-            line-height: 30px;
-        }
-        table{
-            margin: 20px 0 30px;
-            border-collapse: collapse;
-        }
-        ul{
-            padding:0 0 0 15px;
-            margin-bottom:0;
-            .title{
-                margin-top:49px
+        
+        .modal-view-news-body{
+            padding-top: 72px;
+            .cms-article{
+                margin: 0;
+                padding: 0;
+            }
+            p{
+                line-height: 30px;
+            }
+            table{
+                margin: 20px 0 30px;
+                border-collapse: collapse;
             }
             ul{
-                padding: 0 0 0 6px;
-                margin-bottom: 0;
-                li {
-                    padding: 4px 0 4px 15px;
-                    :before{
+                padding:0 0 0 15px;
+                margin-bottom:0;
+                .title{
+                    margin-top:49px
+                }
+                ul{
+                    padding: 0 0 0 6px;
+                    margin-bottom: 0;
+                    li {
+                        padding: 4px 0 4px 15px;
+                        :before{
+                            top:14px;
+                            width:6px;
+                            height:6px;
+                            background-position:-480px -180px;
+                        }
+                    }
+                    li:before{
                         top:14px;
                         width:6px;
                         height:6px;
                         background-position:-480px -180px;
                     }
-                }
-                li:before{
-                    top:14px;
-                    width:6px;
-                    height:6px;
-                    background-position:-480px -180px;
-                }
-                ul{
-                    padding:0 0 0 15px;
-                    margin-bottom:-3px;
-                    li{
-                        padding:1px 0 2px 12px;
-                        &:before{
-                            top:14px;
-                            width:6px;
-                            height:1px;
-                            background-image:none;
-                            background-color:$text;
+                    ul{
+                        padding:0 0 0 15px;
+                        margin-bottom:-3px;
+                        li{
+                            padding:1px 0 2px 12px;
+                            &:before{
+                                top:14px;
+                                width:6px;
+                                height:1px;
+                                background-image:none;
+                                background-color:$text;
+                            }
                         }
+                        
                     }
+                }
+                li{
+                    position:relative;
+                    padding:19px 0 0 21px;
+                    line-height:27px;
+                    &:before{
+                        position:absolute;
+                        top:26px;
+                        left:0;
+                        width:13px;
+                        height:13px;
+                        background-position:-460px -180px;
+                        content:'';
                     
+                    }
                 }
-            }
-            li{
-                position:relative;
-                padding:19px 0 0 21px;
-                line-height:27px;
-                &:before{
-                    position:absolute;
-                    top:26px;
-                    left:0;
-                    width:13px;
-                    height:13px;
-                    background-position:-460px -180px;
-                    content:'';
                 
-                }
             }
-            
         }
     }
 }
