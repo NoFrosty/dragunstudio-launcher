@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-view">
+    <div class="modal-view login">
         <div class="modal-view-head">
             <h2 class="modal-view-subject">Login</h2>
         </div>
@@ -21,7 +21,7 @@
                 required>
             </b-input>
         </b-field>
-                        <button class="button is-primary">Login</button>
+        <button class="button is-primary">Login</button>
     </div>
 </template>
 <script>

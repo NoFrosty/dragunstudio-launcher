@@ -328,7 +328,16 @@ a.navbar-item, .navbar-link{
     padding: 105px 90px 91px;
     background-color: #000000a8;
     border-radius: 1rem;
-    
+    label{
+        color: $text
+    }
+    &.login{
+        button{
+            display: flex;
+            width: -webkit-fill-available;
+        }
+        
+    }
     .modal-view-head{
         margin: 0;
         padding: 0;
