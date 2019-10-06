@@ -72,33 +72,37 @@ body {
 .user-panel{
     display: flex;
     justify-content: flex-end;
+    
     .is-rounded{
         border-radius: 290486px;
     }
-    .user-data{
-        display: flex;
-        align-items: center;
-        background-color: rgba($color: #000000, $alpha: 0.5);
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-        padding-left: 1rem;
-        border-radius: 1rem 0 0 1rem;
-        .user-name{
+    .user-logged{
+        .user-data{
             display: flex;
             align-items: center;
-            margin-right: 1rem;
+            background-color: rgba($color: #000000, $alpha: 0.5);
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+            border-radius: 1rem 0 0 1rem;
+            .user-name{
+                display: flex;
+                align-items: center;
+                margin-right: 1rem;
+            }
+            .user-friends{
+                display: flex;
+                align-items: center;
+                margin-right: 1rem;
+            }
         }
-        .user-friends{
-            display: flex;
-            align-items: center;
-            margin-right: 1rem;
+        .user-icon{
+            border-style: solid;
+            border-width: 5px;
+            border-color: #00aeff;
         }
     }
-    .user-icon{
-        border-style: solid;
-        border-width: 5px;
-        border-color: #00aeff;
-    }
+    
 }
 
 
@@ -317,97 +321,100 @@ a.navbar-item, .navbar-link{
     background-color: rgba($color: #000000, $alpha: 0.0);
     border: none;
 }
-
-.news-details{
-    .view-news{
-        padding: 105px 90px 91px;
-        .news-head{
+.modal .animation-content{
+    z-index: 1;
+}
+.modal-view{
+    padding: 105px 90px 91px;
+    background-color: #000000a8;
+    border-radius: 1rem;
+    
+    .modal-view-head{
+        margin: 0;
+        padding: 0;
+        .modal-view-subject{
+            font-size: 48px;
+            line-height: 60px;
+            text-align: center;
+        }
+        .txt-time{
+            display: block;
+            padding-top: 35px;
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+    }
+    
+    .modal-view-news-body{
+        padding-top: 72px;
+        .cms-article{
             margin: 0;
             padding: 0;
-            .subject-news{
-                font-size: 48px;
-                line-height: 60px;
-                text-align: center;
-            }
-            .txt-time{
-                display: block;
-                padding-top: 35px;
-                text-align: center;
-                font-size: 16px;
-                line-height: 1.5;
-            }
         }
-        
-        .news-body{
-            padding-top: 72px;
-            .cms-article{
-                margin: 0;
-                padding: 0;
-            }
-            p{
-                line-height: 30px;
-            }
-            table{
-                margin: 20px 0 30px;
-                border-collapse: collapse;
+        p{
+            line-height: 30px;
+        }
+        table{
+            margin: 20px 0 30px;
+            border-collapse: collapse;
+        }
+        ul{
+            padding:0 0 0 15px;
+            margin-bottom:0;
+            .title{
+                margin-top:49px
             }
             ul{
-                padding:0 0 0 15px;
-                margin-bottom:0;
-                .title{
-                    margin-top:49px
-                }
-                ul{
-                    padding: 0 0 0 6px;
-                    margin-bottom: 0;
-                    li {
-                        padding: 4px 0 4px 15px;
-                        :before{
-                            top:14px;
-                            width:6px;
-                            height:6px;
-                            background-position:-480px -180px;
-                        }
-                    }
-                    li:before{
+                padding: 0 0 0 6px;
+                margin-bottom: 0;
+                li {
+                    padding: 4px 0 4px 15px;
+                    :before{
                         top:14px;
                         width:6px;
                         height:6px;
                         background-position:-480px -180px;
                     }
-                    ul{
-                        padding:0 0 0 15px;
-                        margin-bottom:-3px;
-                        li{
-                            padding:1px 0 2px 12px;
-                            &:before{
-                                top:14px;
-                                width:6px;
-                                height:1px;
-                                background-image:none;
-                                background-color:$text;
-                            }
+                }
+                li:before{
+                    top:14px;
+                    width:6px;
+                    height:6px;
+                    background-position:-480px -180px;
+                }
+                ul{
+                    padding:0 0 0 15px;
+                    margin-bottom:-3px;
+                    li{
+                        padding:1px 0 2px 12px;
+                        &:before{
+                            top:14px;
+                            width:6px;
+                            height:1px;
+                            background-image:none;
+                            background-color:$text;
                         }
-                        
                     }
-                }
-                li{
-                    position:relative;
-                    padding:19px 0 0 21px;
-                    line-height:27px;
-                    &:before{
-                        position:absolute;
-                        top:26px;
-                        left:0;
-                        width:13px;
-                        height:13px;
-                        background-position:-460px -180px;
-                        content:'';
                     
-                    }
                 }
-                
             }
+            li{
+                position:relative;
+                padding:19px 0 0 21px;
+                line-height:27px;
+                &:before{
+                    position:absolute;
+                    top:26px;
+                    left:0;
+                    width:13px;
+                    height:13px;
+                    background-position:-460px -180px;
+                    content:'';
+                
+                }
+            }
+            
         }
     }
 }

@@ -1,11 +1,11 @@
 <template>
-     <div class="view-news">
-                    <div class="news-head">
-                        <h2 class="subject-news" id="kakaoBody">Notes de Patch - 2 octobre 2019</h2>
+     <div class="modal-view">
+                    <div class="modal-view-head">
+                        <h2 class="modal-view-subject" >Notes de Patch - 2 octobre 2019</h2>
                         <span class="txt-time">02 octobre 2019 10:00</span>
                         <!-- <span class="txt_date">12 July 2017<span class="txt_bar">|</span>5:00</span> -->
                     </div>
-                    <div class="news-body">
+                    <div class="modal-view-news-body">
                         <div class="cms-article">
                             <p>Salutations aventuriers,</p>
 
