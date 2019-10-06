@@ -1,7 +1,7 @@
 <template>
     <div>
         <section>
-            <b-modal :active.sync="isComponentModalActive" class="news-details">
+            <b-modal :active.sync="isComponentModalActive" class="form-prompt">
                <FullNews/>
             </b-modal>
         </section>
@@ -112,7 +112,7 @@
 
             <div class="overview-download-bottom">
                 <div class="overview-download-bottom-left">
-                    <b-button size="is-large">Play</b-button>
+                    <b-button size="is-large" class="is-primary" @click="confirm">Play</b-button>
                 </div>
                 <div class="overview-download-bottom-right">
                     <progress class="progress is-primary" value="15" max="100">15%</progress>
@@ -159,6 +159,26 @@
         components: {
             DropDownGameMode,
             FullNews
+        },
+        computed: {
+            isSignedIn: function() {
+                return this.$store.state.isSignedIn;
+            },
+        },
+        methods: {
+            
+            confirm() {
+                if(!this.$store.state.isSignedIn){
+                    this.$buefy.dialog.confirm({
+                    message: 'Continue without logged in?',
+                    onConfirm: () => this.$buefy.toast.open('User confirmed without logged in')
+                })
+                }
+                
+            },
+            logout: async function() {
+                await this.$root.$AuthService.SignOut();
+            }
         }
     }
 </script>

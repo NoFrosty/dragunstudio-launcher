@@ -1,16 +1,48 @@
 <template>
     <section class="user-panel">
-        <div class="user-data">
-            <div class="user-friends">
-                <b-icon pack="fas" icon="user" size="is-small"></b-icon>
-                <p>17</p>
+        <b-modal :active.sync="isComponentModalActive" has-modal-card >
+               <LoginPrompt/>
+            </b-modal>
+        <div class="user-logged" v-if="isSignedIn">
+            <div class="user-data">
+                <div class="user-friends">
+                    <b-icon pack="fas" icon="user" size="is-small"></b-icon>
+                    <p>17</p>
+                </div>
+                <div class="user-name">
+                    <p>Username</p>
+                </div>
             </div>
-            <div class="user-name">
-                <p>Username</p>
-            </div>
+            <figure class="image is-64x64">
+                    <img class="is-rounded user-icon" src="https://bulma.io/images/placeholders/64x64.png">
+            </figure>
         </div>
-        <figure class="image is-64x64">
-                <img class="is-rounded user-icon" src="https://bulma.io/images/placeholders/64x64.png">
-        </figure>
+        <div class="user-not-logged" v-else>
+            <b-button type="is-primary"  @click="isComponentModalActive = true">Log in</b-button>
+        </div>
     </section>
 </template>
+
+<script>
+import LoginPrompt from './LoginPrompt.vue';
+export default {
+    data() {
+            return {
+                isComponentModalActive: false,
+            }
+        },
+    components:{
+        LoginPrompt
+    },
+    computed: {
+      isSignedIn: function() {
+        return this.$store.state.isSignedIn;
+      }
+    },
+    methods: {
+      logout: async function() {
+        await this.$root.$AuthService.SignOut();
+      }
+    },
+}
+</script>

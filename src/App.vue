@@ -52,6 +52,7 @@
   import WindowsController from './components/WindowsController.vue';
   import UserPanel from './components/UserPanel.vue';
   import GameOverview from './components/GameOverview.vue';
+  import AuthService  from './services/auth-service';
 
   export default {
     name: 'evopeons-launcher',
@@ -71,7 +72,10 @@
       WindowsController,
       UserPanel,
       GameOverview
-    }
+    },
+    created: function() {
+      this.$root.$AuthService = new AuthService(this.$store);
+    },
   }
 </script>
 
