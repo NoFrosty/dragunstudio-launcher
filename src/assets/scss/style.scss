@@ -329,11 +329,18 @@ a.navbar-item, .navbar-link{
     border: none;
 }
 
+
+
+
 .modal .animation-content{
     z-index: 1;
     padding: 105px 90px 91px;
-    background-color: #000000a8;
+    
     border-radius: 1.5rem;
+    
+    &:not(.modal-card){
+        background-color: #000000a8;
+    }
     .modal-background {
         background-color: rgba(10, 10, 10, 0.86);
         border-radius: $window-border-radius;
