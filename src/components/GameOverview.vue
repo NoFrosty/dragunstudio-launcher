@@ -122,8 +122,7 @@
                             <DropDownGameMode class="level-item" v-model="gameMode" />
                             <b-dropdown aria-role="list" class="is-up">
                                 <button class="button is-primary is-auto" slot="trigger">
-                                    <span>Options</span>
-                                    <b-icon pack="fas" icon="caret-up"></b-icon>
+                                    <b-icon pack="fas" icon="cog"></b-icon>
                                 </button>
                                 <b-dropdown-item aria-role="listitem">Settings</b-dropdown-item>
                                 <b-dropdown-item aria-role="listitem">Uninstall</b-dropdown-item>
