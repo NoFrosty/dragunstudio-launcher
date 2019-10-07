@@ -125,6 +125,7 @@
                                     <b-icon pack="fas" icon="cog"></b-icon>
                                 </button>
                                 <b-dropdown-item aria-role="listitem">Settings</b-dropdown-item>
+                                <b-dropdown-item aria-role="listitem">Repair</b-dropdown-item>
                                 <b-dropdown-item aria-role="listitem">Uninstall</b-dropdown-item>
                             </b-dropdown>
                         </div>
