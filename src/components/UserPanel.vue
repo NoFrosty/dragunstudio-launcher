@@ -7,10 +7,10 @@
             <div class="user-data">
                 <div class="user-friends">
                     <b-icon pack="fas" icon="user" size="is-small"></b-icon>
-                    <p>17</p>
+                    <p>0</p>
                 </div>
                 <div class="user-name">
-                    <p>Username</p>
+                    <p>{{this.$store.state.username}}</p>
                 </div>
             </div>
             <figure class="image is-64x64">
