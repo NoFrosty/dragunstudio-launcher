@@ -9,10 +9,10 @@
                     </div>
                     <h1 class="login-heading">Welcome back !</h1>
                     <p class="login-subheading">We don't need a healer for this, right?</p>
-                    <form method="" action="">
+                    <form v-on:submit.prevent="attemptSignIn">
                       <div class="field">
                         <p class="control has-icons-left has-icons-right">
-                          <input class="input is-medium" type="email" placeholder="Email" value="" name="email" autofocus="" required>
+                          <input class="input is-medium" v-model="email" type="email" placeholder="Email" value="" name="email" autofocus="" required>
                           <span class="icon is-medium is-left">
                             <i class="fa fa-envelope"></i>
                           </span>
@@ -23,7 +23,7 @@
                       </div>
                       <div class="field">
                         <p class="control has-icons-left has-icons-right">
-                          <input class="input is-medium" type="password" placeholder="Password" name="password" required>
+                          <input class="input is-medium" v-model="password" type="password" placeholder="Password" name="password" required>
                           <span class="icon is-medium is-left">
                             <i class="fa fa-lock"></i>
                           </span>
@@ -34,10 +34,10 @@
                       </div>
                       <div class="field is-grouped is-grouped-centered login-btn-group">
                         <div class="buttons">
-                          <b-button type="is-primary">Login</b-button>
+                          <b-button type="submit is-primary" @click="attemptSignIn">Login {{wrongIdentifier}}</b-button>
                           <b-button type="is-warning">Register</b-button>
                           <b-button type="is-danger">Forgot Password</b-button>
-                          <b-button type="is-info" tag="router-link" to="/">Without login</b-button>
+                          <b-button type="is-info" tag="router-link" :to="{name:'index'}">Without login</b-button>
                         </div>
                       </div>
                     </form>
@@ -52,7 +52,30 @@
 <script>
   import AuthService  from '@/services/auth-service';
 export default {
+    data() {
+        return {
+            email: '',
+            password: '',
+            wrongIdentifier: false
+        }
+    },
     components: {
+    },
+    methods: {
+        attemptSignIn: async function() {
+            
+            var isLogged = await this.$root.$AuthService.AttemptSignIn({
+                email: this.email,
+                password: this.password
+            });
+            console.log("isLogged :"+isLogged);
+            if(isLogged){
+                this.wrongIdentifier = false;
+            }
+            else{
+                this.wrongIdentifier = true;
+            }
+        }
     },
 }
 </script>
