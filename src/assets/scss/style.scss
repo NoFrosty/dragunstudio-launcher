@@ -12,6 +12,7 @@ body {
     background-image: url('./assets/Background-4K.jpg');
     background-size: cover;
     display: flex;
+    flex-direction: column;
     height: 100vh;
 } 
 
