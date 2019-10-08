@@ -1,0 +1,48 @@
+<template>
+    <div class="view-aux is-fullheight">
+      <div class="main-panel">
+        <WindowsController/>
+      </div>
+      <figure class="image">
+          <img class="logo" src="@/assets/logo.png"/>
+        </figure>
+
+        <div id="login">
+  <div class="login-card">
+
+    <div class="card-title">
+      <h1>Please Sign In</h1>
+    </div>
+
+    <div class="content">
+      <form method="POST" action="#">
+
+        <input id="email" type="email" name="email" title="email" placeholder="Email" required autofocus>
+        <input id="password" type="password" name="password" title="password" placeholder="Password" required>
+
+        <div class="level options">
+          <div class="checkbox level-left">
+            <input type="checkbox" id="checkbox" class="regular-checkbox">
+            <label for="checkbox"></label>
+            <span>Remember me</span>
+          </div>
+
+          <a class="btn btn-link level-right" href="#">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+    </div>
+</template>
+<script>
+  import WindowsController from '@/components/WindowsController.vue';
+  import AuthService  from '@/services/auth-service';
+export default {
+    components: {
+      WindowsController,
+    },
+}
+</script>

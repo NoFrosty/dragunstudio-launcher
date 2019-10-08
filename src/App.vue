@@ -1,5 +1,6 @@
 <template>
-  <div id="app">
+  <div id="window">
+    <WindowsController/>
     <router-view></router-view>
   </div>
 </template>

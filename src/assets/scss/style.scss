@@ -8,12 +8,14 @@ body {
     background-color: rgba($color: #000000, $alpha: 0.0);
 }
 
-#app{
+#window{
     background-image: url('./assets/Background-4K.jpg');
     background-size: cover;
+    display: flex;
+    height: 100vh;
 } 
 
-.windows-controller {
+.window-controller {
     display: flex;
     //flex-direction: row-reverse;
     justify-content: flex-end;
@@ -29,12 +31,16 @@ body {
         -webkit-app-region:drag;
         flex-grow: 1;
     }
-    .windows-controller-btn{
+    .window-controller-btn{
         line-height: $window-bar-height;
         text-align: right;
     }
 }
-
+.window-content{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
 .sidebar {
     &.column{
         padding: 0rem;
@@ -48,20 +54,17 @@ body {
 
     .top-bar {
         display: flex;
-
-        .game-tabs {
-            flex-grow: 1;
+        flex-direction: column;
+        .level{
             margin-bottom: 0;
-
+            margin-right: 1rem;
+            margin-left: 3rem;
+            margin-top: 1rem;
+        }
+        .game-tabs {
             .tab-content {
                 display: none;
             }
-        }
-        .control-panel {
-            width: 20rem;
-            position: absolute;
-            right: 1rem;
-            margin-top: 1rem;
         }
     }
     .content-container {
@@ -105,17 +108,11 @@ body {
     
 }
 
-
-.logo{
-    padding: 2em;
-}
-
 .is-sidebar-menu {
     background-color: rgba($color: #000000, $alpha: 0.2);
 }
-
-.columns {
-    &.is-fullheight {
+.columns{
+    .is-fullheight {
         &:not(:last-child) {
           margin-bottom: 0;
         }
@@ -131,11 +128,12 @@ body {
           max-height: 100vh;
           height: 100vh;
         }
-      
-        //.column {
-        //  overflow-y: auto;
-        //}
-      }
+
+  
+    //.column {
+    //  overflow-y: auto;
+    //}
+  }
 }
 
 .content-container {
@@ -444,5 +442,16 @@ a.navbar-item, .navbar-link{
                 
             }
         }
+    }
+}
+.view-aux{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    height: 100%;
+    img{
+        display: -webkit-inline-box;
+        max-width: 20%;
+        vertical-align: middle;
     }
 }

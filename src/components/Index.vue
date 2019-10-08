@@ -1,23 +1,32 @@
 <template>
-    <div class="columns is-fullheight">
+    <div class="window-content">
       <div class="sidebar column is-2 is-sidebar-menu">
-        <figure class="image">
-          <img class="logo" src="@/assets/logo.png"/>
-        </figure>
+        
         
         <SideBar/>
       </div>
       <div class="main-panel">
-        <WindowsController/>
+        
         <div class="top-bar">
-          <b-tabs v-model="activeGameTab" v-on:change="onGameTabChange" position="is-centered" class="game-tabs block">
+          <nav class="level">
+        <!-- Left side -->
+        <div class="level-left">
+          <div class="level-item">
+                <img class="logo" src="@/assets/logo.png" style="height: 4rem;"/>
+          </div>
+        </div>
+
+        <!-- Right side -->
+        <div class="level-right">
+          <p class="level-item"><UserPanel/></p>
+        </div>
+      </nav>
+        <b-tabs v-model="activeGameTab" v-on:change="onGameTabChange" position="is-centered" class="game-tabs block">
             <b-tab-item label="Overview" />
             <b-tab-item label="Activities" />
             <b-tab-item label="Achievements" />
           </b-tabs>
-          <div class="control-panel">
-            <UserPanel/>
-          </div>
+          
         </div>
         <div class="content-container">
           <GameOverview class="game-overview tab-content" v-bind:class="{ active: activeGameTab == GAME_TABS.OVERVIEW }"/>

@@ -21,4 +21,4 @@ new Vue({
   },
   render: h => h(App),
   defaultIconPack: 'fas',
-}).$mount('#app')
+}).$mount('#window')
