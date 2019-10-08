@@ -8,7 +8,7 @@
                     <img src="@/assets/logo.png"/>
                     </div>
                     <h1 class="login-heading">Welcome back !</h1>
-                    <p class="login-subheading">Fill out thisto access super awesome imaginary control panel</p>
+                    <p class="login-subheading">We don't need a healer for this, right?</p>
                     <form method="" action="">
                       <div class="field">
                         <p class="control has-icons-left has-icons-right">
