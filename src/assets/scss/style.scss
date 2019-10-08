@@ -22,7 +22,7 @@ body {
     justify-content: flex-end;
     height: $window-bar-height;
     padding-right: 1rem;
-    background-color: rgba($color: #000000, $alpha: 0.2);
+    background-color: $window-controller-background-color;
 
     a{
         margin-left: 0.5em;
@@ -110,7 +110,7 @@ body {
 }
 
 .is-sidebar-menu {
-    background-color: rgba($color: #000000, $alpha: 0.2);
+    background-color: $window-controller-background-color;
 }
 .columns{
     .is-fullheight {

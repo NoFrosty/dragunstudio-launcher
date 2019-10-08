@@ -18,7 +18,7 @@
             </figure>
         </div>
         <div class="user-not-logged" v-else>
-            <b-button type="is-primary"  @click="isComponentModalActive = true">Log in</b-button>
+            <b-button type="is-primary" @click="isComponentModalActive = true" tag="router-link" to="/login">Log in</b-button>
         </div>
     </section>
 </template>
