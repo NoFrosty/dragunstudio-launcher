@@ -7,15 +7,14 @@
         </section>
         <div class="overview-panel">
             <div class="overview-panel-left">
-                <div class="scrollable">
+                <div class="scrollable" v-if="news">
                     <p class="title is-3">News</p>
-                    <a @click="isComponentModalActive = true">
+                    <a v-bind:key="item.id" v-for="item in news" @click="isComponentModalActive = true">
                         <article class="content">
-                            <p class="title is-4">News Sample : This is a test</p>
-                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
-                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
-                                pharetra consectetur dui pharetra.</p>
-                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                            <p class="title is-4">{{item.title}}</p>
+                            <p v-if="item.article.length<350" class="article">{{item.article}}</p>
+                            <p v-else class="article">{{item.article.substring(0,350)+"..."}}</p>
+                            <time datetime="2016-1-1">{{item.publishDate}}</time>
                         </article>
                     </a>
 
@@ -148,12 +147,14 @@
     } from '@/services/constants.js'
     import DropDownGameMode from './DropDownGameMode.vue';
     import FullNews from './FullNews.vue'
+    import axios from 'axios';
 
     export default {
         data() {
             return {
                 gameMode: GAME_MODE.PUBLIC,
                 isComponentModalActive: false,
+                news: null
             }
         },
         components: {
@@ -179,6 +180,10 @@
             logout: async function() {
                 await this.$root.$AuthService.SignOut();
             }
+        },
+        created: async function () {
+            let newsResponse = await axios.get(process.env.VUE_APP_API_LINK+'news');
+            this.news = newsResponse.data;
         }
     }
 </script>
