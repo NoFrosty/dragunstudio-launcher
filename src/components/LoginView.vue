@@ -12,24 +12,25 @@
                     <form v-on:submit.prevent="attemptSignIn">
                       <div class="field">
                         <p class="control has-icons-left has-icons-right">
-                          <input class="input is-medium" v-model="email" type="email" placeholder="Email" value="" name="email" autofocus="" required>
-                          <span class="icon is-medium is-left">
-                            <i class="fa fa-envelope"></i>
-                          </span>
-                          <span class="icon is-small is-right">
-                            <i class="fa fa-check"></i>
-                          </span>
+                          <b-field>
+                                <b-input size="is-medium" icon-pack="fa"
+                                    icon="envelope" v-model="email" type="email"
+                                    name="email"
+                                    placeholder="Email" required>
+                                </b-input>
+                            </b-field>
                         </p>
                       </div>
                       <div class="field">
                         <p class="control has-icons-left has-icons-right">
-                          <input class="input is-medium" v-model="password" type="password" placeholder="Password" name="password" required>
-                          <span class="icon is-medium is-left">
-                            <i class="fa fa-lock"></i>
-                          </span>
-                          <span class="icon is-small is-right">
-                            <i class="fa fa-eye"></i>
-                          </span>
+                            <b-field>
+                                <b-input size="is-medium" icon-pack="fa"
+                                    icon="lock" v-model="password" type="password"
+                                    name="password"
+                                    placeholder="Password"
+                                    password-reveal required>
+                                </b-input>
+                            </b-field>
                         </p>
                       </div>
                       <div class="field is-grouped is-grouped-centered login-btn-group">
