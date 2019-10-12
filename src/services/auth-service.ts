@@ -1,14 +1,19 @@
 import axios from 'axios';
+import Vue from 'vue';
+import { Store } from 'vuex';
+import ApplicationState from '@/store/State';
 
 class AuthService {
-    constructor(store) {
+    private $store : Store<ApplicationState>;
+
+    constructor(store : Store<ApplicationState>) {
         this.$store = store;
     }
 
-    async AttemptSignIn({email, password}) {
+    async AttemptSignIn(credentials: {email : string, password : string}) {
         let parameters = {
-            Email: email,
-            Password: password
+            Email: credentials.email,
+            Password: credentials.password
         };
         
         let loginResult = await axios.post(process.env.VUE_APP_API_LINK+"authenticate", parameters);

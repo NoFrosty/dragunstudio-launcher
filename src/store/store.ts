@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex';
+import ApplicationState from './State';
 
 Vue.use(Vuex)
 
