@@ -2,14 +2,13 @@ import Vue from 'vue'
 import axios from 'axios'
 import Buefy from 'buefy'
 
-import App from './App'
+import App from './App.vue'
 import router from './router'
 import store from './store'
 
 Vue.config.productionTip = false
+Vue.prototype.$http = axios
 
-Vue.http = Vue.prototype.$http = axios
-Vue.config.productionTip = false
 Vue.use(Buefy)
 
 /* eslint-disable no-new */
@@ -20,5 +19,5 @@ new Vue({
     this.$store.commit('initialiseStore')
   },
   render: h => h(App),
-  defaultIconPack: 'fas',
+  //defaultIconPack: 'fas',
 }).$mount('#window')

@@ -144,7 +144,7 @@
 <script>
     import {
         GAME_MODE
-    } from '@/services/constants.js'
+    } from '@/services/constants.ts'
     import DropDownGameMode from './DropDownGameMode.vue';
     import FullNews from './FullNews.vue'
     import axios from 'axios';

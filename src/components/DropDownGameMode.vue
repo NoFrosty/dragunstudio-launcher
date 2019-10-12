@@ -21,7 +21,7 @@
 </template>
 
 <script>
-    import { GAME_MODE, GAME_MODE_ICONS, GAME_MODE_NAME } from '@/services/constants.js'
+    import { GAME_MODE, GAME_MODE_ICONS, GAME_MODE_NAME } from '@/services/constants.ts'
 
     export default {
         props: {
