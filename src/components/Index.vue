@@ -35,32 +35,30 @@
                     <b-tab-item label="Achievements" />
                 </b-tabs>
             </div>
-            <div v-if="!isOffline">
-                <div class="content-container">
-                    <GameOverview
-                        v-if="!isOffline"
-                        class="game-overview tab-content"
-                        v-bind:class="{ active: activeGameTab == GAME_TABS.OVERVIEW }"
-                    />
-                    <div
-                        class="game-activities tab-content"
-                        v-bind:class="{ active: activeGameTab == GAME_TABS.ACTIVITIES }"
-                    >
-                        Nunc nec velit nec libero vestibulum eleifend.
-                        Curabitur pulvinar congue luctus.
-                        Nullam hendrerit iaculis augue vitae ornare.
-                        Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget
-                    </div>
-                    <div
-                        class="game-achievements tab-content"
-                        v-bind:class="{ active: activeGameTab == GAME_TABS.ACHIEVEMENTS }"
-                    >
-                        What joy is joy, if Silvia be not by—
-                        <br />Unless it be to think that she is by
-                        <br />And feed upon the shadow of perfection?
-                        <br />Except I be by Silvia in the night,
-                        <br />There is no music in the nightingale.
-                    </div>
+            <div class="content-container" v-if="!isOffline">
+                <GameOverview
+                    v-if="!isOffline"
+                    class="game-overview tab-content"
+                    v-bind:class="{ active: activeGameTab == GAME_TABS.OVERVIEW }"
+                />
+                <div
+                    class="game-activities tab-content"
+                    v-bind:class="{ active: activeGameTab == GAME_TABS.ACTIVITIES }"
+                >
+                    Nunc nec velit nec libero vestibulum eleifend.
+                    Curabitur pulvinar congue luctus.
+                    Nullam hendrerit iaculis augue vitae ornare.
+                    Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget
+                </div>
+                <div
+                    class="game-achievements tab-content"
+                    v-bind:class="{ active: activeGameTab == GAME_TABS.ACHIEVEMENTS }"
+                >
+                    What joy is joy, if Silvia be not by—
+                    <br />Unless it be to think that she is by
+                    <br />And feed upon the shadow of perfection?
+                    <br />Except I be by Silvia in the night,
+                    <br />There is no music in the nightingale.
                 </div>
             </div>
         </div>
