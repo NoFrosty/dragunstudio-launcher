@@ -1,26 +1,28 @@
 <template>
     <b-menu >
-        <b-menu-list>
-            <MenuItem icon="information-outline" label="Game 1" imagepath="../assets/images/pikachu.png"></MenuItem>
-            <MenuItem icon="information-outline" label="Game 2" imagepath="../assets/images/pikachu.png"></MenuItem>
-            <MenuItem icon="information-outline" label="Game 3" imagepath="../assets/images/pikachu.png"></MenuItem>
-            <MenuItem icon="information-outline" label="Game 4" imagepath="../assets/images/pikachu.png"></MenuItem>
+        <b-menu-list v-if="applications">
+            <MenuItem v-bind:key="application.applicationId" v-for="application in applications" icon="information-outline" :label="application.name" imagepath="../assets/images/pikachu.png"></MenuItem>
         </b-menu-list>
     </b-menu>
     
 </template>
 
 <script>
-import MenuItem from './buefyC/MenuItem.vue';
-
+    import MenuItem from './buefyC/MenuItem.vue';
+    import axios from 'axios';
     export default {
         data() {
             return {
-                isActive: true
+                isActive: true,
+                applications:null
             }
         },
         components: {
             MenuItem,
+        },
+        mounted () {
+            axios.get(process.env.VUE_APP_API_LINK+'application').then(response => (this.applications = response.data));
+            
         }
     }
 </script>
