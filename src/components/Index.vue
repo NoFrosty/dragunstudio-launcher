@@ -1,15 +1,17 @@
 <template>
     <div class="window-content">
+        <!--
         <div class="sidebar column is-2 is-sidebar-menu">
             <SideBar />
         </div>
+        -->
         <div class="main-panel">
             <div class="top-bar">
                 <nav class="level">
                     <!-- Left side -->
                     <div class="level-left">
                         <div class="level-item">
-                            <img class="logo" src="@/assets/logo.png" style="height: 4rem;" />
+                            <DropDownApplicationSelection/>
                         </div>
                     </div>
 
@@ -73,6 +75,7 @@ const GAME_TABS = {
 };
 import SideBar from "@/components/SideBar.vue";
 import UserPanel from "@/components/UserPanel.vue";
+import DropDownApplicationSelection from "@/components/DropDownApplicationSelection.vue";
 import GameOverview from "@/components/GameOverview.vue";
 import AuthService from "@/services/auth-service";
 
@@ -97,7 +100,8 @@ export default {
     components: {
         SideBar,
         UserPanel,
-        GameOverview
+        GameOverview,
+        DropDownApplicationSelection
     },
     created: function() {}
 };
