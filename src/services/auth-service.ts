@@ -11,8 +11,6 @@ class AuthService {
     constructor(store : Store<ApplicationState>, router : Router) {
         this.$store = store;
         this.$router = router;
-        console.log('router1', this.$router)
-
     }
 
     async AttemptSignIn(credentials: {email : string, password : string}) {
@@ -38,12 +36,14 @@ class AuthService {
     }
 
     async SignOut() {
-        await axios.post(process.env.VUE_APP_API_LINK + "/authenticate/signout");
-        this.$store.dispatch('signOut');
-        axios.defaults.headers.common['Authorization'] = null;
-        console.log('router', this.$router)
-
-        this.$router.push({ name: "login" });
+        try {
+            await axios.post(process.env.VUE_APP_API_LINK + "/authenticate/signout");
+        }
+        finally {
+            this.$store.dispatch('signOut');
+            axios.defaults.headers.common['Authorization'] = null;
+            this.$router.push({ name: "login" });
+        }
     }
 
     IsSignedIn() {

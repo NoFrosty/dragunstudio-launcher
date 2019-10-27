@@ -169,17 +169,16 @@
             confirm() {
                 if(!this.$store.state.isSignedIn){
                     this.$buefy.dialog.confirm({
-                    message: 'Continue without logged in?',
-                    onConfirm: () => this.$buefy.toast.open('User confirmed without logged in')
-                })
+                        message: 'Continue without logged in?',
+                        onConfirm: () => this.$buefy.toast.open('User confirmed without logged in')
+                    })
                 }
-                
             },
             logout: async function() {
                 await this.$root.$AuthService.SignOut();
             }
         },
-        created: async function () {
+        mounted: async function () {
             let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
             this.news = newsResponse.data;
         }
