@@ -2,7 +2,7 @@ import axios from 'axios';
 import Vue from 'vue';
 import { Store } from 'vuex';
 import Router from 'vue-router'
-import ApplicationState from '@/store/State';
+import ApplicationState from '@/store/ApplicationState';
 
 class AuthService {
     private $store : Store<ApplicationState>;

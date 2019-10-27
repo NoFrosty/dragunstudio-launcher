@@ -174,13 +174,20 @@
                     })
                 }
             },
-            logout: async function() {
-                await this.$root.$AuthService.SignOut();
-            }
+            GetApplication: function() {
+                this.$store.commit('getInstalledApplication', this.$store.state.selectedApplicationId);
+            },
         },
         mounted: async function () {
             let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
             this.news = newsResponse.data;
+        },
+        created() {
+            this.$store.subscribe((mutation, state) => {
+            if (mutation.type === 'setSelectedApplicationId') {
+                console.log(`Updating to ${state.selectedApplicationId}`);
+            }
+            });
         }
     }
 </script>

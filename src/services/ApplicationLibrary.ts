@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Store } from 'vuex';
-import ApplicationState from '@/store/State';
+import ApplicationState from '@/store/ApplicationState';
 import {ApplicationInfo} from "@/models/ApplicationInfo";
 
 class ApplicationLibrary {

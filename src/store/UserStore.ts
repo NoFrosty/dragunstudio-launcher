@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex';
-import ApplicationState from './State';
+import ApplicationState from '@/store/ApplicationState';
 import { InstallationInfo } from '@/models/InstallationInfo';
 
 Vue.use(Vuex)
@@ -10,6 +10,7 @@ const state : ApplicationState = {
     username: "",
     jwt: "",
     isOffline: undefined,
+    selectedApplicationId: undefined,
     installedApplications: []
 }
 
@@ -52,6 +53,12 @@ const store = new Vuex.Store({
         },
         setOfflineStatus(state, isOffline: boolean) {
             state.isOffline = isOffline;
+        },
+        setSelectedApplicationId (state, selectedApplicationId: string) {
+            state.selectedApplicationId = selectedApplicationId;
+        },
+        getInstalledApplication (state, applicationId: string) {
+            return state.installedApplications.find(x => x.ApplicationId == applicationId);
         }
     },
     actions: {
@@ -73,6 +80,12 @@ const store = new Vuex.Store({
         },
         setOfflineStatus ({ commit }, isOffline: boolean) {
             commit('setOfflineStatus', isOffline);
+        },
+        setSelectedApplicationId ({ commit }, selectedApplicationId: string) {
+            commit('setSelectedApplicationId', selectedApplicationId);
+        },
+        getInstalledApplication ({ commit }, applicationId: string) {
+            commit('getInstalledApplication', applicationId);
         }
     }
 })

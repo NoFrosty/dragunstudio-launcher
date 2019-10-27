@@ -1,7 +1,7 @@
 <template>
 
     <b-dropdown v-model="currentApplication" aria-role="list">
-        <button class="button is-danger" type="button" slot="trigger">
+        <button class="button is-danger" type="button" slot="trigger" v-if="currentApplication">
             <template >
                 <b-icon pack="fas" icon="user"></b-icon>
                 <span>{{currentApplication.name}}</span>
@@ -9,7 +9,7 @@
             <b-icon icon="menu-down"></b-icon>
         </button>
 
-        <b-dropdown-item v-for="application in applications" :key="application.ApplicationId" :value="application"  aria-role="listitem">
+        <b-dropdown-item v-for="application in applications" :key="application.applicationid" :value="application" @click="changeApplication" aria-role="listitem">
             <div class="media">
                 <b-icon class="media-left" pack="fas" icon="user"></b-icon>
                 <div class="media-content">
@@ -55,10 +55,9 @@
             }
         },
         methods: {
-            onChange: function(value) {
-                this.$emit('input', value)
-                this.$emit('game-mode-changed', value)
-            }
+            changeApplication: function() {
+                this.$store.commit('setSelectedApplicationId', this.currentApplication.applicationId);
+            },
         },
         async mounted () {
             this.applications = await this.$root.$ApplicationLibrary.getAllGameList();

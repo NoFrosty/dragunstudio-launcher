@@ -5,6 +5,7 @@ interface ApplicationState {
     username : string
     jwt : string,
     isOffline?: boolean,
+    selectedApplicationId?: string,
     installedApplications: InstallationInfo[]
 }
 
