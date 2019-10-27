@@ -6,8 +6,9 @@ export type ApplicationType = {
     Name: string;
     IsPublished: boolean;
     InMaintenance: boolean;
+    IsInstalled: boolean;
     Path: string;
     ExeName: string;
     Size: number;
-    Version: SemVersion;
+    Version?: SemVersion;
 }
