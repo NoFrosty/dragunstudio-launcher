@@ -20,8 +20,8 @@
         components: {
             MenuItem,
         },
-        mounted () {
-            axios.get(process.env.VUE_APP_API_LINK + '/application').then(response => (this.applications = response.data));
+        async mounted () {
+            this.applications = await this.$root.$ApplicationLibrary.getAllGameList();
             
         }
     }

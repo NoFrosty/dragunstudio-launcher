@@ -19,28 +19,33 @@
           <p class="level-item"><UserPanel/></p>
         </div>
       </nav>
-        <b-tabs v-model="activeGameTab" v-on:change="onGameTabChange" position="is-centered" class="game-tabs block">
-            <b-tab-item label="Overview" />
-            <b-tab-item label="Activities" />
-            <b-tab-item label="Achievements" />
-          </b-tabs>
-          
+        <div v-if="isOffline">
+            <h1>NO DESCRIPTION IN OFFLINE MODE!</h1>
         </div>
-        <div class="content-container">
-          <GameOverview class="game-overview tab-content" v-bind:class="{ active: activeGameTab == GAME_TABS.OVERVIEW }"/>
-          <div class="game-activities tab-content" v-bind:class="{ active: activeGameTab == GAME_TABS.ACTIVITIES }">
-            Nunc nec velit nec libero vestibulum eleifend.
-            Curabitur pulvinar congue luctus.
-            Nullam hendrerit iaculis augue vitae ornare.
-            Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget
-          </div>
-          <div class="game-achievements tab-content" v-bind:class="{ active: activeGameTab == GAME_TABS.ACHIEVEMENTS }">
-            What joy is joy, if Silvia be not by— <br>
-            Unless it be to think that she is by <br>
-            And feed upon the shadow of perfection? <br>
-            Except I be by Silvia in the night, <br>
-            There is no music in the nightingale.
-          </div>
+        <div v-else>
+            <b-tabs v-model="activeGameTab" v-on:change="onGameTabChange" position="is-centered" class="game-tabs block">
+                <b-tab-item label="Overview" />
+                <b-tab-item label="Activities" />
+                <b-tab-item label="Achievements" />
+            </b-tabs>
+            
+            </div>
+            <div class="content-container">
+            <GameOverview v-if="!isOffline" class="game-overview tab-content" v-bind:class="{ active: activeGameTab == GAME_TABS.OVERVIEW }"/>
+            <div class="game-activities tab-content" v-bind:class="{ active: activeGameTab == GAME_TABS.ACTIVITIES }">
+                Nunc nec velit nec libero vestibulum eleifend.
+                Curabitur pulvinar congue luctus.
+                Nullam hendrerit iaculis augue vitae ornare.
+                Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget
+            </div>
+            <div class="game-achievements tab-content" v-bind:class="{ active: activeGameTab == GAME_TABS.ACHIEVEMENTS }">
+                What joy is joy, if Silvia be not by— <br>
+                Unless it be to think that she is by <br>
+                And feed upon the shadow of perfection? <br>
+                Except I be by Silvia in the night, <br>
+                There is no music in the nightingale.
+            </div>
+            </div>
         </div>
         
       </div>
@@ -65,6 +70,12 @@
         GAME_TABS: GAME_TABS,
         activeGameTab: GAME_TABS.OVERVIEW
       }
+    },
+    computed: {
+        isOffline: function() {
+            return true;
+            return this.$store.state.isOffline;
+        }
     },
     methods: {
       onGameTabChange: function (index) {
