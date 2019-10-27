@@ -1,15 +1,27 @@
 import {GameNameEnum} from "./GameNameEnum";
-import {Game} from "./Game";
+import {Application} from "./Application";
 import { SemVersion } from './SemVersion';
+import { LauncherOptions } from './LauncherOptions';
+import * as WebRequest from 'web-request'
+import axios from 'axios';
+
 export class Launcher {
 
-    public games: Game[];
-    
+    public applications: Array<Application>;
+    public apiUrl: string;
     constructor () {
-        this.games = new Array<Game>();
-        this.games.push(new Game(GameNameEnum.Heroes, "", "", 0, new SemVersion(0,0,0)));
-        this.games.push(new Game(GameNameEnum.Diablo, "", "", 0, new SemVersion(0,0,0)));
-        this.games.push(new Game(GameNameEnum.LoL, "", "", 0, new SemVersion(0,0,0)));
+        this.apiUrl = process.env.VUE_APP_API_LINK+"";
+        this.applications = this.getAllGameList();
+        
     }
 
+    private getAllGameList(): Array<Application>{
+        var result:Array<Application> = new Array<Application>();
+        let response = axios.get(process.env.VUE_APP_API_LINK+'application').then(function (response) {
+            // handle success
+            result = response.data;
+            console.log(result);
+          });
+        return result;
+    }
 }

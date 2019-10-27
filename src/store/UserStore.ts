@@ -1,22 +1,28 @@
 import Vue from 'vue'
 import Vuex from 'vuex';
+import ApplicationState from './State';
 
 Vue.use(Vuex)
 
+const state : ApplicationState = {
+    isSignedIn: false,
+    username: "",
+    jwt: ""
+}
+
 const store = new Vuex.Store({
-    state: {
-        isSignedIn: false,
-        username: null,
-        jwt: null
-    },
+    state,
     mutations: {
         initialiseStore(state) {
 			// Check if the ID exists
 			if(localStorage.getItem('store')) {
 				// Replace the state object with the stored item
-				this.replaceState(
-					Object.assign(state, JSON.parse(localStorage.getItem('store')))
-				);
+                let soteObject = localStorage.getItem('store');
+                if (soteObject) {
+                    this.replaceState(
+                        Object.assign(state, JSON.parse(soteObject))
+                    );
+                }
 			}
         },
         
@@ -41,8 +47,8 @@ const store = new Vuex.Store({
             commit('signIn');
         },
         signOut ({ commit }) {
-            commit('setJWT', null);
-            commit('setUsername', null);
+            commit('setJWT', "");
+            commit('setUsername', "");
             commit('signOut');
         }
     }
