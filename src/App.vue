@@ -16,7 +16,8 @@
   import UserPanel from './components/UserPanel.vue';
   import GameOverview from './components/GameOverview.vue';
   import AuthService  from './services/auth-service';
-
+  import {Launcher} from './launcher/Launcher';
+  var launcher;
   export default {
     name: 'evopeons-launcher',
     data() {
@@ -39,7 +40,11 @@
     created: function() {
       this.$root.$AuthService = new AuthService(this.$store);
     },
+    
   }
+    launcher = new Launcher();
+  
+  
 </script>
 
 <style lang="scss">
