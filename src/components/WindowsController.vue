@@ -1,5 +1,7 @@
 <template>
     <div class="window-controller">
+        <p class="title-blue">Evo</p>
+        <p class="title-white">Launcher</p>
         <div class="draggable">
         </div>
         <div class="window-controller-btn">

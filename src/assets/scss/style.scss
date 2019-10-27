@@ -22,8 +22,19 @@ body {
     justify-content: flex-end;
     height: $window-bar-height;
     padding-right: 1rem;
+    padding-left: 1rem;
     background-color: $window-controller-background-color;
 
+    .title-blue{
+        font-size: x-large;
+        font-weight: bold;
+        color: $primary;
+    }
+    .title-white{
+        font-size: x-large;
+        font-weight: bold;
+        color: $white;
+    }
     a{
         margin-left: 0.5em;
         margin-right: 0.5em;
