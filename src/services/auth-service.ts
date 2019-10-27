@@ -23,13 +23,10 @@ class AuthService {
                 username: loginResult.data.username
             }).then(() => {
               });
-              console.log("log true");
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.jwt;
             return true;
         }
         else{
-            console.log("log false");
-
             return false;
         }
         
