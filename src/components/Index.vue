@@ -1,8 +1,6 @@
 <template>
     <div class="window-content">
       <div class="sidebar column is-2 is-sidebar-menu">
-        
-        
         <SideBar/>
       </div>
       <div class="main-panel">
@@ -79,7 +77,6 @@
       GameOverview
     },
     created: function() {
-      this.$root.$AuthService = new AuthService(this.$store);
     },
   }
 </script>

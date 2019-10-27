@@ -13,8 +13,8 @@
   }
   import WindowsController from './components/WindowsController.vue';
   import AuthService  from './services/auth-service';
-  import {Launcher} from './launcher/Launcher';
-  var launcher;
+  import ApplicationLibrary  from './services/ApplicationLibrary';
+
   export default {
     name: 'evopeons-launcher',
     data() {
@@ -32,11 +32,11 @@
       WindowsController,
     },
     created: function() {
-      this.$root.$AuthService = new AuthService(this.$store);
-    },
+      this.$root.$AuthService = new AuthService(this.$store, this.$router);
+      this.$root.$ApplicationLibrary = new ApplicationLibrary(this.$store);
+    }
     
   }
-    launcher = new Launcher();
   
   
 </script>

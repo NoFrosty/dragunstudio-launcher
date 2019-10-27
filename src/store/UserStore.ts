@@ -1,14 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex';
 import ApplicationState from './State';
+import { InstallationInfo } from '@/models/InstallationInfo';
 
 Vue.use(Vuex)
 
 const state : ApplicationState = {
     isSignedIn: false,
     username: "",
-    jwt: ""
+    jwt: "",
+    isOffline: undefined,
+    installedApplications: []
 }
+
 
 const store = new Vuex.Store({
     state,
@@ -38,6 +42,16 @@ const store = new Vuex.Store({
         },
         setJWT(state, jwt) {
             state.jwt = jwt;
+        },
+        addNewApplication(state, installation: InstallationInfo) {
+            state.installedApplications.push(installation);
+        },
+        removeApplication(state, installation: InstallationInfo) {
+            let appIndex = state.installedApplications.findIndex(x => x.ApplicationId == installation.ApplicationId);
+            state.installedApplications.splice(appIndex, 1);
+        },
+        setOfflineStatus(state, isOffline: boolean) {
+            state.isOffline = isOffline;
         }
     },
     actions: {
@@ -50,6 +64,15 @@ const store = new Vuex.Store({
             commit('setJWT', "");
             commit('setUsername', "");
             commit('signOut');
+        },
+        addNewApplication ({ commit }, installation: InstallationInfo) {
+            commit('addNewApplication', installation);
+        },
+        removeApplication ({ commit }, installation: InstallationInfo) {
+            commit('removeApplication', installation);
+        },
+        setOfflineStatus ({ commit }, isOffline: boolean) {
+            commit('setOfflineStatus', isOffline);
         }
     }
 })

@@ -39,7 +39,7 @@
                           <b-button type="submit is-primary" @click="attemptSignIn">Login</b-button>
                           <b-button type="is-warning">Register</b-button>
                           <b-button type="is-danger">Forgot Password</b-button>
-                          <b-button type="is-info" tag="router-link" :to="{name:'index'}">Without login</b-button>
+                          <b-button type="is-info" tag="router-link" :to="{name:'launcher'}">Without login</b-button>
                         </div>
                       </div>
                     </form>
@@ -68,9 +68,9 @@ export default {
                 email: this.email,
                 password: this.password
             });
-            if(isLogged){
+            if(isLogged) {
                 this.wrongIdentifier = false;
-                this.$router.push("/");
+                this.$router.push({ name: "launcher" });
             }
             else{
                 this.wrongIdentifier = true;
@@ -78,6 +78,11 @@ export default {
             }
         }
     },
+    mounted: async function() {
+        if (this.$root.$AuthService.IsSignedIn()) {
+            this.$router.push({ name: "launcher" });
+        }
+    }
 }
 </script>
 

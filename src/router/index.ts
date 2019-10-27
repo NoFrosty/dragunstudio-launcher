@@ -4,20 +4,25 @@ Vue.use(Router)
 
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'index',
-      component: require('@/components/Index').default
-    },
-    {
-      path: '*',
-      redirect: '/',
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: require('@/components/LoginView').default
-    }
-  ]
+    routes: [
+        {
+            path: '/',
+            name: 'boot',
+            component: require('@/components/Boot').default
+        },
+        {
+            path: '/launcher',
+            name: 'launcher',
+            component: require('@/components/Index').default
+        },
+        {
+            path: '*',
+            redirect: '/',
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: require('@/components/LoginView').default
+        }
+    ]
 })

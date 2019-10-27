@@ -1,13 +1,18 @@
 import axios from 'axios';
 import Vue from 'vue';
 import { Store } from 'vuex';
+import Router from 'vue-router'
 import ApplicationState from '@/store/State';
 
 class AuthService {
     private $store : Store<ApplicationState>;
+    private $router : Router;
 
-    constructor(store : Store<ApplicationState>) {
+    constructor(store : Store<ApplicationState>, router : Router) {
         this.$store = store;
+        this.$router = router;
+        console.log('router1', this.$router)
+
     }
 
     async AttemptSignIn(credentials: {email : string, password : string}) {
@@ -22,7 +27,7 @@ class AuthService {
                 jwt: loginResult.data.token,
                 username: loginResult.data.username
             }).then(() => {
-              });
+            });
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.jwt;
             return true;
         }
@@ -36,6 +41,13 @@ class AuthService {
         await axios.post(process.env.VUE_APP_API_LINK + "/authenticate/signout");
         this.$store.dispatch('signOut');
         axios.defaults.headers.common['Authorization'] = null;
+        console.log('router', this.$router)
+
+        this.$router.push({ name: "login" });
+    }
+
+    IsSignedIn() {
+        return this.$store.state.isSignedIn;
     }
 }
 
