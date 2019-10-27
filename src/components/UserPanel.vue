@@ -7,6 +7,10 @@
                         <span>{{this.$store.state.username}}</span>
                         <b-icon pack="fas" icon="caret-down"></b-icon>
                     </button>
+                    <b-dropdown-item v-if="isOffline" v-on:click="goOnline" value="settings">
+                        <b-icon pack="fas" icon="plug"></b-icon>
+                        Go Online
+                    </b-dropdown-item>
                     <b-dropdown-item value="settings">
                         <b-icon pack="fas" icon="user-friends"></b-icon>
                         Friends
@@ -35,13 +39,19 @@ export default {
     components:{
     },
     computed: {
-      isSignedIn: function() {
-        return this.$store.state.isSignedIn;
-      }
+        isSignedIn: function() {
+            return this.$store.state.isSignedIn;
+        },
+        isOffline: function() {
+            return this.$store.state.isOffline;
+        }
     },
     methods: {
       logout: async function() {
         await this.$root.$AuthService.SignOut();
+      },
+      goOnline: async function() {
+        this.$router.push({ name: "boot" })
       }
     },
 }

@@ -73,7 +73,6 @@
     },
     computed: {
         isOffline: function() {
-            return true;
             return this.$store.state.isOffline;
         }
     },
