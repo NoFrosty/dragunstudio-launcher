@@ -1,6 +1,7 @@
 <template>
     <div>
-        <p v-if="isLoading">Loading!</p>
+        <p v-if="currentAction == 'health-check'">Checking server!</p>
+        <p v-if="currentAction == 'loading'">Loading!</p>
         <p v-if="isServerDown">
             Server Down!
             <button @click="goOffline">Go Offline</button>
@@ -18,7 +19,7 @@
         },
         data() {
             return {
-                isLoading: true,
+                currentAction: null,
                 isServerDown: false
             }
         },
@@ -27,6 +28,7 @@
                 this.activeGameTab = index;
             },
             testServerConnection: async function() {
+                this.currentAction = 'health-check';
                 try {
                     // Check if server is up
                     await axios.get(process.env.VUE_APP_API_LINK + '/health');
@@ -36,20 +38,22 @@
                     // Server is down!
                     this.isServerDown = true;
                 }
+                this.currentAction = null;
                 return !this.isServerDown;
             },
             initializeLauncher: async function() {
-                this.isLoading = true;
+                this.currentAction = 'loading';
                 
                 var result = await this.$root.$ApplicationLibrary.getAllGameList();
                 
-                this.isLoading = false;
+                this.currentAction = null;
 
                 return true;
             },
             goOffline: function() {
                 this.$store.commit('setOfflineStatus', true);
                 this.initializeLauncher();
+                this.$router.push({ name: "launcher" });
             },
             goOnline: function() {
                 this.$store.commit('setOfflineStatus', false);
