@@ -182,7 +182,7 @@
             }
         },
         created: async function () {
-            let newsResponse = await axios.get(process.env.VUE_APP_API_LINK+'news');
+            let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
             this.news = newsResponse.data;
         }
     }

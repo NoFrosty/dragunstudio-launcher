@@ -16,7 +16,7 @@ class AuthService {
             Password: credentials.password
         };
         
-        let loginResult = await axios.post(process.env.VUE_APP_API_LINK+"authenticate", parameters);
+        let loginResult = await axios.post(process.env.VUE_APP_API_LINK + "/authenticate", parameters);
         if (loginResult.data.isSuccessfull) {
             this.$store.dispatch('signIn', { 
                 jwt: loginResult.data.token,
@@ -33,7 +33,7 @@ class AuthService {
     }
 
     async SignOut() {
-        await axios.post(process.env.VUE_APP_API_LINK+"authenticate/signout");
+        await axios.post(process.env.VUE_APP_API_LINK + "/authenticate/signout");
         this.$store.dispatch('signOut');
         axios.defaults.headers.common['Authorization'] = null;
     }

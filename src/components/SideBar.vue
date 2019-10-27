@@ -21,7 +21,7 @@
             MenuItem,
         },
         mounted () {
-            axios.get(process.env.VUE_APP_API_LINK+'application').then(response => (this.applications = response.data));
+            axios.get(process.env.VUE_APP_API_LINK + '/application').then(response => (this.applications = response.data));
             
         }
     }

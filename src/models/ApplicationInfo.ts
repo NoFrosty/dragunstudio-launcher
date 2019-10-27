@@ -1,8 +1,7 @@
-import {GameNameEnum} from "./GameNameEnum";
-import { SemVersion } from './SemVersion';
+import {GameNameEnum} from "../launcher/GameNameEnum";
+import { SemVersion } from '../launcher/SemVersion';
 
-export interface Application {
-
+export interface ApplicationInfo {
     ApplicationId: string;
     Name: string;
     IsPublished: boolean;
@@ -11,5 +10,4 @@ export interface Application {
     ExeName: string;
     Size: number;
     Version: SemVersion;
-
 }
