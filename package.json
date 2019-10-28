@@ -1,6 +1,15 @@
 {
   "name": "evopeons-launcher-client",
-  "version": "0.1.0",
+  "version": "0.0.1",
+  "description": "Evorine multi application launcher",
+  "keywords": [
+    "launcher",
+    "game",
+    "evorine",
+    "evolauncher"
+  ],
+  "author": "Evorine",
+  "license": "© 2019 Evorine All Rights Reserved",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
