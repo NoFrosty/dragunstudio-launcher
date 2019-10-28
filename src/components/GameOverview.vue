@@ -92,7 +92,11 @@
             </div>
         </div>
 
-        <div class="overview-download">
+
+        <b-button size="is-large" class="is-primary" @click="confirm" v-if="this.actualGame.Path == ''">Install</b-button>
+
+
+        <div class="overview-download" v-else>
             <div class="overview-download-top">
                 <div class="overview-download-top-right">
                     <div>
@@ -146,13 +150,19 @@
     import DropDownGameMode from './DropDownGameMode.vue';
     import FullNews from './FullNews.vue'
     import axios from 'axios';
+    import { InstallationInfo } from '@/models/InstallationInfo';
 
     export default {
         data() {
             return {
                 gameMode: GAME_MODE.PUBLIC,
                 isComponentModalActive: false,
-                news: null
+                news: null,
+                actualGame: {
+                    ApplicationId : this.$store.state.installedApplications[0].ApplicationId,
+                    Path : this.$store.state.installedApplications[0].Path,
+                    ExeName : this.$store.state.installedApplications[0].ExeName
+                }
             }
         },
         components: {
@@ -174,9 +184,15 @@
                     })
                 }
             },
-            GetApplication: function() {
-                this.$store.commit('getInstalledApplication', this.$store.state.selectedApplicationId);
-            },
+            AddApplication: function() {
+                var installationInfo = {
+                    ApplicationId : this.$store.state.selectedApplicationId,
+                    Path : "",
+                    ExeName : ""
+                }
+                this.$store.commit('addNewApplication', installationInfo);
+                this.actualGame = this.$store.commit('getInstalledApplication',installationInfo.ApplicationId);
+            }
         },
         mounted: async function () {
             let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
@@ -185,7 +201,9 @@
         created() {
             this.$store.subscribe((mutation, state) => {
             if (mutation.type === 'setSelectedApplicationId') {
-                console.log(`Updating to ${state.selectedApplicationId}`);
+                this.actualGame = this.$store.state.installedApplications.find(x => x.ApplicationId == this.$store.state.selectedApplicationId);
+                if(this.actualGame === undefined)
+                    this.AddApplication();
             }
             });
         }
