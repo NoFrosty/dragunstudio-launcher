@@ -3,7 +3,7 @@
     <b-dropdown v-model="currentApplication" aria-role="list">
         <button class="button is-danger" type="button" slot="trigger" v-if="currentApplication">
             <template >
-                <b-icon pack="fas" icon="user"></b-icon>
+                <b-icon pack="fas" icon="gamepad"></b-icon>
                 <span>{{currentApplication.name}}</span>
             </template>
             <b-icon icon="menu-down"></b-icon>
@@ -19,28 +19,6 @@
             </div>
         </b-dropdown-item>
     </b-dropdown>
-
-    <!--
-    <b-dropdown v-model="currentApplication" aria-role="list" v-bind:value="value" v-on:change="onChange">
-        <button class="button is-primary" type="button" slot="trigger">
-            <template>
-                <b-icon pack="fas" :icon="aze"></b-icon>
-                <span>{{applications[currentApplication]}}</span>
-            </template>
-            <b-icon icon="menu-down"></b-icon>
-        </button>
-
-        <b-dropdown-item v-for="application in applications" :key="application" aria-role="listitem">
-            <div class="media">
-                <b-icon class="media-left" pack="fas" :icon="application.name"></b-icon>
-                <div class="media-content">
-                    <h3>{{application.name}}</h3>
-                    <small>Version : 1.2.2</small>
-                </div>
-            </div>
-        </b-dropdown-item>
-    </b-dropdown>
-    -->
 </template>
 
 <script>

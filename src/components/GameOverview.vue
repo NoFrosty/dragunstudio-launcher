@@ -1,84 +1,23 @@
 <template>
     <div>
         <section>
-            <b-modal :active.sync="isComponentModalActive" class="form-prompt">
+            <b-modal :active.sync="isNewsModalActive" class="popup-news">
                <FullNews/>
+            </b-modal>
+             <b-modal :active.sync="isInstallModalActive" class="popup-install">
+               <Install/>
             </b-modal>
         </section>
         <div class="overview-panel">
             <div class="overview-panel-left">
                 <div class="scrollable" v-if="news">
                     <p class="title is-3">News</p>
-                    <a v-bind:key="item.id" v-for="item in news" @click="isComponentModalActive = true">
+                    <a v-bind:key="item.id" v-for="item in news" @click="isNewsModalActive = true">
                         <article class="content">
                             <p class="title is-4">{{item.title}}</p>
                             <p v-if="item.article.length<350" class="article">{{item.article}}</p>
                             <p v-else class="article">{{item.article.substring(0,350)+"..."}}</p>
                             <time datetime="2016-1-1">{{item.publishDate}}</time>
-                        </article>
-                    </a>
-
-                    <a @click="isComponentModalActive = true">
-                        <article class="content">
-                            <p class="title is-4">News Sample : This is a test</p>
-                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
-                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
-                                pharetra consectetur dui pharetra.</p>
-                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                        </article>
-                    </a>
-                    <a @click="isComponentModalActive = true">
-                        <article class="content">
-                            <p class="title is-4">News Sample : This is a test</p>
-                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
-                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
-                                pharetra consectetur dui pharetra.</p>
-                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                        </article>
-                    </a>
-                    <a @click="isComponentModalActive = true">
-                        <article class="content">
-                            <p class="title is-4">News Sample : This is a test</p>
-                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
-                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
-                                pharetra consectetur dui pharetra.</p>
-                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                        </article>
-                    </a>
-                    <a @click="isComponentModalActive = true">
-                        <article class="content">
-                            <p class="title is-4">News Sample : This is a test</p>
-                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
-                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
-                                pharetra consectetur dui pharetra.</p>
-                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                        </article>
-                    </a>
-                    <a @click="isComponentModalActive = true">
-                        <article class="content">
-                            <p class="title is-4">News Sample : This is a test</p>
-                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
-                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
-                                pharetra consectetur dui pharetra.</p>
-                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                        </article>
-                    </a>
-                    <a @click="isComponentModalActive = true">
-                        <article class="content">
-                            <p class="title is-4">News Sample : This is a test</p>
-                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
-                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
-                                pharetra consectetur dui pharetra.</p>
-                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                        </article>
-                    </a>
-                    <a @click="isComponentModalActive = true">
-                        <article class="content">
-                            <p class="title is-4">News Sample : This is a test</p>
-                            <p class="article">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus
-                                justo augue, sed vehicula dolor pharetra id. Duis rhoncus libero a orci condimentum,
-                                pharetra consectetur dui pharetra.</p>
-                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                         </article>
                     </a>
                 </div>
@@ -93,7 +32,7 @@
         </div>
 
 
-        <b-button size="is-large" class="is-primary" @click="confirm" v-if="this.actualGame.Path == ''">Install</b-button>
+        <b-button size="is-large" class="is-primary" @click="isInstallModalActive = true" v-if="this.actualGame.Path == ''">Install</b-button>
 
 
         <div class="overview-download" v-else>
@@ -149,6 +88,7 @@
     } from '@/services/constants.ts'
     import DropDownGameMode from './DropDownGameMode.vue';
     import FullNews from './FullNews.vue'
+    import Install from './Install.vue'
     import axios from 'axios';
     import { InstallationInfo } from '@/models/InstallationInfo';
 
@@ -156,7 +96,8 @@
         data() {
             return {
                 gameMode: GAME_MODE.PUBLIC,
-                isComponentModalActive: false,
+                isNewsModalActive: false,
+                isInstallModalActive: false,
                 news: null,
                 actualGame: {
                     ApplicationId : this.$store.state.installedApplications[0].ApplicationId,
@@ -167,7 +108,8 @@
         },
         components: {
             DropDownGameMode,
-            FullNews
+            FullNews,
+            Install
         },
         computed: {
             isSignedIn: function() {
