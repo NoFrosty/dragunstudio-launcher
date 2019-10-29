@@ -13,19 +13,20 @@ class ApplicationLibrary {
 
     public async getAllGameList(): Promise<ApplicationInfo[]> {
         let currentOS = this.getOperatingSystem();
-
+        
         if (this.$store.state.isOffline) {
             let appData = localStorage.getItem("Applications");
             if (appData == null) {
                 throw "Offline mode can't be used for first execution!";
             }
             let apps : ApplicationInfo[] = JSON.parse(appData);
-            apps = apps.filter(x => (x.supportedOperatingSystems & currentOS) === currentOS);
             return apps;
         }
         else {
             let result = await axios.get<ApplicationInfo[]>(process.env.VUE_APP_API_LINK + '/application');
-            localStorage.setItem("Applications", JSON.stringify(result.data));
+            console.log(result.data);
+            let apps = result.data.filter(x => (x.supportedOperatingSystems & currentOS) === currentOS);
+            localStorage.setItem("Applications", JSON.stringify(apps));
             return result.data;
         }
     }
@@ -41,7 +42,7 @@ class ApplicationLibrary {
 
     private getOperatingSystem() : OSType {
         switch(process.platform as String) {
-            case "windows": return OSType.Windows;
+            case "win32": return OSType.Windows;
             case "linux": return OSType.Linux;
             case "darwin": return OSType.MacOS;
             default: throw `Unsupported operating system type '{process.platform}'`;
