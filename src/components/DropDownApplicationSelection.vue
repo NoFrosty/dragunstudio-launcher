@@ -42,6 +42,12 @@
             this.currentApplication =  this.applications.find(x => x.applicationId == this.$store.state.selectedApplicationId)
             if(!this.currentApplication)
                 this.$store.commit('setSelectedApplicationId', this.applications[0].applicationId);
+            this.$store.subscribe((mutation, state) => {
+                if (mutation.type === 'setSelectedApplicationId') {
+                    if(state.selectedApplicationId != this.currentApplication.applicationId)
+                        this.changeApplication();
+                }
+            });
         }
     }
 </script>
