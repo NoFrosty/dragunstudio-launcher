@@ -24,7 +24,6 @@ class ApplicationLibrary {
         }
         else {
             let result = await axios.get<ApplicationInfo[]>(process.env.VUE_APP_API_LINK + '/application');
-            console.log(result.data);
             let apps = result.data.filter(x => (x.supportedOperatingSystems & currentOS) === currentOS);
             localStorage.setItem("Applications", JSON.stringify(apps));
             return result.data;
