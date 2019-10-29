@@ -116,6 +116,13 @@
             isSignedIn: function() {
                 return this.$store.state.isSignedIn;
             },
+            selectedApplication: function() {
+                if (!this.$store.state.selectedApplicationId) {
+                    return null;
+                }
+                let app = this.$store.state.installedApplications.find(x => x.applicationId == this.$store.state.selectedApplicationId);
+                return app;
+            }
         },
         methods: {
             
