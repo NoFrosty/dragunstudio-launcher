@@ -1,8 +1,8 @@
 <template>
     <div class="window-controller">
-        <p class="title-blue">Evo</p>
-        <p class="title-white">Launcher</p>
         <div class="draggable">
+            <span class="title-blue">Evo</span>
+            <span class="title-white">Launcher</span>
         </div>
         <div class="window-controller-btn">
             <a id="open-dev-tool-btn"><b-icon pack="fas" icon="code" size="is-small" type="is-primary"></b-icon></a>
