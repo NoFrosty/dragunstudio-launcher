@@ -120,6 +120,12 @@
                 if (!this.$store.state.selectedApplicationId) {
                     return null;
                 }
+                return this.$root.$ApplicationLibrary.getGameFromId(this.$store.state.selectedApplicationId);
+            },
+            installation: function() {
+                if (!this.$store.state.selectedApplicationId) {
+                    return null;
+                }
                 let app = this.$store.state.installedApplications.find(x => x.applicationId == this.$store.state.selectedApplicationId);
                 return app;
             }
