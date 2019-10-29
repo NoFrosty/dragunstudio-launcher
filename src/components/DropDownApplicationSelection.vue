@@ -1,6 +1,6 @@
 <template>
 
-    <b-dropdown v-model="currentApplication" aria-role="list">
+    <b-dropdown v-model="currentApplication" aria-role="list" v-if="this.applications">
         <button class="button is-danger" type="button" slot="trigger" v-if="currentApplication">
             <template >
                 <b-icon pack="fas" icon="gamepad"></b-icon>
@@ -39,9 +39,9 @@
         },
         async mounted () {
             this.applications = await this.$root.$ApplicationLibrary.getAllGameList();
-            this.currentApplication = this.applications[0];
-            this.changeApplication();
-            
+            this.currentApplication =  this.applications.find(x => x.applicationId == this.$store.state.selectedApplicationId)
+            if(!this.currentApplication)
+                this.$store.commit('setSelectedApplicationId', this.applications[0].applicationId);
         }
     }
 </script>
