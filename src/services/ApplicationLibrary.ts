@@ -36,9 +36,10 @@ class ApplicationLibrary {
         if (app == null) {
             throw "No App found with this Id" + applicationId;
         }
-        
         return app;
     }
+
+    
 }
 
 export default ApplicationLibrary

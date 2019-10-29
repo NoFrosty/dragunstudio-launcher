@@ -40,6 +40,7 @@
         async mounted () {
             this.applications = await this.$root.$ApplicationLibrary.getAllGameList();
             this.currentApplication = this.applications[0];
+            this.changeApplication();
             
         }
     }

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="this.actualGame">
         <section>
             <b-modal :active.sync="isNewsModalActive" class="popup-news">
                <FullNews/>
@@ -101,9 +101,9 @@
                 news: null,
                 applicationInfo:null,
                 actualGame: {
-                    ApplicationId : this.$store.state.installedApplications[0].ApplicationId,
-                    Path : this.$store.state.installedApplications[0].Path,
-                    ExeName : this.$store.state.installedApplications[0].ExeName
+                    ApplicationId : null,
+                    Path : "",
+                    ExeName : ""
                 }
             }
         },
@@ -134,22 +134,28 @@
                     ExeName : ""
                 }
                 this.$store.commit('addNewApplication', installationInfo);
-                this.actualGame = this.$store.commit('getInstalledApplication',installationInfo.ApplicationId);
+                this.actualGame = this.$store.state.installedApplications.find(x => x.ApplicationId == this.$store.state.selectedApplicationId);
             }
         },
         mounted: async function () {
             let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
             this.news = newsResponse.data;
         },
-        created() {
+        beforeCreate() {
             this.$store.subscribe((mutation, state) => {
             if (mutation.type === 'setSelectedApplicationId') {
+                console.log("this.$store.state.selectedApplicationId",this.$store.state.selectedApplicationId);
                 this.actualGame = this.$store.state.installedApplications.find(x => x.ApplicationId == this.$store.state.selectedApplicationId);
                 if(this.actualGame === undefined)
                     this.AddApplication();
-                this.$root.$ApplicationLibrary.getGameFromId(this.actualGame.ApplicationId).then(x=>this.applicationInfo = x);
+                console.log("this.actualGame",this.actualGame);
+                this.$root.$ApplicationLibrary.getGameFromId(this.$store.state.selectedApplicationId).then(x=>this.applicationInfo = x);
+                console.log("this.applicationInfo",this.applicationInfo);
             }
             });
+            this.$root.$ApplicationLibrary.getGameFromId(this.$store.state.selectedApplicationId).then(x => this.applicationInfo = x);
+
+            this.actualGame = this.$store.commit('getInstalledApplication',this.$store.state.selectedApplicationId);
         }
     }
 </script>

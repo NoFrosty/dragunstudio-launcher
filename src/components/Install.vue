@@ -61,6 +61,10 @@
                         Keep this game updated automatically
                     </b-checkbox>
                 </b-field>
+                <div class="buttons">
+                    <b-button size="is-large" type="is-primary is-fullwidth" expanded>Install</b-button>
+                </div>
+
             </div>
         </div>
     </div>
