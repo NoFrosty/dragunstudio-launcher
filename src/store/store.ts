@@ -48,7 +48,7 @@ const store = new Vuex.Store({
             state.installedApplications.push(installation);
         },
         removeApplication(state, installation: InstallationInfo) {
-            let appIndex = state.installedApplications.findIndex(x => x.ApplicationId == installation.ApplicationId);
+            let appIndex = state.installedApplications.findIndex(x => x.applicationId == installation.applicationId);
             state.installedApplications.splice(appIndex, 1);
         },
         setOfflineStatus(state, isOffline: boolean) {
@@ -58,7 +58,7 @@ const store = new Vuex.Store({
             state.selectedApplicationId = selectedApplicationId;
         },
         getInstalledApplication (state, applicationId: string) {
-            return state.installedApplications.find(x => x.ApplicationId == applicationId);
+            return state.installedApplications.find(x => x.applicationId == applicationId);
         }
     },
     actions: {

@@ -12,7 +12,7 @@
     ACHIEVEMENTS: 2
   }
   import WindowsController from './components/WindowsController.vue';
-  import AuthService  from './services/auth-service';
+  import AuthenticationService  from './services/AuthenticationService';
   import ApplicationLibrary  from './services/ApplicationLibrary';
 
   export default {
@@ -32,7 +32,7 @@
       WindowsController,
     },
     created: function() {
-      this.$root.$AuthService = new AuthService(this.$store, this.$router);
+      this.$root.$AuthenticationService = new AuthenticationService(this.$store, this.$router);
       this.$root.$ApplicationLibrary = new ApplicationLibrary(this.$store);
     }
     

@@ -48,7 +48,7 @@ export default {
     },
     methods: {
       logout: async function() {
-        await this.$root.$AuthService.SignOut();
+        await this.$root.$AuthenticationService.SignOut();
       },
       goOnline: async function() {
         this.$router.push({ name: "boot" })

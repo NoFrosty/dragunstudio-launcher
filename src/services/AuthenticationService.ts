@@ -4,7 +4,7 @@ import { Store } from 'vuex';
 import Router from 'vue-router'
 import ApplicationState from '@/store/ApplicationState';
 
-class AuthService {
+class AuthenticationService {
     private $store : Store<ApplicationState>;
     private $router : Router;
 
@@ -51,4 +51,4 @@ class AuthService {
     }
 }
 
-export default AuthService
+export default AuthenticationService

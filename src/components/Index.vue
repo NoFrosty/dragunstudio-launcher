@@ -1,10 +1,5 @@
 <template>
     <div class="window-content">
-        <!--
-        <div class="sidebar column is-2 is-sidebar-menu">
-            <SideBar />
-        </div>
-        -->
         <div class="main-panel">
             <div class="top-bar">
                 <nav class="level">
@@ -73,11 +68,10 @@ const GAME_TABS = {
     ACTIVITIES: 1,
     ACHIEVEMENTS: 2
 };
-import SideBar from "@/components/SideBar.vue";
 import UserPanel from "@/components/UserPanel.vue";
 import DropDownApplicationSelection from "@/components/DropDownApplicationSelection.vue";
 import GameOverview from "@/components/GameOverview.vue";
-import AuthService from "@/services/auth-service";
+import AuthenticationService from "@/services/AuthenticationService";
 
 export default {
     name: "evopeons-launcher",
@@ -98,7 +92,6 @@ export default {
         }
     },
     components: {
-        SideBar,
         UserPanel,
         GameOverview,
         DropDownApplicationSelection

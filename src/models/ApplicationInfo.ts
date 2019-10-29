@@ -1,6 +1,6 @@
 export interface ApplicationInfo {
-    ApplicationId: string;
-    Name: string;
-    IsPublished: boolean;
-    InMaintenance: boolean;
+    applicationId: string;
+    name: string;
+    isPublished: boolean;
+    inMaintenance: boolean;
 }

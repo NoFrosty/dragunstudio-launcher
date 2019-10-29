@@ -64,7 +64,7 @@ export default {
     },
     methods: {
         attemptSignIn: async function() {
-            var isLogged = await this.$root.$AuthService.AttemptSignIn({
+            var isLogged = await this.$root.$AuthenticationService.AttemptSignIn({
                 email: this.email,
                 password: this.password
             });
@@ -79,7 +79,7 @@ export default {
         }
     },
     mounted: async function() {
-        if (this.$root.$AuthService.IsSignedIn()) {
+        if (this.$root.$AuthenticationService.IsSignedIn()) {
             this.$router.push({ name: "launcher" });
         }
     }

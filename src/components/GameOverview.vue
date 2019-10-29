@@ -32,7 +32,7 @@
         </div>
 
 
-        <b-button size="is-large" class="is-primary" @click="isInstallModalActive = true" v-if="this.actualGame.Path == ''">Install</b-button>
+        <b-button size="is-large" class="is-primary" @click="isInstallModalActive = true" v-if="this.actualGame.path == ''">Install</b-button>
 
 
         <div class="overview-download" v-else>
@@ -101,9 +101,9 @@
                 news: null,
                 applicationInfo:null,
                 actualGame: {
-                    ApplicationId : null,
-                    Path : "",
-                    ExeName : ""
+                    applicationId : null,
+                    path : "",
+                    exeName : ""
                 }
             }
         },
@@ -129,12 +129,12 @@
             },
             AddApplication: function() {
                 var installationInfo = {
-                    ApplicationId : this.$store.state.selectedApplicationId,
-                    Path : "",
-                    ExeName : ""
+                    applicationId : this.$store.state.selectedApplicationId,
+                    path : "",
+                    exeName : ""
                 }
                 this.$store.commit('addNewApplication', installationInfo);
-                this.actualGame = this.$store.state.installedApplications.find(x => x.ApplicationId == this.$store.state.selectedApplicationId);
+                this.actualGame = this.$store.state.installedApplications.find(x => x.applicationId == this.$store.state.selectedApplicationId);
             }
         },
         mounted: async function () {
@@ -145,7 +145,7 @@
             this.$store.subscribe((mutation, state) => {
             if (mutation.type === 'setSelectedApplicationId') {
                 console.log("this.$store.state.selectedApplicationId",this.$store.state.selectedApplicationId);
-                this.actualGame = this.$store.state.installedApplications.find(x => x.ApplicationId == this.$store.state.selectedApplicationId);
+                this.actualGame = this.$store.state.installedApplications.find(x => x.applicationId == this.$store.state.selectedApplicationId);
                 if(this.actualGame === undefined)
                     this.AddApplication();
                 console.log("this.actualGame",this.actualGame);
