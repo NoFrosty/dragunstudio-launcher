@@ -33,7 +33,7 @@
             <img src="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="">
         </div>
         <div class="popup-inner-text">
-            <h1>{Application.name} Installation </h1>
+            <h1>{{this.applicationName}} Installation </h1>
             <div class="field">
                 <b-field label="Location">
                     <div class="file has-name is-right is-fullwidth">
@@ -77,7 +77,7 @@ export default {
         }
     },
     props:{
-        gameName: String,
+        applicationName: String,
     },
     methods:{
         uploadPath(e) {

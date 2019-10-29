@@ -4,8 +4,8 @@
             <b-modal :active.sync="isNewsModalActive" class="popup-news">
                <FullNews/>
             </b-modal>
-             <b-modal :active.sync="isInstallModalActive" class="popup-install">
-               <Install/>
+             <b-modal :active.sync="isInstallModalActive" class="popup-install" v-if="this.applicationInfo">
+               <Install v-bind:applicationName="this.applicationInfo.name"/>
             </b-modal>
         </section>
         <div class="overview-panel">
@@ -99,6 +99,7 @@
                 isNewsModalActive: false,
                 isInstallModalActive: false,
                 news: null,
+                applicationInfo:null,
                 actualGame: {
                     ApplicationId : this.$store.state.installedApplications[0].ApplicationId,
                     Path : this.$store.state.installedApplications[0].Path,
@@ -139,8 +140,6 @@
         mounted: async function () {
             let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
             this.news = newsResponse.data;
-            var result = await this.$root.$ApplicationLibrary.getGameFromId(this.actualGame.ApplicationId);
-            console.log(result);
         },
         created() {
             this.$store.subscribe((mutation, state) => {
@@ -148,6 +147,7 @@
                 this.actualGame = this.$store.state.installedApplications.find(x => x.ApplicationId == this.$store.state.selectedApplicationId);
                 if(this.actualGame === undefined)
                     this.AddApplication();
+                this.$root.$ApplicationLibrary.getGameFromId(this.actualGame.ApplicationId).then(x=>this.applicationInfo = x);
             }
             });
         }
