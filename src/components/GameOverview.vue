@@ -144,13 +144,10 @@
         beforeCreate() {
             this.$store.subscribe((mutation, state) => {
             if (mutation.type === 'setSelectedApplicationId') {
-                console.log("this.$store.state.selectedApplicationId",this.$store.state.selectedApplicationId);
                 this.actualGame = this.$store.state.installedApplications.find(x => x.applicationId == this.$store.state.selectedApplicationId);
                 if(this.actualGame === undefined)
                     this.AddApplication();
-                console.log("this.actualGame",this.actualGame);
                 this.$root.$ApplicationLibrary.getGameFromId(this.$store.state.selectedApplicationId).then(x=>this.applicationInfo = x);
-                console.log("this.applicationInfo",this.applicationInfo);
             }
             });
             this.$root.$ApplicationLibrary.getGameFromId(this.$store.state.selectedApplicationId).then(x => this.applicationInfo = x);
