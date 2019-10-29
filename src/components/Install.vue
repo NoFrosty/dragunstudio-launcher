@@ -48,7 +48,7 @@
                             </span>
                             </span>
                             <span class="file-name">
-                            {{this.path}}
+                            {{this.path}}\{{this.applicationName}}
                             </span>
                         </label>
                     </div>

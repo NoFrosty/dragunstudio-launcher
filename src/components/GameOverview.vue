@@ -4,8 +4,8 @@
             <b-modal :active.sync="isNewsModalActive" class="popup-news">
                <FullNews/>
             </b-modal>
-             <b-modal :active.sync="isInstallModalActive" class="popup-install" v-if="this.applicationInfo">
-               <Install v-bind:applicationName="this.applicationInfo.name"/>
+             <b-modal :active.sync="isInstallModalActive" class="popup-install" v-if="selectedApplication">
+               <Install v-bind:applicationName="selectedApplication.name"/>
             </b-modal>
         </section>
         <div class="overview-panel">
@@ -30,11 +30,7 @@
                 </div>
             </div>
         </div>
-
-
-        <b-button size="is-large" class="is-primary" @click="isInstallModalActive = true" v-if="this.actualGame.path == ''">Install</b-button>
-
-
+        <b-button size="is-large" class="is-primary" @click="isInstallModalActive = true" v-if="!installation">Install</b-button>
         <div class="overview-download" v-else>
             <div class="overview-download-top">
                 <div class="overview-download-top-right">
@@ -116,18 +112,20 @@
             isSignedIn: function() {
                 return this.$store.state.isSignedIn;
             },
-            selectedApplication: function() {
-                if (!this.$store.state.selectedApplicationId) {
-                    return null;
-                }
-                return this.$root.$ApplicationLibrary.getGameFromId(this.$store.state.selectedApplicationId);
-            },
             installation: function() {
                 if (!this.$store.state.selectedApplicationId) {
                     return null;
                 }
                 let app = this.$store.state.installedApplications.find(x => x.applicationId == this.$store.state.selectedApplicationId);
                 return app;
+            }
+        },
+        asyncComputed: {
+            selectedApplication: async function() {
+                if (!this.$store.state.selectedApplicationId) {
+                    return null;
+                }
+                return await this.$root.$ApplicationLibrary.getGameFromId(this.$store.state.selectedApplicationId);
             }
         },
         methods: {
@@ -146,7 +144,7 @@
                     path : "",
                     exeName : ""
                 }
-                this.$store.commit('addNewApplication', installationInfo);
+                //this.$store.commit('addNewApplication', installationInfo);
                 this.actualGame = this.$store.state.installedApplications.find(x => x.applicationId == this.$store.state.selectedApplicationId);
             }
         },
@@ -154,18 +152,5 @@
             let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
             this.news = newsResponse.data;
         },
-        beforeCreate() {
-            this.$store.subscribe((mutation, state) => {
-            if (mutation.type === 'setSelectedApplicationId') {
-                this.actualGame = this.$store.state.installedApplications.find(x => x.applicationId == this.$store.state.selectedApplicationId);
-                if(this.actualGame === undefined)
-                    this.AddApplication();
-                this.$root.$ApplicationLibrary.getGameFromId(this.$store.state.selectedApplicationId).then(x=>this.applicationInfo = x);
-            }
-            });
-            this.$root.$ApplicationLibrary.getGameFromId(this.$store.state.selectedApplicationId).then(x => this.applicationInfo = x);
-
-            this.actualGame = this.$store.commit('getInstalledApplication',this.$store.state.selectedApplicationId);
-        }
     }
 </script>
