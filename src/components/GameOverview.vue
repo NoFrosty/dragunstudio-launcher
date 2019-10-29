@@ -139,6 +139,8 @@
         mounted: async function () {
             let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
             this.news = newsResponse.data;
+            var result = await this.$root.$ApplicationLibrary.getGameFromId(this.actualGame.ApplicationId);
+            console.log(result);
         },
         created() {
             this.$store.subscribe((mutation, state) => {

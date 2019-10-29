@@ -25,6 +25,20 @@ class ApplicationLibrary {
             return result.data;
         }
     }
+
+    private async getGameFromId(applicationId:string) : Promise<ApplicationInfo>{
+        let appData = localStorage.getItem("Applications");
+        if (appData == null) {
+            throw "Offline mode can't be used for first execution!" + applicationId;
+        }
+        let apps : Promise<ApplicationInfo[]> = this.getAllGameList();
+        var app = (await apps).find(x => x.applicationId == applicationId);
+        if (app == null) {
+            throw "No App found with this Id" + applicationId;
+        }
+        
+        return app;
+    }
 }
 
 export default ApplicationLibrary

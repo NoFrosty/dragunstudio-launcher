@@ -76,6 +76,9 @@ export default {
             file: undefined
         }
     },
+    props:{
+        gameName: String,
+    },
     methods:{
         uploadPath(e) {
             let reader = new FileReader();
