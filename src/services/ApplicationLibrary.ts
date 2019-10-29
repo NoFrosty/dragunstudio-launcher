@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Store } from 'vuex';
 import ApplicationState from '@/store/ApplicationState';
 import {ApplicationInfo} from "@/models/ApplicationInfo";
+import { OSType } from '@/models/OSType';
 
 class ApplicationLibrary {
     private $store : Store<ApplicationState>;
@@ -10,13 +11,16 @@ class ApplicationLibrary {
         this.$store = store;
     }
 
-    private async getAllGameList(): Promise<ApplicationInfo[]> {
+    public async getAllGameList(): Promise<ApplicationInfo[]> {
+        let currentOS = this.getOperatingSystem();
+
         if (this.$store.state.isOffline) {
             let appData = localStorage.getItem("Applications");
             if (appData == null) {
                 throw "Offline mode can't be used for first execution!";
             }
             let apps : ApplicationInfo[] = JSON.parse(appData);
+            apps = apps.filter(x => (x.supportedOperatingSystems & currentOS) === currentOS);
             return apps;
         }
         else {
@@ -26,7 +30,7 @@ class ApplicationLibrary {
         }
     }
 
-    private async getGameFromId(applicationId:string) : Promise<ApplicationInfo>{
+    public async getGameFromId(applicationId:string) : Promise<ApplicationInfo>{
         let apps : Promise<ApplicationInfo[]> = this.getAllGameList();
         var app = (await apps).find(x => x.applicationId == applicationId);
         if (app == null) {
@@ -35,7 +39,14 @@ class ApplicationLibrary {
         return app;
     }
 
-    
+    private getOperatingSystem() : OSType {
+        switch(process.platform as String) {
+            case "windows": return OSType.Windows;
+            case "linux": return OSType.Linux;
+            case "darwin": return OSType.MacOS;
+            default: throw `Unsupported operating system type '{process.platform}'`;
+        }
+    }
 }
 
 export default ApplicationLibrary
