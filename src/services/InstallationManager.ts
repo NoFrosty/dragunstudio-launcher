@@ -3,7 +3,14 @@ import ApplicationState from '@/store/ApplicationState';
 import { InstallationInfo } from '@/models/InstallationInfo';
 import axios from 'axios';
 import fs from 'fs';
+import { IncomingMessage } from 'http';
 var request = require('request');
+
+type DownloadData = {
+    remoteFile:string,
+    localFile:string,
+    onProgress:(received: number, total: number) => void,
+}
 
 class InstallationManager {
     private $store : Store<ApplicationState>;
@@ -12,8 +19,8 @@ class InstallationManager {
         this.$store = store;
     }
 
-
-    public async installApplication(applicationId : string, installationPath : string) : InstallationInfo {
+    
+    public async installApplication(applicationId : string, installationPath : string){
         if (this.$store.state.installedApplications.find(x => x.applicationId == applicationId)) {
             throw "Application is already installed";
         }
@@ -51,14 +58,15 @@ class InstallationManager {
             if(!fs.existsSync(filePath)){
                 fs.mkdirSync(filePath, { recursive: true });
             }
-            await this.downloadFile({
-                remoteFile: process.env.VUE_APP_API_LINK + '/files/' + applicationId + '/' + file.fileId,
+            let config:DownloadData = {
                 localFile: filePath + '/' + file.fileName,
-                onProgress: function (received,total){
+                remoteFile: process.env.VUE_APP_API_LINK + '/files/' + applicationId + '/' + file.fileId,
+                onProgress: function (received:number,total:number){
                     var percentage = (received * 100) / total;
                     console.log(percentage + "% | " + received + " bytes out of " + total + " bytes.");
                 }
-            }).then(function(){
+            }
+            await this.downloadFile(config).then(function(){
                 console.log("File succesfully downloaded" + installationPath + '/' +file.fileName);
             });
         }
@@ -71,8 +79,6 @@ class InstallationManager {
             path: installationPath
         };
         this.$store.commit('addNewApplication', installation);
-
-        return installation;
     }
 
     public uninstallApplication(applicationId : string) {
@@ -87,7 +93,7 @@ class InstallationManager {
     /**
      * Promise based download file method
      */
-    public downloadFile(configuration){
+    public downloadFile(configuration:DownloadData){
         return new Promise(function(resolve, reject){
             // Save variable to know progress
             var received_bytes = 0;
@@ -102,21 +108,21 @@ class InstallationManager {
             var out = fs.createWriteStream(configuration.localFile);
             req.pipe(out);
 
-            req.on('response', function ( data ) {
+            req.on('response', function (data) {
                 // Change the total bytes value to get progress later.
                 total_bytes = parseInt(data.headers['content-length' ]);
             });
 
             // Get progress if callback exists
             if(configuration.hasOwnProperty("onProgress")){
-                req.on('data', function(chunk) {
+                req.on('data', function(chunk:Buffer) {
                     // Update the received bytes
                     received_bytes += chunk.length;
 
                     configuration.onProgress(received_bytes, total_bytes);
                 });
             }else{
-                req.on('data', function(chunk) {
+                req.on('data', function(chunk:Buffer) {
                     // Update the received bytes
                     received_bytes += chunk.length;
                 });
