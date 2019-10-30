@@ -33,7 +33,7 @@
             <img src="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="">
         </div>
         <div class="popup-inner-text">
-            <h1>{{this.applicationName}} Installation </h1>
+            <h1>{{this.application.name}} Installation </h1>
             <div class="field">
                 <b-field label="Location">
                     <div class="file has-name is-right is-fullwidth">
@@ -48,7 +48,7 @@
                             </span>
                             </span>
                             <span class="file-name">
-                            {{this.path}}\{{this.applicationName}}
+                            {{this.path}}
                             </span>
                         </label>
                     </div>
@@ -62,7 +62,7 @@
                     </b-checkbox>
                 </b-field>
                 <div class="buttons">
-                    <b-button size="is-large" type="is-primary is-fullwidth" expanded>Install</b-button>
+                    <b-button size="is-large" type="is-primary is-fullwidth" @click="install(); $parent.close()" expanded>Install</b-button>
                 </div>
 
             </div>
@@ -72,30 +72,32 @@
 </template>
 
 <script>
+    import { ApplicationInfo } from '@/models/ApplicationInfo';
+
 export default {
     data() {
         return {
-            folder: null,
-            path : null,
-            file: undefined
+            path : null
         }
     },
     props:{
-        applicationName: String,
+        application: ApplicationInfo,
     },
     methods:{
         uploadPath(e) {
             let reader = new FileReader();
             let formData = new FormData();
             let files = e.target.files || e.dataTransfer.files;
-            this.path = e.target.files[0].path;
+            this.path = e.target.files[0].path + "\\" + this.application.name;
 
             if (!files.length) {
             return;
             }
+        },
+        install(){
+            this.$root.$InstallationManager.installApplication(this.application.applicationId,this.path);
         }
     }
-    
 }
 </script>
 <style lang="scss">

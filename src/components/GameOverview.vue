@@ -5,7 +5,7 @@
                <FullNews/>
             </b-modal>
              <b-modal :active.sync="isInstallModalActive" class="popup-install" v-if="selectedApplication">
-               <Install v-bind:applicationName="selectedApplication.name"/>
+               <Install :application="selectedApplication"/>
             </b-modal>
         </section>
         <div class="overview-panel">
@@ -64,7 +64,7 @@
                                 </button>
                                 <b-dropdown-item aria-role="listitem">Settings</b-dropdown-item>
                                 <b-dropdown-item aria-role="listitem">Repair</b-dropdown-item>
-                                <b-dropdown-item aria-role="listitem">Uninstall</b-dropdown-item>
+                                <b-dropdown-item aria-role="listitem" @click="uninstallApplication">Uninstall</b-dropdown-item>
                             </b-dropdown>
                         </div>
 
@@ -146,6 +146,9 @@
                 }
                 //this.$store.commit('addNewApplication', installationInfo);
                 this.actualGame = this.$store.state.installedApplications.find(x => x.applicationId == this.$store.state.selectedApplicationId);
+            },
+            uninstallApplication(){
+                this.$root.$InstallationManager.uninstallApplication(this.selectedApplication.applicationId);
             }
         },
         mounted: async function () {
