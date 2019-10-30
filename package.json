@@ -23,8 +23,9 @@
   "main": "background.js",
   "dependencies": {
     "axios": "^0.19.0",
-    "buefy": "^0.8.5",
+    "buefy": "^0.8.6",
     "core-js": "^2.6.5",
+    "electron-download-manager": "^2.1.2",
     "vue": "^2.6.10",
     "vue-async-computed": "^3.7.0",
     "vue-class-component": "^7.0.2",

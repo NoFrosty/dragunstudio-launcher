@@ -2,7 +2,6 @@ import Vue from 'vue'
 import axios from 'axios'
 import Buefy from 'buefy'
 import AsyncComputed from 'vue-async-computed'
-
 import App from './App.vue'
 import router from './router'
 import store from './store/store'
