@@ -35,23 +35,12 @@
         <div class="popup-inner-text">
             <h1>{{this.application.name}} Installation </h1>
             <div class="field">
-                <b-field label="Location">
-                    <div class="file has-name is-right is-fullwidth">
-                        <label class="file-label">
-                            <input class="file-input" @change="uploadPath" type="file" name="resume" webkitdirectory>
-                            <span class="file-cta">
-                            <span class="file-icon">
-                                <i class="fas fa-upload"></i>
-                            </span>
-                            <span class="file-label">
-                                Choose a file…
-                            </span>
-                            </span>
-                            <span class="file-name">
-                            {{this.path}}
-                            </span>
-                        </label>
-                    </div>
+                            
+                <b-field grouped>
+                    <b-input :value="this.path" expanded readonly></b-input>
+                    <p class="control">
+                        <b-button type="is-primary" @click="openDial()">Select another path</b-button>
+                    </p>
                 </b-field>
                 <b-field label="Size">
                     15.13 Go
@@ -73,26 +62,26 @@
 
 <script>
     import { ApplicationInfo } from '@/models/ApplicationInfo';
+    const {dialog} = require('electron').remote;
+
+    
+
 
 export default {
     data() {
         return {
-            path : null
+            path : null,
         }
     },
     props:{
         application: ApplicationInfo,
     },
     methods:{
-        uploadPath(e) {
-            let reader = new FileReader();
-            let formData = new FormData();
-            let files = e.target.files || e.dataTransfer.files;
-            this.path = e.target.files[0].path + "\\" + this.application.name;
-
-            if (!files.length) {
-            return;
-            }
+        openDial: async function() {
+            const selectedPaths = await dialog.showOpenDialog({
+                properties: ['openDirectory']
+            });
+            this.path = selectedPaths.filePaths[0] + "\\" + this.application.name;
         },
         install(){
             this.$root.$InstallationManager.installApplication(this.application.applicationId,this.path);
