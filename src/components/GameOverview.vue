@@ -53,7 +53,7 @@
                     <b-button size="is-large" class="is-primary" @click="confirm">Play</b-button>
                 </div>
                 <div class="overview-download-bottom-right">
-                    <progress class="progress is-primary" :value="percentage" max="100" show-value format="percent">15%</progress>
+                    <b-progress class="progress" type="is-primary" :precision="0" :value="percentage" show-value format="percent"></b-progress>
                     <nav class="level">
                         <!-- Left side -->
                         <div class="level-left">
