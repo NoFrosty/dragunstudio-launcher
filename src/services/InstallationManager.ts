@@ -11,6 +11,12 @@ type DownloadData = {
     localFile:string,
     onProgress:(received: number, total: number) => void,
 }
+enum ActionType {
+    CreateFile = 0,
+    DeleteFile = 1,
+    UpdateFile = 2,
+    CopyFile = 3
+}
 
 class InstallationManager {
     private $store : Store<ApplicationState>;
@@ -30,11 +36,15 @@ class InstallationManager {
         }
         this.isDownloading = true;
         let result = await axios.get(process.env.VUE_APP_API_LINK + '/version/' + applicationId);
-        let version = result.data;
+        let newVersion = result.data;
 
-        result = await axios.get(process.env.VUE_APP_API_LINK + '/files/' + version.versionId);
+        result = await axios.get(process.env.VUE_APP_API_LINK + '/files/' + newVersion.versionId);
         let files = result.data;
-
+        /*
+        result = await axios.get(process.env.VUE_APP_API_LINK + '/version/' + null + '/' + newVersion.versionId);
+        let updateActions = result.data;
+        console.log(updateActions);
+        */
         for(let file of files){
             this.total += file.compressedSize;
         }
@@ -45,7 +55,8 @@ class InstallationManager {
         let installation : InstallationInfo = {
             applicationId: applicationId,
             exeName: "",
-            path: installationPath
+            path: installationPath,
+            version: newVersion.version
         };
         this.$store.commit('addNewApplication', installation);
 
@@ -74,6 +85,20 @@ class InstallationManager {
             });
         }
         this.isDownloading = false;
+    }
+
+    public async checkUpdateAvailable(applicationId : string){
+        let installation = this.$store.state.installedApplications.find(x => x.applicationId == applicationId);
+        if (!installation) {
+            throw "Application is not installed";
+        }
+    }
+
+    public async updateApplication(applicationId : string){
+        let installation = this.$store.state.installedApplications.find(x => x.applicationId == applicationId);
+        if (!installation) {
+            throw "Application is not installed";
+        }
     }
 
     public uninstallApplication(applicationId : string) {
