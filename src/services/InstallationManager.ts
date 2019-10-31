@@ -3,6 +3,8 @@ import ApplicationState from '@/store/ApplicationState';
 import { InstallationInfo } from '@/models/InstallationInfo';
 import axios from 'axios';
 import fs from 'fs';
+import {OSType} from '@/models/OSType';
+
 var rimraf = require("rimraf");
 var request = require('request');
 
@@ -34,18 +36,13 @@ class InstallationManager {
         if (this.$store.state.installedApplications.find(x => x.applicationId == applicationId)) {
             throw "Application is already installed";
         }
-        this.isDownloading = true;
-        let result = await axios.get(process.env.VUE_APP_API_LINK + '/version/' + applicationId);
-        let newVersion = result.data;
 
-        result = await axios.get(process.env.VUE_APP_API_LINK + '/files/' + newVersion.versionId);
-        let files = result.data;
-        /*
-        result = await axios.get(process.env.VUE_APP_API_LINK + '/version/' + null + '/' + newVersion.versionId);
-        let updateActions = result.data;
-        console.log(updateActions);
-        */
-        for(let file of files){
+        this.isDownloading = true;
+
+        let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetInstallationFiles/' + this.getOperatingSystem() + '/' + applicationId);
+        let response = responsepromise.data;
+
+        for(let file of response.files){
             this.total += file.compressedSize;
         }
         
@@ -56,11 +53,12 @@ class InstallationManager {
             applicationId: applicationId,
             exeName: "",
             path: installationPath,
-            version: newVersion.version
+            version: response.version,
+            versionId: response.versionId
         };
         this.$store.commit('addNewApplication', installation);
 
-        for(let file of files){
+        for(let file of response.files){
             var filePath = installationPath;
             if(file.directoryPath !="")
                 filePath += file.directoryPath
@@ -75,7 +73,6 @@ class InstallationManager {
                     //console.log(percentage + "% | " + received + " bytes out of " + total + " bytes.");
                     this.totalReceivedForActualFile = received;
                     this.percentage = (((this.totalReceived + this.totalReceivedForActualFile) * 100) / this.total)
-                    console.log(this.percentage);
                 }
             }
             await this.downloadFile(config).then((result) =>{
@@ -92,12 +89,65 @@ class InstallationManager {
         if (!installation) {
             throw "Application is not installed";
         }
+        let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/CheckUpdateAvailable/' + this.getOperatingSystem() + '/' + applicationId + '/' + installation.versionId);
+        return responsepromise.data;
     }
 
     public async updateApplication(applicationId : string){
         let installation = this.$store.state.installedApplications.find(x => x.applicationId == applicationId);
         if (!installation) {
             throw "Application is not installed";
+        }
+        this.resetProgressData();
+        let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetUpdateFiles/' + this.getOperatingSystem() + '/' + applicationId + '/' + installation.versionId);
+        let response = responsepromise.data;
+        
+        for(let updateAction of response.updateActions){
+            switch(+ActionType[updateAction.actionType]) { 
+                case ActionType.CreateFile: { 
+                    let actionpromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetUpdateActionCreate/' + updateAction.actionId);
+                    let action = actionpromise.data;
+                    let filepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetFile/' + action.fileId);
+                    let file = filepromise.data;
+                    var filePath = installation.path;
+                    if(file.directoryPath !="")
+                        filePath += file.directoryPath
+                    if(!fs.existsSync(filePath)){
+                        fs.mkdirSync(filePath, { recursive: true });
+                    }
+                    let config:DownloadData = {
+                        localFile: filePath + '/' + file.fileName,
+                        remoteFile: process.env.VUE_APP_API_LINK + '/files/' + applicationId + '/' + file.fileId,
+                        onProgress: (received:number,total:number) =>{
+                            var percentage = (received * 100) / total;
+                            this.totalReceivedForActualFile = received;
+                            this.percentage = (((this.totalReceived + this.totalReceivedForActualFile) * 100) / this.total)
+                        }
+                    }
+                    await this.downloadFile(config).then((result) =>{
+                        this.totalReceived += this.totalReceivedForActualFile;
+                        this.totalReceivedForActualFile = 0;
+                    });
+                   //statements; 
+                   break; 
+                } 
+                case ActionType.DeleteFile: { 
+                   //statements; 
+                   break; 
+                } 
+                case ActionType.CopyFile: { 
+                    //statements; 
+                    break; 
+                } 
+                case ActionType.UpdateFile: { 
+                //statements; 
+                    break; 
+                } 
+                default: { 
+                   //statements; 
+                   throw "Not supported type of update action";
+                } 
+             } 
         }
     }
 
@@ -178,6 +228,21 @@ class InstallationManager {
 
     public getPercentage(): number{
         return this.percentage;
+    }
+
+    public resetProgressData(){
+        this.total = 0;
+        this.totalReceived = 0;
+        this.percentage = 0;
+    }
+
+    private getOperatingSystem() : OSType {
+        switch(process.platform as String) {
+            case "win32": return OSType.Windows;
+            case "linux": return OSType.Linux;
+            case "darwin": return OSType.MacOS;
+            default: throw `Unsupported operating system type '{process.platform}'`;
+        }
     }
 }
 export default InstallationManager;
