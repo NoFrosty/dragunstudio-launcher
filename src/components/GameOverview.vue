@@ -1,5 +1,5 @@
 <template>
-    <div v-if="this.actualGame">
+    <div>
         <section>
             <b-modal :active.sync="isNewsModalActive" class="popup-news">
                <FullNews/>
@@ -95,7 +95,6 @@
                 isNewsModalActive: false,
                 isInstallModalActive: false,
                 news: null,
-                applicationInfo:null,
                 actualGame: {
                     applicationId : null,
                     path : "",
@@ -140,15 +139,6 @@
                         onConfirm: () => this.$buefy.toast.open('User confirmed without logged in')
                     })
                 }
-            },
-            AddApplication: function() {
-                var installationInfo = {
-                    applicationId : this.$store.state.selectedApplicationId,
-                    path : "",
-                    exeName : ""
-                }
-                //this.$store.commit('addNewApplication', installationInfo);
-                this.actualGame = this.$store.state.installedApplications.find(x => x.applicationId == this.$store.state.selectedApplicationId);
             },
             uninstallApplication(){
                 this.$root.$InstallationManager.uninstallApplication(this.selectedApplication.applicationId);
