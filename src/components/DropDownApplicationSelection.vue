@@ -39,9 +39,9 @@
         },
         async mounted () {
             this.applications = await this.$root.$ApplicationLibrary.getAllGameList();
-            this.currentApplication =  this.applications.find(x => x.applicationId == this.$store.state.selectedApplicationId)
-            if(!this.currentApplication)
+            if(!this.$store.state.selectedApplicationId)
                 this.$store.commit('setSelectedApplicationId', this.applications[0].applicationId);
+            this.currentApplication =  this.applications.find(x => x.applicationId == this.$store.state.selectedApplicationId)
             this.$store.subscribe((mutation, state) => {
                 if (mutation.type === 'setSelectedApplicationId') {
                     if(state.selectedApplicationId != this.currentApplication.applicationId)
