@@ -18,25 +18,25 @@ class InstallationManager {
     constructor(store : Store<ApplicationState>) {
         this.$store = store;
     }
-    
+    public percentage:number = 0;
+    public totalReceived:number = 0;
+    public totalReceivedForActualFile:number = 0;
+    public total:number = 0;
+    public isDownloading:boolean = false;
+
     public async installApplication(applicationId : string, installationPath : string){
         if (this.$store.state.installedApplications.find(x => x.applicationId == applicationId)) {
             throw "Application is already installed";
         }
+        this.isDownloading = true;
         let result = await axios.get(process.env.VUE_APP_API_LINK + '/version/' + applicationId);
         let version = result.data;
 
         result = await axios.get(process.env.VUE_APP_API_LINK + '/files/' + version.versionId);
         let files = result.data;
-        
-        let totalCompressedSize = 0;
-        for(let file of files){
-            totalCompressedSize += file.compressedSize;
-        }
 
-        let totalSize = 0;
         for(let file of files){
-            totalSize += file.size;
+            this.total += file.compressedSize;
         }
         
         if(!fs.existsSync(installationPath)){
@@ -59,15 +59,21 @@ class InstallationManager {
             let config:DownloadData = {
                 localFile: filePath + '/' + file.fileName,
                 remoteFile: process.env.VUE_APP_API_LINK + '/files/' + applicationId + '/' + file.fileId,
-                onProgress: function (received:number,total:number){
+                onProgress: (received:number,total:number) =>{
                     var percentage = (received * 100) / total;
-                    console.log(percentage + "% | " + received + " bytes out of " + total + " bytes.");
+                    //console.log(percentage + "% | " + received + " bytes out of " + total + " bytes.");
+                    this.totalReceivedForActualFile = received;
+                    this.percentage = (((this.totalReceived + this.totalReceivedForActualFile) * 100) / this.total)
+                    console.log(this.percentage);
                 }
             }
-            await this.downloadFile(config).then(function(){
-                console.log("File succesfully downloaded" + installationPath + '/' +file.fileName);
+            await this.downloadFile(config).then((result) =>{
+                //console.log("File succesfully downloaded" + installationPath + '/' +file.fileName);
+                this.totalReceived += this.totalReceivedForActualFile;
+                this.totalReceivedForActualFile = 0;
             });
         }
+        this.isDownloading = false;
     }
 
     public uninstallApplication(applicationId : string) {
@@ -118,11 +124,35 @@ class InstallationManager {
                     received_bytes += chunk.length;
                 });
             }
-
             req.on('end', function() {
                 resolve();
             });
         });
+    }
+
+    public octetConverter(size:number){
+        size = Math.abs(size);
+        var sizeOfSuffixe = [1, 1024, 1024*1024, 1024*1024*1024, 1024*1024*1024*1024];
+        var suffixe = ['octets', 'Ko', 'Mo', 'Go', 'To'];
+        for(var i=0; i<suffixe.length; i++){
+            if(size<sizeOfSuffixe[i]) 
+            return {
+                size:(size/sizeOfSuffixe[i-1]).toFixed(2),
+                suffixe: suffixe[i-1]
+            }
+        }
+    }
+
+    public getTotal(){
+        return this.octetConverter(this.total);
+    }
+
+    public getTotalReceived(){
+        return this.octetConverter(this.totalReceived);
+    }
+
+    public getPercentage(): number{
+        return this.percentage;
     }
 }
 export default InstallationManager;

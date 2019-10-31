@@ -53,7 +53,7 @@
                     <b-button size="is-large" class="is-primary" @click="confirm">Play</b-button>
                 </div>
                 <div class="overview-download-bottom-right">
-                    <progress class="progress is-primary" value="15" max="100">15%</progress>
+                    <progress class="progress is-primary" :value="percentage" max="100" show-value format="percent">15%</progress>
                     <nav class="level">
                         <!-- Left side -->
                         <div class="level-left">
@@ -70,7 +70,7 @@
 
                         <!-- Right side -->
                         <div class="level-right">
-                            <p class="level-item">1.26 GB OUT OF 2.17 GB</p>
+                            <p class="level-item">{{totalReceived.size}} {{totalReceived.suffixe}} out of {{totalToReceive.size}} {{totalToReceive.suffixe}}</p>
                         </div>
                     </nav>
                 </div>
@@ -100,7 +100,10 @@
                     applicationId : null,
                     path : "",
                     exeName : ""
-                }
+                },
+                percentage: 0,
+                totalReceived: null,
+                totalToReceive: null,
             }
         },
         components: {
@@ -149,11 +152,22 @@
             },
             uninstallApplication(){
                 this.$root.$InstallationManager.uninstallApplication(this.selectedApplication.applicationId);
-            }
+            },
+            calculateData() {
+                window.setInterval(() => {
+                    this.percentage = this.$root.$InstallationManager.getPercentage();
+                    this.totalReceived = this.$root.$InstallationManager.getTotalReceived();
+                    this.totalToReceive = this.$root.$InstallationManager.getTotal();
+                }, 100)
+            },
         },
         mounted: async function () {
             let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
             this.news = newsResponse.data;
+
+            this.interval = setInterval(() => this.calculateData(), 100);
+
+            
         },
     }
 </script>
