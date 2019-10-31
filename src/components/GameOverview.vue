@@ -86,7 +86,6 @@
     import FullNews from './FullNews.vue'
     import Install from './Install.vue'
     import axios from 'axios';
-    import { InstallationInfo } from '@/models/InstallationInfo';
 
     export default {
         data() {
@@ -95,11 +94,6 @@
                 isNewsModalActive: false,
                 isInstallModalActive: false,
                 news: null,
-                actualGame: {
-                    applicationId : null,
-                    path : "",
-                    exeName : ""
-                },
                 percentage: 0,
                 totalReceived: null,
                 totalToReceive: null,
