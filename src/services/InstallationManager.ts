@@ -4,6 +4,7 @@ import { InstallationInfo } from '@/models/InstallationInfo';
 import axios from 'axios';
 import fs from 'fs';
 import {OSType} from '@/models/OSType';
+import notifier from '@/services/Notifier';
 
 var rimraf = require("rimraf");
 var request = require('request');
@@ -39,49 +40,57 @@ class InstallationManager {
 
         this.isDownloading = true;
 
-        let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetInstallationFiles/' + this.getOperatingSystem() + '/' + applicationId);
-        let response = responsepromise.data;
+        try {
+            let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetInstallationFiles/' + this.getOperatingSystem() + '/' + applicationId);
+            let response = responsepromise.data;
+            
+            for(let file of response.files){
+                this.total += file.compressedSize;
+            }
+            
+            if(!fs.existsSync(installationPath)){
+                fs.mkdirSync(installationPath, { recursive: true })
+            }
+            let installation : InstallationInfo = {
+                applicationId: applicationId,
+                exeName: "",
+                path: installationPath,
+                version: response.version,
+                versionId: response.versionId
+            };
+            this.$store.commit('addNewApplication', installation);
 
-        for(let file of response.files){
-            this.total += file.compressedSize;
-        }
-        
-        if(!fs.existsSync(installationPath)){
-            fs.mkdirSync(installationPath, { recursive: true })
-        }
-        let installation : InstallationInfo = {
-            applicationId: applicationId,
-            exeName: "",
-            path: installationPath,
-            version: response.version,
-            versionId: response.versionId
-        };
-        this.$store.commit('addNewApplication', installation);
-
-        for(let file of response.files){
-            var filePath = installationPath;
-            if(file.directoryPath !="")
+            for(let file of response.files){
+                var filePath = installationPath;
+                if(file.directoryPath !="")
                 filePath += file.directoryPath
-            if(!fs.existsSync(filePath)){
-                fs.mkdirSync(filePath, { recursive: true });
-            }
-            let config:DownloadData = {
-                localFile: filePath + '/' + file.fileName,
-                remoteFile: process.env.VUE_APP_API_LINK + '/files/' + applicationId + '/' + file.fileId,
-                onProgress: (received:number,total:number) =>{
-                    var percentage = (received * 100) / total;
-                    //console.log(percentage + "% | " + received + " bytes out of " + total + " bytes.");
-                    this.totalReceivedForActualFile = received;
-                    this.percentage = (((this.totalReceived + this.totalReceivedForActualFile) * 100) / this.total)
+                if(!fs.existsSync(filePath)){
+                    fs.mkdirSync(filePath, { recursive: true });
                 }
+                let config:DownloadData = {
+                    localFile: filePath + '/' + file.fileName,
+                    remoteFile: process.env.VUE_APP_API_LINK + '/files/' + applicationId + '/' + file.fileId,
+                    onProgress: (received:number,total:number) =>{
+                        var percentage = (received * 100) / total;
+                        //console.log(percentage + "% | " + received + " bytes out of " + total + " bytes.");
+                        this.totalReceivedForActualFile = received;
+                        this.percentage = (((this.totalReceived + this.totalReceivedForActualFile) * 100) / this.total)
+                    }
+                }
+                await this.downloadFile(config).then((result) =>{
+                    //console.log("File succesfully downloaded" + installationPath + '/' +file.fileName);
+                    this.totalReceived += this.totalReceivedForActualFile;
+                    this.totalReceivedForActualFile = 0;
+                });
             }
-            await this.downloadFile(config).then((result) =>{
-                //console.log("File succesfully downloaded" + installationPath + '/' +file.fileName);
-                this.totalReceived += this.totalReceivedForActualFile;
-                this.totalReceivedForActualFile = 0;
-            });
         }
-        this.isDownloading = false;
+        catch(e) {
+            notifier.Error(e.message)
+            throw e;
+        }
+        finally {
+            this.isDownloading = false;
+        }
     }
 
     public async checkUpdateAvailable(applicationId : string){

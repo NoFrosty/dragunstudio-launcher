@@ -16,6 +16,7 @@ import AuthenticationService from "./services/AuthenticationService";
 import ApplicationLibrary from "./services/ApplicationLibrary";
 import InstallationManager from "./services/InstallationManager";
 import RepairService from "./services/RepairService";
+import notifier from "./services/Notifier";
 
 export default {
     name: "evopeons-launcher",
@@ -41,6 +42,7 @@ export default {
         this.$root.$ApplicationLibrary = new ApplicationLibrary(this.$store);
         this.$root.$InstallationManager = new InstallationManager(this.$store);
         this.$root.$RepairService = new RepairService(this.$store);
+        this.$root.$Notifier = notifier;
 
         this.$root.$RepairService.CheckStore();
         console.log("State", this.$store.state);
