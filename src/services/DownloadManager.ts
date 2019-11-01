@@ -40,7 +40,7 @@ class DownloadManager extends ServiceBase {
     private _totalFileSize : number = 0;
     private _downloadedFileSize : number = 0;
     private _downloadedFileCount : number = 0;
-    private _isFinished : boolean = false;
+    private _isDownloading : boolean = false;
 
     constructor(settings : DownloadManagerSettings) {
         super()
@@ -60,8 +60,8 @@ class DownloadManager extends ServiceBase {
     public get downloadedSize() : number {
         return this._downloadedFileSize;
     }
-    public get isFinished() : boolean {
-        return this._isFinished;
+    public get isDownloading() : boolean {
+        return this._isDownloading;
     }
     
 
@@ -71,9 +71,12 @@ class DownloadManager extends ServiceBase {
     }
 
     public start() {
-        this._isFinished = false;
+        if (this.settings.onProgress) {
+            setInterval(this.doProgressUpdate, 1000);
+        }
+        this._isDownloading = true;
         this.download().then(() => {
-            this._isFinished = true;
+            this._isDownloading = false;
         })
     }
     public pause() {
@@ -81,6 +84,20 @@ class DownloadManager extends ServiceBase {
     }
     public stop() {
 
+    }
+
+    private doProgressUpdate() {
+        if (this._isDownloading) {
+            if (this.settings.onProgress) {
+                let progress : DownloadManagerOnProgressEvent = {
+                    downloadedSize: this.downloadedSize,
+                    downloadedCount: this.downloadedFileCount,
+                    totalFileSize: this.totalFileSize,
+                    totalFileCount: this.totalFileCount
+                };
+                this.settings.onProgress(progress);
+            }
+        }
     }
 
 
@@ -110,33 +127,12 @@ class DownloadManager extends ServiceBase {
             })
             .on('data', (chunk : Buffer) => {
                 $this._downloadedFileSize += chunk.length;
-                if ($this.settings.onProgress) {
-                    if (Date.now() - $this.lastProgressTrigger > 250) {
-                        $this.lastProgressTrigger = Date.now();
-                        let progress : DownloadManagerOnProgressEvent = {
-                            downloadedSize: $this.downloadedSize,
-                            downloadedCount: $this.downloadedFileCount,
-                            totalFileSize: $this.totalFileSize,
-                            totalFileCount: $this.totalFileCount
-                        };
-                        $this.settings.onProgress(progress);
-                    }
-                }
             })
             .on('error', function(err) {
                 reject(err);
             })
             .on('close', () => {
                 $this._downloadedFileCount++;
-                if ($this.settings.onProgress) {
-                    let progress : DownloadManagerOnProgressEvent = {
-                        downloadedSize: $this.downloadedSize,
-                        downloadedCount: $this.downloadedFileCount,
-                        totalFileSize: $this.totalFileSize,
-                        totalFileCount: $this.totalFileCount
-                    };
-                    $this.settings.onProgress(progress);
-                }
                 resolve();
             })
             .pipe(fs.createWriteStream(filePath));
