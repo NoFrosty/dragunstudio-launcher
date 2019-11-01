@@ -61,33 +61,31 @@
 </template>
 
 <script>
+    import { installationManager } from '@/services/services'
     import { ApplicationInfo } from '@/models/ApplicationInfo';
     const {dialog} = require('electron').remote;
 
-    
-
-
-export default {
-    data() {
-        return {
-            path : null,
-        }
-    },
-    props:{
-        application: ApplicationInfo,
-    },
-    methods:{
-        openDial: async function() {
-            const selectedPaths = await dialog.showOpenDialog({
-                properties: ['openDirectory']
-            });
-            this.path = selectedPaths.filePaths[0] + "\\" + this.application.name;
+    export default {
+        data() {
+            return {
+                path : null,
+            }
         },
-        install(){
-            this.$root.$InstallationManager.installApplicationMultiThread(this.application.applicationId,this.path);
+        props:{
+            application: ApplicationInfo,
+        },
+        methods:{
+            openDial: async function() {
+                const selectedPaths = await dialog.showOpenDialog({
+                    properties: ['openDirectory']
+                });
+                this.path = selectedPaths.filePaths[0] + "\\" + this.application.name;
+            },
+            install(){
+                installationManager.installApplicationMultiThread(this.application.applicationId,this.path);
+            }
         }
     }
-}
 </script>
 <style lang="scss">
 .modal .animation-content {

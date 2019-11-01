@@ -52,38 +52,40 @@
   </section>
 </template>
 <script>
-export default {
-    data() {
-        return {
-            email: '',
-            password: '',
-            wrongIdentifier: false
-        }
-    },
-    components: {
-    },
-    methods: {
-        attemptSignIn: async function() {
-            var isLogged = await this.$root.$AuthenticationService.AttemptSignIn({
-                email: this.email,
-                password: this.password
-            });
-            if(isLogged) {
-                this.wrongIdentifier = false;
+    import { authenticationService } from '@/services/services'
+
+    export default {
+        data() {
+            return {
+                email: '',
+                password: '',
+                wrongIdentifier: false
+            }
+        },
+        components: {
+        },
+        methods: {
+            attemptSignIn: async function() {
+                var isLogged = await authenticationService.AttemptSignIn({
+                    email: this.email,
+                    password: this.password
+                });
+                if(isLogged) {
+                    this.wrongIdentifier = false;
+                    this.$router.push({ name: "launcher" });
+                }
+                else{
+                    this.wrongIdentifier = true;
+                    
+                }
+            }
+        },
+        mounted: async function() {
+            if (authenticationService.IsSignedIn()) {
                 this.$router.push({ name: "launcher" });
             }
-            else{
-                this.wrongIdentifier = true;
-                
-            }
-        }
-    },
-    mounted: async function() {
-        if (this.$root.$AuthenticationService.IsSignedIn()) {
-            this.$router.push({ name: "launcher" });
         }
     }
-}
 </script>
 
 <style>

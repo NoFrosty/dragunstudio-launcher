@@ -31,29 +31,31 @@
 </template>
 
 <script>
-export default {
-    data() {
-            return {
+    import { authenticationService } from '@/services/services'
+
+    export default {
+        data() {
+                return {
+                }
+            },
+        components:{
+        },
+        computed: {
+            isSignedIn: function() {
+                return this.$store.state.isSignedIn;
+            },
+            isOffline: function() {
+                return this.$store.state.isOffline;
             }
         },
-    components:{
-    },
-    computed: {
-        isSignedIn: function() {
-            return this.$store.state.isSignedIn;
+        methods: {
+        logout: async function() {
+            await authenticationService.SignOut();
+            this.$router.push({ name: "login" });
         },
-        isOffline: function() {
-            return this.$store.state.isOffline;
+        goOnline: async function() {
+            this.$router.push({ name: "boot" })
         }
-    },
-    methods: {
-      logout: async function() {
-        await this.$root.$AuthenticationService.SignOut();
-        this.$router.push({ name: "login" });
-      },
-      goOnline: async function() {
-        this.$router.push({ name: "boot" })
-      }
-    },
-}
+        },
+    }
 </script>

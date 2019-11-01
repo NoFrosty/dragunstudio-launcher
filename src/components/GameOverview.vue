@@ -87,6 +87,8 @@
     import Install from './Install.vue'
     import axios from 'axios';
 
+    import { applicationLibrary, installationManager } from '@/services/services'
+
     export default {
         data() {
             return {
@@ -121,7 +123,7 @@
                 if (!this.$store.state.selectedApplicationId) {
                     return null;
                 }
-                return await this.$root.$ApplicationLibrary.getGameFromId(this.$store.state.selectedApplicationId);
+                return await applicationLibrary.getGameFromId(this.$store.state.selectedApplicationId);
             }
         },
         methods: {
@@ -135,13 +137,13 @@
                 }
             },
             uninstallApplication(){
-                this.$root.$InstallationManager.uninstallApplication(this.selectedApplication.applicationId);
+                installationManager.uninstallApplication(this.selectedApplication.applicationId);
             },
             calculateData() {
                 window.setInterval(() => {
-                    this.percentage = this.$root.$InstallationManager.getPercentage();
-                    this.totalReceived = this.$root.$InstallationManager.getTotalReceived();
-                    this.totalToReceive = this.$root.$InstallationManager.getTotal();
+                    this.percentage = installationManager.getPercentage();
+                    this.totalReceived = installationManager.getTotalReceived();
+                    this.totalToReceive = installationManager.getTotal();
                 }, 100)
             },
         },

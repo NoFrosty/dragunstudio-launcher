@@ -46,6 +46,7 @@
 
 <script>
     import axios from 'axios';
+    import { applicationLibrary } from '@/services/services';
 
     export default {
         computed: {
@@ -85,8 +86,8 @@
             },
             initializeLauncher: async function() {
                 this.currentAction = 'Loading';
-                
-                var result = await this.$root.$ApplicationLibrary.getAllGameList();
+
+                var result = await applicationLibrary.getAllGameList();
                 
                 this.currentAction = 'Loaded';
 
