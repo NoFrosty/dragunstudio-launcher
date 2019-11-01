@@ -80,6 +80,7 @@
     </div>
 </template>
 <script>
+    import humanize from 'humanize'
     import {
         GAME_MODE
     } from '@/services/constants.ts'
@@ -129,10 +130,9 @@
         },
         methods: {
             onProgress(progress) {
-                console.log("PROGRESS", progress);
                 this.percentage = progress.downloadedSize / progress.totalFileSize * 100;
-                this.totalReceived = progress.downloadedSize;
-                this.totalToReceive = progress.totalFileSize;
+                this.totalReceived = humanize.filesize(progress.downloadedSize);
+                this.totalToReceive = humanize.filesize(progress.totalFileSize);
             },
             onStartInstall(installData) {
                 installationManager.installApplicationMultiThread(

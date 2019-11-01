@@ -10,7 +10,7 @@ import {
 } from '@/models/UpdateActions';
 
 import path from 'path';
-import fs from 'fs';
+import fs, { realpath } from 'fs';
 import request from 'request'
 var progress = require('request-progress');
 
@@ -113,14 +113,21 @@ class DownloadManager extends ServiceBase {
 
 
     private async download() {
-        for(let i in this.allFiles) {
-            let file = this.allFiles[i];
-            
-            await this.downloadFile(file);
+        try {
+            for(let i in this.allFiles) {
+                let file = this.allFiles[i];
+                await this.downloadFile(file);
+            }
+        }
+        catch(e) {
+            this.logger.error(e);
+            console.log(e)
         }
     }
 
     private downloadFile(file : FileInfo) {
+        this.logger.info("New file to download!", file)
+
         let url = process.env.VUE_APP_API_LINK + '/files/' + this.settings.applicationId + '/' + file.fileId
         let directoryPath = path.join(this.settings.rootPath, file.directoryPath);
         let filePath = path.join(directoryPath, file.fileName);
@@ -129,9 +136,14 @@ class DownloadManager extends ServiceBase {
             fs.mkdirSync(directoryPath, { recursive: true });
         }
 
+        
         let $this = this;
-
+        this.logger.info("Requesting new file download")
+        
         return new Promise(function(resolve, reject) {
+            setTimeout(function() {
+                reject("something happened");
+            }, 6000)
             progress(request({
                 "rejectUnauthorized": false, 
                 uri: url
@@ -139,19 +151,26 @@ class DownloadManager extends ServiceBase {
                 throttle: 250
             })
             .on('progress', (state:any) => {
+                console.log($this);
+                $this.logger.info("File downlaod progressed", state)
                 $this._downloadedFileSize = state.size.transferred;
             })
             .on('error', (err:any) => {
+                $this.logger.error(err)
                 reject(err);
             })
             .on('close', () => {
+                $this.logger.info("File download completed", file);
                 $this._downloadedFileCount++;
-                $this._totalDownloadedSize += $this._downloadedFileSize;
+                $this._totalDownloadedSize += file.compressedSize;
                 $this._downloadedFileSize = 0;
-
                 resolve();
             })
-            .pipe(fs.createWriteStream(filePath))
+            .pipe(fs.createWriteStream(filePath)
+                .on('error', function (err) {
+                    console.log(err);
+                })
+            )
         });
     }
 }

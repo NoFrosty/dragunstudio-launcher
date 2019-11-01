@@ -99,10 +99,15 @@ class InstallationManager extends ServiceBase {
         onProgress: (progress: DownloadManagerOnProgressEvent) => void) 
         : Promise<DownloadManager> {
 
+        this.logger.info("Application installation started!")
+
         if (this.store.state.installedApplications.find(x => x.applicationId == applicationId)) {
             throw "Application is already installed";
         }
         let lastVersion = await this.getLastVersion(applicationId);
+
+        this.logger.info("Last version fetched!", lastVersion);
+
 
         let installation : InstallationInfo = {
             applicationId: applicationId,
@@ -113,12 +118,17 @@ class InstallationManager extends ServiceBase {
         };
         this.store.commit('addNewApplication', installation);
 
+        this.logger.info("Application is added to store as installation!", installation);
+
         let url = format("{root}/update?toVersionId={toVersionId}", {
             root: process.env.VUE_APP_API_LINK,
             toVersionId: lastVersion.versionId
         });
         let updateResponse = await axios.get(url);
         let updateActions = updateResponse.data as UpdateAction[];
+
+        // TODO:
+        this.logger.info("Update actions are fetched: " + updateActions.length);
         
         let downloadManagerSettings : DownloadManagerSettings = {
             applicationId: applicationId,
@@ -272,7 +282,10 @@ class InstallationManager extends ServiceBase {
             throw "Application is not installed";
         }
         
-        rimraf.sync(installation.path);
+        // rimraf(installation.path, function(error: any) {
+        //     console.error('Error: ', error);
+        // });
+        //rimraf.sync(installation.path);
         // TODO: Do real unsintall here!
         this.store.commit('removeApplication', installation);
     }
