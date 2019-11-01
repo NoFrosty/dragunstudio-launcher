@@ -54,7 +54,8 @@
     "sass-loader": "^8.0.0",
     "typescript": "^3.4.3",
     "vue-cli-plugin-electron-builder": "^1.4.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "@types/request": "^2.48.3"
   },
   "eslintConfig": {
     "root": true,
