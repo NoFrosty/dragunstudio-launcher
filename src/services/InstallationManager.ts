@@ -88,7 +88,7 @@ class InstallationManager {
             }
         }
         catch(e) {
-            notifier.Error(e.message)
+            this.notifier.Error(e.message)
             throw e;
         }
         finally {

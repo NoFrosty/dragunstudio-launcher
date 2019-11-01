@@ -44,6 +44,7 @@ export default {
 
         this.$root.$RepairService.CheckStore();
         this.$root.$RepairService.CheckIfSelectedApplicationStillExists();
+        console.log('State', this.$store.state);
     }
 };
 </script>
