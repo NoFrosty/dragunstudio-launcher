@@ -54,8 +54,8 @@
                     <b-button size="is-large" class="is-primary" @click="confirm">Play</b-button>
                 </div>
                 <div class="overview-download-bottom-right">
-                    <b-progress class="progress" type="is-primary" :precision="0" :value="percentage" show-value format="percent"></b-progress>
-                    <nav class="level">
+                    <b-progress class="progress" type="is-primary" :precision="2" :value="percentage" show-value format="percent"></b-progress>
+                    <nav class="level" >
                         <!-- Left side -->
                         <div class="level-left">
                             <DropDownGameMode class="level-item" v-model="gameMode" />
@@ -70,8 +70,8 @@
                         </div>
 
                         <!-- Right side -->
-                        <div class="level-right">
-                            <p class="level-item">{{totalReceived.size}} {{totalReceived.suffixe}} out of {{totalToReceive.size}} {{totalToReceive.suffixe}}</p>
+                        <div class="level-right" v-if="totalReceived || totalToReceive">
+                            <p class="level-item">{{totalReceived}} out of {{totalToReceive}}</p>
                         </div>
                     </nav>
                 </div>
@@ -129,7 +129,7 @@
         },
         methods: {
             onProgress(progress) {
-                console.log(progress)
+                console.log(progress);
                 this.percentage = progress.downloadedSize / progress.totalFileSize * 100;
                 this.totalReceived = progress.downloadedSize;
                 this.totalToReceive = progress.totalFileSize;
@@ -151,20 +151,11 @@
             },
             uninstallApplication(){
                 installationManager.uninstallApplication(this.selectedApplication.applicationId);
-            },
-            calculateData() {
-                window.setInterval(() => {
-                    this.percentage = installationManager.getPercentage();
-                    this.totalReceived = installationManager.getTotalReceived();
-                    this.totalToReceive = installationManager.getTotal();
-                }, 100)
-            },
+            }
         },
         mounted: async function () {
             let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
             this.news = newsResponse.data;
-
-            this.interval = setInterval(() => this.calculateData(), 100);
 
             
         },
