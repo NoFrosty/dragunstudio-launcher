@@ -1,20 +1,13 @@
+import ServiceBase from '@/services/ServiceBase';
 import axios from 'axios';
-import { Store } from 'vuex';
-import ApplicationState from '@/store/ApplicationState';
 import {ApplicationInfo} from "@/models/ApplicationInfo";
 import { OSType } from '@/models/OSType';
 
-class ApplicationLibrary {
-    private $store : Store<ApplicationState>;
-
-    constructor(store : Store<ApplicationState>) {
-        this.$store = store;
-    }
-
+class ApplicationLibrary extends ServiceBase {
     public async getAllGameList(): Promise<ApplicationInfo[]> {
         let currentOS = this.getOperatingSystem();
         
-        if (this.$store.state.isOffline) {
+        if (this.store.state.isOffline) {
             let appData = localStorage.getItem("Applications");
             if (appData == null) {
                 throw "Offline mode can't be used for first execution!";

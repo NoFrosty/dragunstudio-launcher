@@ -1,13 +1,7 @@
 import axios from 'axios';
-import { Store } from 'vuex';
-import ApplicationState from '@/store/ApplicationState';
+import ServiceBase from '@/services/ServiceBase';
 
-class AuthenticationService {
-    private $store : Store<ApplicationState>;
-
-    constructor(store : Store<ApplicationState>) {
-        this.$store = store;
-    }
+class AuthenticationService extends ServiceBase {
 
     async AttemptSignIn(credentials: {email : string, password : string}) {
         let parameters = {
@@ -17,11 +11,11 @@ class AuthenticationService {
         
         let loginResult = await axios.post(process.env.VUE_APP_API_LINK + "/authenticate", parameters);
         if (loginResult.data.isSuccessfull) {
-            this.$store.dispatch('signIn', { 
+            this.store.dispatch('signIn', { 
                 jwt: loginResult.data.token,
                 username: loginResult.data.username
             });
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.jwt;
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.store.state.jwt;
             return true;
         }
         else{
@@ -35,13 +29,13 @@ class AuthenticationService {
             await axios.post(process.env.VUE_APP_API_LINK + "/authenticate/signout");
         }
         finally {
-            this.$store.dispatch('signOut');
+            this.store.dispatch('signOut');
             axios.defaults.headers.common['Authorization'] = null;
         }
     }
 
     IsSignedIn() {
-        return this.$store.state.isSignedIn;
+        return this.store.state.isSignedIn;
     }
 }
 

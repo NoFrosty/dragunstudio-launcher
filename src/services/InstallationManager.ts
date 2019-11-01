@@ -1,10 +1,9 @@
-import { Store } from 'vuex';
-import ApplicationState from '@/store/ApplicationState';
+import ServiceBase from '@/services/ServiceBase';
 import { InstallationInfo } from '@/models/InstallationInfo';
 import axios from 'axios';
 import fs from 'fs';
 import {OSType} from '@/models/OSType';
-import Notifier from './Notifier';
+
 var async   = require('async');
 var rimraf = require("rimraf");
 var request = require('request');
@@ -21,14 +20,7 @@ enum ActionType {
     CopyFile = 3
 }
 
-class InstallationManager {
-    private $store : Store<ApplicationState>;
-    private notifier : Notifier;
-
-    constructor(store : Store<ApplicationState>, notifier : Notifier) {
-        this.$store = store;
-        this.notifier = notifier;
-    }
+class InstallationManager extends ServiceBase {
     public percentage:number = 0;
     public totalReceived:number = 0;
     public totalReceivedForActualFile:number = 0;
@@ -36,7 +28,7 @@ class InstallationManager {
     public isDownloading:boolean = false;
 
     public async installApplication(applicationId : string, installationPath : string){
-        if (this.$store.state.installedApplications.find(x => x.applicationId == applicationId)) {
+        if (this.store.state.installedApplications.find(x => x.applicationId == applicationId)) {
             throw "Application is already installed";
         }
 
@@ -60,7 +52,7 @@ class InstallationManager {
                 version: response.version,
                 versionId: response.versionId
             };
-            this.$store.commit('addNewApplication', installation);
+            this.store.commit('addNewApplication', installation);
 
             for(let file of response.files){
                 var filePath = installationPath;
@@ -96,7 +88,7 @@ class InstallationManager {
     }
 
     public async installApplicationMultiThread(applicationId : string, installationPath : string){
-        if (this.$store.state.installedApplications.find(x => x.applicationId == applicationId)) {
+        if (this.store.state.installedApplications.find(x => x.applicationId == applicationId)) {
             throw "Application is already installed";
         }
 
@@ -120,7 +112,7 @@ class InstallationManager {
                 version: response.version,
                 versionId: response.versionId
             };
-            this.$store.commit('addNewApplication', installation);
+            this.store.commit('addNewApplication', installation);
             async.eachLimit(response.files, 20, ((file:any,callback:Function)  => {
                 var filePath = installationPath;
                 if(file.directoryPath !="")
@@ -160,7 +152,7 @@ class InstallationManager {
     }
 
     public async checkUpdateAvailable(applicationId : string){
-        let installation = this.$store.state.installedApplications.find(x => x.applicationId == applicationId);
+        let installation = this.store.state.installedApplications.find(x => x.applicationId == applicationId);
         if (!installation) {
             throw "Application is not installed";
         }
@@ -169,7 +161,7 @@ class InstallationManager {
     }
 
     public async updateApplication(applicationId : string){
-        let installation = this.$store.state.installedApplications.find(x => x.applicationId == applicationId);
+        let installation = this.store.state.installedApplications.find(x => x.applicationId == applicationId);
         if (!installation) {
             throw "Application is not installed";
         }
@@ -227,14 +219,14 @@ class InstallationManager {
     }
 
     public uninstallApplication(applicationId : string) {
-        let installation = this.$store.state.installedApplications.find(x => x.applicationId == applicationId);
+        let installation = this.store.state.installedApplications.find(x => x.applicationId == applicationId);
         if (!installation) {
             throw "Application is not installed";
         }
         
         rimraf.sync(installation.path);
         // TODO: Do real unsintall here!
-        this.$store.commit('removeApplication', installation);
+        this.store.commit('removeApplication', installation);
     }
 
     /**
