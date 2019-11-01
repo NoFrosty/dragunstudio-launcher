@@ -1,12 +1,19 @@
 import { Store } from 'vuex';
 import ApplicationState from '@/store/ApplicationState';
 import { ApplicationInfo } from '@/models/ApplicationInfo'
+import container from '@/container'
+import ApplicationLibrary from './ApplicationLibrary';
 
 export default class RepairService {
     private $store : Store<ApplicationState>;
+    private applicationLibrary : ApplicationLibrary;
 
     constructor(store : Store<ApplicationState>) {
         this.$store = store;
+        this.applicationLibrary = container.resolve('applicationLibrary');
+    }
+
+    CheckAll() {
     }
     
     CheckStore() {
@@ -15,6 +22,19 @@ export default class RepairService {
             if (!app.path) {
                 this.$store.commit("removeApplication", app);
                 i--;
+            }
+        }
+    }
+
+    async CheckIfSelectedApplicationStillExists() {
+        let applications = await this.applicationLibrary.getAllGameList();
+        if (applications.length == 0) {
+            this.$store.commit('setSelectedApplicationId', null);
+        }
+        else {
+            let app = applications.find(x => x.applicationId == this.$store.state.selectedApplicationId);
+            if (!app) {
+                this.$store.commit('setSelectedApplicationId', applications[0].applicationId);
             }
         }
     }

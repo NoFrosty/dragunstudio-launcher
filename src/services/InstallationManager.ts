@@ -4,7 +4,6 @@ import { InstallationInfo } from '@/models/InstallationInfo';
 import axios from 'axios';
 import fs from 'fs';
 import {OSType} from '@/models/OSType';
-import notifier from '@/services/Notifier';
 
 var rimraf = require("rimraf");
 var request = require('request');
