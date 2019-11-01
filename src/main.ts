@@ -5,17 +5,12 @@ import AsyncComputed from 'vue-async-computed'
 import App from './App.vue'
 import router from './router'
 import store from './store/store'
-import container from '@/container'
-import { asValue } from 'awilix'
-import { registerServices } from '@/services/services'
-
-container.register({
-     store: asValue(store)
-});
-registerServices(container);
+import { asValue, asClass } from 'awilix'
+import services from '@/services/services'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
+Vue.prototype.$services = services
 
 Vue.use(Buefy)
 Vue.use(AsyncComputed)

@@ -4,7 +4,6 @@ import { InstallationInfo } from '@/models/InstallationInfo';
 import axios from 'axios';
 import fs from 'fs';
 import {OSType} from '@/models/OSType';
-import container from '@/container'
 import Notifier from './Notifier';
 
 var rimraf = require("rimraf");
@@ -26,9 +25,9 @@ class InstallationManager {
     private $store : Store<ApplicationState>;
     private notifier : Notifier;
 
-    constructor(store : Store<ApplicationState>) {
+    constructor(store : Store<ApplicationState>, notifier : Notifier) {
         this.$store = store;
-        this.notifier = container.resolve<Notifier>('notifier');
+        this.notifier = notifier;
     }
     public percentage:number = 0;
     public totalReceived:number = 0;

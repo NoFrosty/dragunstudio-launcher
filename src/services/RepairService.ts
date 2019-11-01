@@ -1,16 +1,14 @@
 import { Store } from 'vuex';
 import ApplicationState from '@/store/ApplicationState';
-import { ApplicationInfo } from '@/models/ApplicationInfo'
-import container from '@/container'
 import ApplicationLibrary from './ApplicationLibrary';
 
 export default class RepairService {
     private $store : Store<ApplicationState>;
     private applicationLibrary : ApplicationLibrary;
 
-    constructor(store : Store<ApplicationState>) {
+    constructor(store : Store<ApplicationState>, applicationLibrary : ApplicationLibrary) {
         this.$store = store;
-        this.applicationLibrary = container.resolve('applicationLibrary');
+        this.applicationLibrary = applicationLibrary;
     }
 
     CheckAll() {

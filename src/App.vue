@@ -12,10 +12,7 @@ const GAME_TABS = {
     ACHIEVEMENTS: 2
 };
 import WindowsController from "./components/WindowsController.vue";
-import AuthenticationService from "./services/AuthenticationService";
-import ApplicationLibrary from "./services/ApplicationLibrary";
-import InstallationManager from "./services/InstallationManager";
-import RepairService from "./services/RepairService";
+import services from "@/services/services";
 
 export default {
     name: "evopeons-launcher",
@@ -34,16 +31,9 @@ export default {
         WindowsController
     },
     created: function() {
-        this.$root.$AuthenticationService = new AuthenticationService(
-            this.$store,
-            this.$router
-        );
-        this.$root.$ApplicationLibrary = new ApplicationLibrary(this.$store);
-        this.$root.$InstallationManager = new InstallationManager(this.$store);
-        this.$root.$RepairService = new RepairService(this.$store);
-
-        this.$root.$RepairService.CheckStore();
-        this.$root.$RepairService.CheckIfSelectedApplicationStillExists();
+        let RepairService = services.resolve('repairService');
+        RepairService.CheckStore();
+        RepairService.CheckIfSelectedApplicationStillExists();
         console.log('State', this.$store.state);
     }
 };

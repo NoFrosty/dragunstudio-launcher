@@ -23,6 +23,8 @@
 
 <script>
     import axios from 'axios';
+    import { applicationLibrary } from '@/services/services';
+
     export default {
         props: {
         },
@@ -38,7 +40,7 @@
             },
         },
         async mounted () {
-            this.applications = await this.$root.$ApplicationLibrary.getAllGameList();
+            this.applications = await applicationLibrary.getAllGameList();
             if(!this.$store.state.selectedApplicationId)
                 this.$store.commit('setSelectedApplicationId', this.applications[0].applicationId);
             this.currentApplication =  this.applications.find(x => x.applicationId == this.$store.state.selectedApplicationId)
