@@ -41,6 +41,7 @@ class DownloadManager extends ServiceBase {
     private _intervalId : number = 0;
     private _totalFileSize : number = 0;
     private _downloadedFileSize : number = 0;
+    private _totalDownloadedSize : number = 0;
     private _downloadedFileCount : number = 0;
     private _isDownloading : boolean = false;
 
@@ -55,6 +56,9 @@ class DownloadManager extends ServiceBase {
     }
     public get totalFileCount() : number {
         return this.allFiles.length;
+    }
+    public get totalDownloadedFileSize() : number {
+        return this._totalDownloadedSize;
     }
     public get downloadedFileCount() : number {
         return this._downloadedFileCount;
@@ -97,10 +101,10 @@ class DownloadManager extends ServiceBase {
         if ($this._isDownloading) {
             if ($this.settings.onProgress) {
                 let progress : DownloadManagerOnProgressEvent = {
-                    downloadedSize: $this.downloadedSize,
+                    downloadedSize: $this.downloadedSize + $this.totalDownloadedFileSize,
                     downloadedCount: $this.downloadedFileCount,
                     totalFileSize: $this.totalFileSize,
-                    totalFileCount: $this.totalFileCount
+                    totalFileCount: $this.totalFileCount,
                 };
                 $this.settings.onProgress(progress);
             }
@@ -135,13 +139,16 @@ class DownloadManager extends ServiceBase {
                 throttle: 250
             })
             .on('progress', (state:any) => {
-                $this._downloadedFileSize += state.size.transferred
+                $this._downloadedFileSize = state.size.transferred;
             })
             .on('error', (err:any) => {
                 reject(err);
             })
             .on('close', () => {
                 $this._downloadedFileCount++;
+                $this._totalDownloadedSize += $this._downloadedFileSize;
+                $this._downloadedFileSize = 0;
+
                 resolve();
             })
             .pipe(fs.createWriteStream(filePath))
