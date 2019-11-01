@@ -234,7 +234,7 @@ class InstallationManager {
     }
 
     public getTotalReceived(){
-        return this.octetConverter(this.totalReceived);
+        return this.octetConverter(this.totalReceived + this.totalReceivedForActualFile);
     }
 
     public getPercentage(): number{
