@@ -247,7 +247,7 @@ class InstallationManager extends ServiceBase {
             var out = fs.createWriteStream(configuration.localFile);
             req.pipe(out);
 
-            req.on('response', function (data) {
+            req.on('response', function (data : any) {
                 // Change the total bytes value to get progress later.
                 total_bytes = parseInt(data.headers['content-length' ]);
             });
