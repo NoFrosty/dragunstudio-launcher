@@ -104,6 +104,15 @@ class InstallationManager extends ServiceBase {
         }
         let lastVersion = await this.getLastVersion(applicationId);
 
+        let installation : InstallationInfo = {
+            applicationId: applicationId,
+            exeName: "",
+            path: installationPath,
+            version: lastVersion.version,
+            versionId: lastVersion.versionId
+        };
+        this.store.commit('addNewApplication', installation);
+
         let url = format("{root}/update?toVersionId={toVersionId}", {
             root: process.env.VUE_APP_API_LINK,
             toVersionId: lastVersion.versionId

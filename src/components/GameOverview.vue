@@ -30,6 +30,7 @@
                 </div>
             </div>
         </div>
+        
         <b-button size="is-large" class="is-primary" @click="isInstallModalActive = true" v-if="!installation">Install</b-button>
         <div class="overview-download" v-else>
             <div class="overview-download-top">
@@ -129,11 +130,14 @@
         methods: {
             onProgress(progress) {
                 console.log(progress)
+                this.percentage = progress.downloadedSize / progress.totalFileSize * 100;
+                this.totalReceived = progress.downloadedSize;
+                this.totalToReceive = progress.totalFileSize;
             },
-            onStartInstall(installation) {
+            onStartInstall(installData) {
                 installationManager.installApplicationMultiThread(
                     this.$store.state.selectedApplicationId,
-                    installation.path,
+                    installData.path,
                     this.onProgress
                 );
             },
