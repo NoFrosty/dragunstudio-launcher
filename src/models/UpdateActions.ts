@@ -8,30 +8,30 @@ enum ActionType {
 }
 
 interface UpdateAction {
-    ActionType: ActionType;
+    actionType: ActionType;
 }
 
 interface UpdateActionCreateFile extends UpdateAction {
-    ActionType: ActionType
-    NewFile: FileInfo
+    actionType: ActionType
+    newFile: FileInfo
 }
 
 interface UpdateActionCopyFile extends UpdateAction {
-    ActionType: ActionType
-    SourceFile: FileInfo
-    DestinationFile: FileInfo
+    actionType: ActionType
+    sourceFile: FileInfo
+    destinationFile: FileInfo
 }
 
 interface UpdateActionDeleteFile extends UpdateAction {
-    ActionType: ActionType
-    File: FileInfo
+    actionType: ActionType
+    file: FileInfo
 }
 
 interface UpdateActionUpdateFile extends UpdateAction {
-    ActionType: ActionType
-    OldFile: FileInfo
-    NewFile: FileInfo
-    DiffId: string
+    actionType: ActionType
+    oldFile: FileInfo
+    newFile: FileInfo
+    diffId: string
 }
 
 export {

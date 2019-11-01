@@ -5,7 +5,7 @@ import { OSType } from '@/models/OSType';
 
 class ApplicationLibrary extends ServiceBase {
     public async getAllGameList(): Promise<ApplicationInfo[]> {
-        let currentOS = this.getOperatingSystem();
+        let currentOS = ApplicationLibrary.getOperatingSystem();
         
         if (this.store.state.isOffline) {
             let appData = localStorage.getItem("Applications");
@@ -32,7 +32,7 @@ class ApplicationLibrary extends ServiceBase {
         return app;
     }
 
-    private getOperatingSystem() : OSType {
+    public static getOperatingSystem() : OSType {
         switch(process.platform as String) {
             case "win32": return OSType.Windows;
             case "linux": return OSType.Linux;

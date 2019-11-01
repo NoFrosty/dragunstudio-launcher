@@ -1,32 +1,4 @@
 <template>
-<!--
-    <div class="modal-view">
-        <div class="modal-view-head">
-            <h2 class="modal-view-subject">Warcraft Installation</h2>
-        </div>
-        <div class="modal-view-news-body">
-            <div class="field">
-                <b-field grouped>
-                    <b-field label="Size">
-                        5.13214 Go
-                    </b-field>
-                    <b-field label="Install Location">
-                        <b-select placeholder="Select a subject">
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                        </b-select>
-                    </b-field>
-                </b-field>
-                 <b-field label="Install Location">
-                    <b-checkbox :value="true"
-                    type="is-primary">
-                        Keep this game updated automatically
-                    </b-checkbox>
-                </b-field>
-            </div>
-        </div>
-    </div>
-    -->
     <div class="popup">
         <div class="popup-inner">
         <div class="popup-inner-photo">
@@ -35,7 +7,6 @@
         <div class="popup-inner-text">
             <h1>{{this.application.name}} Installation </h1>
             <div class="field">
-                            
                 <b-field grouped>
                     <b-input :value="this.path" expanded readonly></b-input>
                     <p class="control">
@@ -53,7 +24,6 @@
                 <div class="buttons">
                     <b-button size="is-large" type="is-primary is-fullwidth" @click="install(); $parent.close()" expanded>Install</b-button>
                 </div>
-
             </div>
         </div>
     </div>
@@ -61,8 +31,8 @@
 </template>
 
 <script>
-    import { installationManager } from '@/services/services'
     import { ApplicationInfo } from '@/models/ApplicationInfo';
+    import { DownloadManager, DownloadManagerOnProgressEvent } from '../services/DownloadManager';
     const {dialog} = require('electron').remote;
 
     export default {
@@ -81,8 +51,10 @@
                 });
                 this.path = selectedPaths.filePaths[0] + "\\" + this.application.name;
             },
-            install(){
-                installationManager.installApplicationMultiThread(this.application.applicationId,this.path);
+            install() {
+                this.$emit('start', {
+                    path: this.path
+                })
             }
         }
     }

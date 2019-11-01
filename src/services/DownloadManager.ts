@@ -19,16 +19,27 @@ interface DownloadManagerSettings {
     rootPath : string;
     applicationId : string;
 
-    onError : Function;
-    onFinish : Function;
-    onProgress : Function;
+    onError? : Function;
+    onFinish? : Function;
+    onProgress? : (progress: DownloadManagerOnProgressEvent) => void;
+}
+
+interface DownloadManagerOnProgressEvent {
+    totalFileCount: number;
+    totalFileSize: number;
+    downloadedSize: number;
+    downloadedCount: number;
 }
 
 class DownloadManager extends ServiceBase {
     private settings : DownloadManagerSettings;
     private allFiles : FileInfo[];
 
+    private lastProgressTrigger : number = 0;
+
     private _totalFileSize : number = 0;
+    private _downloadedFileSize : number = 0;
+    private _downloadedFileCount : number = 0;
     private _isFinished : boolean = false;
 
     constructor(settings : DownloadManagerSettings) {
@@ -38,13 +49,19 @@ class DownloadManager extends ServiceBase {
     }
 
     public get totalFileSize() : number {
-        return 0;
+        return this._totalFileSize;
+    }
+    public get totalFileCount() : number {
+        return this.allFiles.length;
+    }
+    public get downloadedFileCount() : number {
+        return this._downloadedFileCount;
     }
     public get downloadedSize() : number {
-        return 0;
+        return this._downloadedFileSize;
     }
     public get isFinished() : boolean {
-        return false;
+        return this._isFinished;
     }
     
 
@@ -77,28 +94,58 @@ class DownloadManager extends ServiceBase {
 
     private downloadFile(file : FileInfo) {
         let url = process.env.VUE_APP_API_LINK + '/files/' + this.settings.applicationId + '/' + file.fileId
-        let filePath = path.join(this.settings.rootPath, file.directoryPath, file.fileName);
+        let directoryPath = path.join(this.settings.rootPath, file.directoryPath);
+        let filePath = path.join(directoryPath, file.fileName);
+
+        if(!fs.existsSync(directoryPath)){
+            fs.mkdirSync(directoryPath, { recursive: true });
+        }
+
+        let $this = this;
 
         return new Promise(function(resolve, reject) {
             request({
                 "rejectUnauthorized": false, 
                 uri: url
             })
-            .pipe(fs.createWriteStream(filePath))
-            .on('data', (chunk : Buffer)=>{
-                
+            .on('data', (chunk : Buffer) => {
+                $this._downloadedFileSize += chunk.length;
+                if ($this.settings.onProgress) {
+                    if (Date.now() - $this.lastProgressTrigger > 250) {
+                        $this.lastProgressTrigger = Date.now();
+                        let progress : DownloadManagerOnProgressEvent = {
+                            downloadedSize: $this.downloadedSize,
+                            downloadedCount: $this.downloadedFileCount,
+                            totalFileSize: $this.totalFileSize,
+                            totalFileCount: $this.totalFileCount
+                        };
+                        $this.settings.onProgress(progress);
+                    }
+                }
             })
             .on('error', function(err) {
                 reject(err);
             })
             .on('close', () => {
+                $this._downloadedFileCount++;
+                if ($this.settings.onProgress) {
+                    let progress : DownloadManagerOnProgressEvent = {
+                        downloadedSize: $this.downloadedSize,
+                        downloadedCount: $this.downloadedFileCount,
+                        totalFileSize: $this.totalFileSize,
+                        totalFileCount: $this.totalFileCount
+                    };
+                    $this.settings.onProgress(progress);
+                }
                 resolve();
-            });
+            })
+            .pipe(fs.createWriteStream(filePath));
         });
     }
 }
 
 export {
     DownloadManager,
-    DownloadManagerSettings
+    DownloadManagerSettings,
+    DownloadManagerOnProgressEvent
 }

@@ -29,6 +29,7 @@
     "electron-download-manager": "^2.1.2",
     "request": "^2.88.0",
     "rimraf": "^3.0.0",
+    "string-format": "^2.0.0",
     "vue": "^2.6.10",
     "vue-async-computed": "^3.7.0",
     "vue-class-component": "^7.0.2",

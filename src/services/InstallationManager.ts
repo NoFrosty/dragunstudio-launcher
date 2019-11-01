@@ -3,7 +3,13 @@ import { InstallationInfo } from '@/models/InstallationInfo';
 import axios from 'axios';
 import fs from 'fs';
 import {OSType} from '@/models/OSType';
+import { VersionInfo } from '@/models/VersionInfo';
+import ApplicationLibrary from './ApplicationLibrary';
+import { DownloadManager, DownloadManagerSettings, DownloadManagerOnProgressEvent } from './DownloadManager';
+import { UpdateAction, UpdateActionCreateFile } from '@/models/UpdateActions';
+import { create } from 'domain';
 
+const format = require('string-format');
 var async   = require('async');
 var rimraf = require("rimraf");
 var request = require('request');
@@ -87,10 +93,43 @@ class InstallationManager extends ServiceBase {
         }
     }
 
-    public async installApplicationMultiThread(applicationId : string, installationPath : string){
+    public async installApplicationMultiThread(
+        applicationId : string,
+        installationPath : string,
+        onProgress: (progress: DownloadManagerOnProgressEvent) => void) 
+        : Promise<DownloadManager> {
+
         if (this.store.state.installedApplications.find(x => x.applicationId == applicationId)) {
             throw "Application is already installed";
         }
+        let lastVersion = await this.getLastVersion(applicationId);
+
+        let url = format("{root}/update?toVersionId={toVersionId}", {
+            root: process.env.VUE_APP_API_LINK,
+            toVersionId: lastVersion.versionId
+        });
+        let updateResponse = await axios.get(url);
+        let updateActions = updateResponse.data as UpdateAction[];
+        
+        let downloadManagerSettings : DownloadManagerSettings = {
+            applicationId: applicationId,
+            concurrentDownloadCount: 2,
+            rootPath: installationPath,
+            onProgress: onProgress
+        }
+        let downloadManager = new DownloadManager(downloadManagerSettings)
+        for(let action of updateActions) {
+            switch(action.actionType) {
+                case ActionType.CreateFile:
+                    let createAction = action as UpdateActionCreateFile;
+                    downloadManager.pushFile(createAction.newFile);
+                    break;
+            }
+        }
+
+        downloadManager.start();
+        return downloadManager;
+        
 
         this.isDownloading = true;
 
@@ -303,13 +342,16 @@ class InstallationManager extends ServiceBase {
         this.percentage = 0;
     }
 
-    private getOperatingSystem() : OSType {
-        switch(process.platform as String) {
-            case "win32": return OSType.Windows;
-            case "linux": return OSType.Linux;
-            case "darwin": return OSType.MacOS;
-            default: throw `Unsupported operating system type '{process.platform}'`;
-        }
+    private async getLastVersion(applicationId : string) : Promise<VersionInfo> {
+        let os = ApplicationLibrary.getOperatingSystem();
+        let url = format("{root}/version/last?applicationId={appId}&operatingSystem={os}", {
+            root: process.env.VUE_APP_API_LINK,
+            appId: applicationId,
+            os: os
+        });
+        
+        let version = await axios.get(url);
+        return version.data as VersionInfo;
     }
 }
 export default InstallationManager;

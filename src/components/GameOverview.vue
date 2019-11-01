@@ -5,7 +5,7 @@
                <FullNews/>
             </b-modal>
              <b-modal :active.sync="isInstallModalActive" class="popup-install" v-if="selectedApplication">
-               <Install :application="selectedApplication"/>
+               <Install :application="selectedApplication" v-on:start="onStartInstall" />
             </b-modal>
         </section>
         <div class="overview-panel">
@@ -127,7 +127,16 @@
             }
         },
         methods: {
-            
+            onProgress(progress) {
+                console.log(progress)
+            },
+            onStartInstall(installation) {
+                installationManager.installApplicationMultiThread(
+                    this.$store.state.selectedApplicationId,
+                    installation.path,
+                    this.onProgress
+                );
+            },
             confirm() {
                 if(!this.$store.state.isSignedIn){
                     this.$buefy.dialog.confirm({
