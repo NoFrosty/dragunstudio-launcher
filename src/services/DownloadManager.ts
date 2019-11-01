@@ -38,6 +38,7 @@ class DownloadManager extends ServiceBase {
 
     private lastProgressTrigger : number = 0;
 
+    private _intervalId : number = 0;
     private _totalFileSize : number = 0;
     private _downloadedFileSize : number = 0;
     private _downloadedFileCount : number = 0;
@@ -72,11 +73,15 @@ class DownloadManager extends ServiceBase {
     }
 
     public start() {
+        this.logger.info("Starting download!")
         if (this.settings.onProgress) {
-            setInterval(this.doProgressUpdate, 1000);
+            this._intervalId = setInterval(this.doProgressUpdate, 250, this);
         }
         this._isDownloading = true;
         this.download().then(() => {
+            clearInterval(this._intervalId);
+            this.doProgressUpdate(this);
+            this.logger.info("Download ended!")
             this._isDownloading = false;
         })
     }
@@ -87,16 +92,17 @@ class DownloadManager extends ServiceBase {
 
     }
 
-    private doProgressUpdate() {
-        if (this._isDownloading) {
-            if (this.settings.onProgress) {
+    private doProgressUpdate($this : DownloadManager) {
+        $this.logger.info("Download progress interval!")
+        if ($this._isDownloading) {
+            if ($this.settings.onProgress) {
                 let progress : DownloadManagerOnProgressEvent = {
-                    downloadedSize: this.downloadedSize,
-                    downloadedCount: this.downloadedFileCount,
-                    totalFileSize: this.totalFileSize,
-                    totalFileCount: this.totalFileCount
+                    downloadedSize: $this.downloadedSize,
+                    downloadedCount: $this.downloadedFileCount,
+                    totalFileSize: $this.totalFileSize,
+                    totalFileCount: $this.totalFileCount
                 };
-                this.settings.onProgress(progress);
+                $this.settings.onProgress(progress);
             }
         }
     }
@@ -127,7 +133,7 @@ class DownloadManager extends ServiceBase {
                 uri: url
             }))
             .on('progress', (state:any) => {
-                console.log(state);
+                $this._downloadedFileSize += state.size.transferred
             })
             .on('error', (err:any) => {
                 reject(err);

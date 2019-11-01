@@ -129,7 +129,7 @@
         },
         methods: {
             onProgress(progress) {
-                console.log(progress);
+                console.log("PROGRESS", progress);
                 this.percentage = progress.downloadedSize / progress.totalFileSize * 100;
                 this.totalReceived = progress.downloadedSize;
                 this.totalToReceive = progress.totalFileSize;
