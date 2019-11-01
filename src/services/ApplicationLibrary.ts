@@ -1,5 +1,3 @@
-import { injectable, inject } from "inversify";
-
 import axios from 'axios';
 import { Store } from 'vuex';
 import ApplicationState from '@/store/ApplicationState';
