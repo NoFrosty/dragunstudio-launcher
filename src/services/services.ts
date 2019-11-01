@@ -9,7 +9,7 @@ import InstallationManager from "@/services/InstallationManager";
 import RepairService from "@/services/RepairService";
 import Notifier from "@/services/Notifier";
 
-var services = createContainer({
+const services = createContainer({
     injectionMode: InjectionMode.CLASSIC
 }) 
 
@@ -24,11 +24,11 @@ services.register({
     notifier: asClass(Notifier).singleton()
 });
 
-let authenticationService = services.resolve<AuthenticationService>('authenticationService');
-let applicationLibrary = services.resolve<ApplicationLibrary>('applicationLibrary');
-let installationManager = services.resolve<InstallationManager>('installationManager');
-let repairService = services.resolve<RepairService>('repairService');
-let notifier = services.resolve<Notifier>('notifier');
+const authenticationService = services.resolve<AuthenticationService>('authenticationService');
+const applicationLibrary = services.resolve<ApplicationLibrary>('applicationLibrary');
+const installationManager = services.resolve<InstallationManager>('installationManager');
+const repairService = services.resolve<RepairService>('repairService');
+const notifier = services.resolve<Notifier>('notifier');
 
 export default services;
 export {
