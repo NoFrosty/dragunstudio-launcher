@@ -6,7 +6,7 @@ import fs from 'fs';
 import {OSType} from '@/models/OSType';
 import container from '@/container'
 import Notifier from './Notifier';
-
+var async   = require('async');
 var rimraf = require("rimraf");
 var request = require('request');
 
@@ -94,6 +94,70 @@ class InstallationManager {
         finally {
             this.isDownloading = false;
         }
+    }
+
+    public async installApplicationMultiThread(applicationId : string, installationPath : string){
+        if (this.$store.state.installedApplications.find(x => x.applicationId == applicationId)) {
+            throw "Application is already installed";
+        }
+
+        this.isDownloading = true;
+
+        try {
+            let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetInstallationFiles/' + this.getOperatingSystem() + '/' + applicationId);
+            let response = responsepromise.data;
+            
+            for(let file of response.files){
+                this.total += file.compressedSize;
+            }
+            
+            if(!fs.existsSync(installationPath)){
+                fs.mkdirSync(installationPath, { recursive: true })
+            }
+            let installation : InstallationInfo = {
+                applicationId: applicationId,
+                exeName: "",
+                path: installationPath,
+                version: response.version,
+                versionId: response.versionId
+            };
+            this.$store.commit('addNewApplication', installation);
+            async.eachLimit(response.files, 20, ((file:any,callback:Function)  => {
+                var filePath = installationPath;
+                if(file.directoryPath !="")
+                filePath += file.directoryPath
+                if(!fs.existsSync(filePath)){
+                    fs.mkdirSync(filePath, { recursive: true });
+                }
+                
+                this.download(process.env.VUE_APP_API_LINK + '/files/' + applicationId + '/' + file.fileId, filePath + '/' + file.fileName, function(){
+                    console.log('Finished Downloading' + file.fileName);
+                    callback();
+                });
+            }))
+        }
+        catch(e) {
+            this.notifier.Error(e.message)
+            throw e;
+        }
+        finally {
+            this.isDownloading = false;
+        }
+    }
+
+    public download (url:string, dest:string, callbackFinish:Function){
+        request({
+            /* Here you should specify the exact link to the file you are trying to download */
+            "rejectUnauthorized": false, 
+            uri: url
+        })
+        .on('error', function(err:any) {console.log(err)} )
+        .pipe(fs.createWriteStream(dest))
+        .on('data', (chunk:Buffer)=>{
+            
+        })
+        .on('close', callbackFinish);
+    
     }
 
     public async checkUpdateAvailable(applicationId : string){

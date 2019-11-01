@@ -84,7 +84,7 @@ export default {
             this.path = selectedPaths.filePaths[0] + "\\" + this.application.name;
         },
         install(){
-            this.$root.$InstallationManager.installApplication(this.application.applicationId,this.path);
+            this.$root.$InstallationManager.installApplicationMultiThread(this.application.applicationId,this.path);
         }
     }
 }
