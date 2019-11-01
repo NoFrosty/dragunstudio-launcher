@@ -12,7 +12,8 @@ import {
 import path from 'path';
 import fs from 'fs';
 import request from 'request'
-import { settings } from 'cluster';
+var progress = require('request-progress');
+
 
 interface DownloadManagerSettings {
     concurrentDownloadCount : number;
@@ -121,21 +122,21 @@ class DownloadManager extends ServiceBase {
         let $this = this;
 
         return new Promise(function(resolve, reject) {
-            request({
+            progress(request({
                 "rejectUnauthorized": false, 
                 uri: url
+            }))
+            .on('progress', (state:any) => {
+                console.log(state);
             })
-            .on('data', (chunk : Buffer) => {
-                $this._downloadedFileSize += chunk.length;
-            })
-            .on('error', function(err) {
+            .on('error', (err:any) => {
                 reject(err);
             })
             .on('close', () => {
                 $this._downloadedFileCount++;
                 resolve();
             })
-            .pipe(fs.createWriteStream(filePath));
+            .pipe(fs.createWriteStream(filePath))
         });
     }
 }
