@@ -131,7 +131,9 @@ class DownloadManager extends ServiceBase {
             progress(request({
                 "rejectUnauthorized": false, 
                 uri: url
-            }))
+            }), {
+                throttle: 250
+            })
             .on('progress', (state:any) => {
                 $this._downloadedFileSize += state.size.transferred
             })
