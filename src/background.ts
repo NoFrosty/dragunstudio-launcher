@@ -1,15 +1,18 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import {
     createProtocol,
     installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
+import { DownloadManager, DownloadManagerSettings } from './services/DownloadManager'
+import FileInfo from './models/FileInfo'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: BrowserWindow | null
+let downloadManager: DownloadManager;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }])
@@ -77,6 +80,7 @@ app.on('ready', async () => {
 
     }
     createWindow()
+    initializeDownloadManager();
 })
 
 // Exit cleanly on request from parent process in development mode.
@@ -92,4 +96,21 @@ if (isDevelopment) {
             app.quit()
         })
     }
+}
+
+
+process.on('uncaughtException', function(err) {
+    console.error("err", err);
+})
+
+function initializeDownloadManager() {
+    downloadManager = new DownloadManager();
+
+    ipcMain.on('start-download', (event, settings : DownloadManagerSettings) => {
+        console.log("starting download", settings);
+        downloadManager.start(settings);
+    });
+    ipcMain.on('push-download-file', (event, file : FileInfo) => {
+        downloadManager.pushFile(file);
+    });
 }

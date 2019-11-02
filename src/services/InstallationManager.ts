@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron'
 import ServiceBase from '@/services/ServiceBase';
 import { InstallationInfo } from '@/models/InstallationInfo';
 import axios from 'axios';
@@ -5,7 +6,7 @@ import fs from 'fs';
 import {OSType} from '@/models/OSType';
 import { VersionInfo } from '@/models/VersionInfo';
 import ApplicationLibrary from './ApplicationLibrary';
-import { DownloadManager, DownloadManagerSettings, DownloadManagerOnProgressEvent } from './DownloadManager';
+import { DownloadManagerSettings } from './DownloadManager';
 import { UpdateAction, UpdateActionCreateFile } from '@/models/UpdateActions';
 import { create } from 'domain';
 
@@ -41,7 +42,7 @@ class InstallationManager extends ServiceBase {
         this.isDownloading = true;
 
         try {
-            let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetInstallationFiles/' + this.getOperatingSystem() + '/' + applicationId);
+            let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetInstallationFiles/' + ApplicationLibrary.getOperatingSystem() + '/' + applicationId);
             let response = responsepromise.data;
             
             for(let file of response.files){
@@ -95,9 +96,8 @@ class InstallationManager extends ServiceBase {
 
     public async installApplicationMultiThread(
         applicationId : string,
-        installationPath : string,
-        onProgress: (progress: DownloadManagerOnProgressEvent) => void) 
-        : Promise<DownloadManager> {
+        installationPath : string/*,
+        onProgress: (progress: DownloadManagerOnProgressEvent) => void*/) {
 
         this.logger.info("Application installation started!")
 
@@ -133,27 +133,31 @@ class InstallationManager extends ServiceBase {
         let downloadManagerSettings : DownloadManagerSettings = {
             applicationId: applicationId,
             concurrentDownloadCount: 2,
-            rootPath: installationPath,
-            onProgress: onProgress
+            rootPath: installationPath
         }
-        let downloadManager = new DownloadManager(downloadManagerSettings)
+
+        //let downloadManager = new DownloadManager()
         for(let action of updateActions) {
             switch(action.actionType) {
                 case ActionType.CreateFile:
                     let createAction = action as UpdateActionCreateFile;
-                    downloadManager.pushFile(createAction.newFile);
+                    ipcRenderer.send('push-download-file', createAction.newFile);
+                    //downloadManager.pushFile(createAction.newFile);
                     break;
             }
         }
 
-        downloadManager.start();
-        return downloadManager;
+        //downloadManager.start(downloadManagerSettings);
+        //return downloadManager;*/
+        ipcRenderer.send('start-download', downloadManagerSettings);
+ 
+        return;
         
 
         this.isDownloading = true;
 
         try {
-            let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetInstallationFiles/' + this.getOperatingSystem() + '/' + applicationId);
+            let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetInstallationFiles/' + ApplicationLibrary.getOperatingSystem() + '/' + applicationId);
             let response = responsepromise.data;
             
             for(let file of response.files){
@@ -214,7 +218,7 @@ class InstallationManager extends ServiceBase {
         if (!installation) {
             throw "Application is not installed";
         }
-        let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/CheckUpdateAvailable/' + this.getOperatingSystem() + '/' + applicationId + '/' + installation.versionId);
+        let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/CheckUpdateAvailable/' + ApplicationLibrary.getOperatingSystem() + '/' + applicationId + '/' + installation.versionId);
         return responsepromise.data;
     }
 
@@ -224,7 +228,7 @@ class InstallationManager extends ServiceBase {
             throw "Application is not installed";
         }
         this.resetProgressData();
-        let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetUpdateFiles/' + this.getOperatingSystem() + '/' + applicationId + '/' + installation.versionId);
+        let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetUpdateFiles/' + ApplicationLibrary.getOperatingSystem() + '/' + applicationId + '/' + installation.versionId);
         let response = responsepromise.data;
         
         for(let updateAction of response.updateActions){
@@ -285,7 +289,7 @@ class InstallationManager extends ServiceBase {
         // rimraf(installation.path, function(error: any) {
         //     console.error('Error: ', error);
         // });
-        //rimraf.sync(installation.path);
+        rimraf.sync(installation.path);
         // TODO: Do real unsintall here!
         this.store.commit('removeApplication', installation);
     }
