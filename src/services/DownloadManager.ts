@@ -185,11 +185,11 @@ class DownloadManager extends MainServiceBase {
                 })
                 .pipe(
                     fs.createWriteStream(filePath, { autoClose: true })
-                    .on("error", function(err) { reject(err); })
+                    .on("error", function(err:any) { reject(err); })
                 )
                 .on('close', () => {
                     this.context.downloadedFileCount++;
-                    this.context.downloadedTotalFileSize = size;
+                    this.context.downloadedTotalFileSize += size;
                     this.context.downloadedSingleFileSize = 0;
                     resolve();
                 })
