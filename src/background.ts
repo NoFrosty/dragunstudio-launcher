@@ -1,5 +1,7 @@
 'use strict'
 
+import logger from '@/services/logger'
+import mainNotificationManager from '@/services/MainNotificationManager'
 import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import {
     createProtocol,
@@ -104,7 +106,7 @@ process.on('uncaughtException', function(err) {
 })
 
 function initializeDownloadManager() {
-    downloadManager = new DownloadManager();
+    downloadManager = new DownloadManager(mainNotificationManager, logger);
 
     ipcMain.on('start-download', (event, settings : DownloadManagerSettings) => {
         console.log("starting download", settings);

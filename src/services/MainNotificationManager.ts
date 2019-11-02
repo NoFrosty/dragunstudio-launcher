@@ -24,4 +24,7 @@ class MainNotificationManager implements NotificationManager {
     }
 }
 
-export default MainNotificationManager
+const mainNotificationManager = new MainNotificationManager();
+
+export default mainNotificationManager
+export { MainNotificationManager }
