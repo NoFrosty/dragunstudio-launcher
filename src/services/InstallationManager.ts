@@ -82,7 +82,6 @@ class InstallationManager extends RendererServiceBase {
         let updateResponse = await axios.get(url);
         let updateActions = updateResponse.data as UpdateAction[];
 
-        // TODO:
         this.logger.info("Update actions are fetched: " + updateActions.length);
         
         let downloadManagerSettings : DownloadManagerSettings = {
@@ -97,6 +96,9 @@ class InstallationManager extends RendererServiceBase {
                 case ActionType.CreateFile:
                     let createAction = action as UpdateActionCreateFile;
                     ipcRenderer.send('push-download-file', createAction.newFile);
+                    break;
+                case ActionType.UpdateFile:
+                    // TODO: FINISH TIS YOU LITTLE PIECE OF SHIT
                     break;
             }
         }
@@ -118,13 +120,9 @@ class InstallationManager extends RendererServiceBase {
         if (!installation) {
             throw "Application is not installed";
         }
-        
-        // rimraf(installation.path, function(error: any) {
-        //     console.error('Error: ', error);
-        // });
+
         ipcRenderer.send('delete-directory', installation.path);
-        //rimraf.sync(installation.path);
-        // TODO: Do real unsintall here!
+
         this.store.commit('removeApplication', installation);
     }
 
