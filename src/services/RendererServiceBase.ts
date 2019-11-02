@@ -2,7 +2,6 @@ import services from '@/container';
 import { Logger } from 'winston';
 import { Store } from 'vuex';
 import ApplicationState from '@/store/ApplicationState';
-import Notifier from '@/services/Notifier';
 import { NotificationManager } from './NotificationManager';
 import ServiceBase from '@/services/ServiceBase';
 import RendererNotificationManager from './RendererNotificationManager';

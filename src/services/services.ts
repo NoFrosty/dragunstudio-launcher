@@ -9,7 +9,7 @@ import AuthenticationService from "@/services/AuthenticationService";
 import ApplicationLibrary from "@/services/ApplicationLibrary";
 import InstallationManager from "@/services/InstallationManager";
 import RepairService from "@/services/RepairService";
-import Notifier from "@/services/Notifier";
+import RendererNotificationManager from "@/services/RendererNotificationManager";
 import logger from "@/services/logger";
 
 
@@ -21,7 +21,7 @@ services.register({
     applicationLibrary: asClass(ApplicationLibrary).singleton(),
     installationManager: asClass(InstallationManager).singleton(),
     repairService: asClass(RepairService).singleton(),
-    notifier: asClass(Notifier).singleton(),
+    notificationManager: asClass(RendererNotificationManager).singleton(),
     logger: asValue(logger)
 });
 
@@ -31,7 +31,7 @@ const authenticationService = services.resolve<AuthenticationService>('authentic
 const applicationLibrary = services.resolve<ApplicationLibrary>('applicationLibrary');
 const installationManager = services.resolve<InstallationManager>('installationManager');
 const repairService = services.resolve<RepairService>('repairService');
-const notifier = services.resolve<Notifier>('notifier');
+const notificationManager = services.resolve<RendererNotificationManager>('notificationManager');
 
 export {
     services,
@@ -39,7 +39,7 @@ export {
     applicationLibrary,
     installationManager,
     repairService,
-    notifier,
+    notificationManager,
     logger
 };
 export default services;

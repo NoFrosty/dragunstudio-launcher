@@ -1,7 +1,7 @@
 import axios from 'axios';
-import ServiceBase from '@/services/ServiceBase';
+import RendererServiceBase from './RendererServiceBase';
 
-class AuthenticationService extends ServiceBase {
+class AuthenticationService extends RendererServiceBase {
 
     async AttemptSignIn(credentials: {email : string, password : string}) {
         let parameters = {

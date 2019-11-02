@@ -1,5 +1,4 @@
 import { ipcRenderer } from 'electron'
-import ServiceBase from '@/services/ServiceBase';
 import { InstallationInfo } from '@/models/InstallationInfo';
 import axios from 'axios';
 import fs from 'fs';
@@ -9,6 +8,7 @@ import ApplicationLibrary from './ApplicationLibrary';
 import { DownloadManagerSettings } from './DownloadManager';
 import { UpdateAction, UpdateActionCreateFile } from '@/models/UpdateActions';
 import { create } from 'domain';
+import RendererServiceBase from './RendererServiceBase';
 
 const format = require('string-format');
 var async   = require('async');
@@ -27,7 +27,7 @@ enum ActionType {
     CopyFile = 3
 }
 
-class InstallationManager extends ServiceBase {
+class InstallationManager extends RendererServiceBase {
     public percentage:number = 0;
     public totalReceived:number = 0;
     public totalReceivedForActualFile:number = 0;

@@ -1,9 +1,9 @@
-import ServiceBase from '@/services/ServiceBase';
+import RendererServiceBase from '@/services/RendererServiceBase';
 import axios from 'axios';
 import {ApplicationInfo} from "@/models/ApplicationInfo";
 import { OSType } from '@/models/OSType';
 
-class ApplicationLibrary extends ServiceBase {
+class ApplicationLibrary extends RendererServiceBase {
     public async getAllGameList(): Promise<ApplicationInfo[]> {
         let currentOS = ApplicationLibrary.getOperatingSystem();
         

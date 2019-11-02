@@ -1,7 +1,7 @@
-import ServiceBase from '@/services/ServiceBase';
 import ApplicationLibrary from './ApplicationLibrary';
+import RendererServiceBase from './RendererServiceBase';
 
-export default class RepairService extends ServiceBase {
+export default class RepairService extends RendererServiceBase {
     private applicationLibrary : ApplicationLibrary;
 
     constructor(applicationLibrary : ApplicationLibrary) {

@@ -1,4 +1,3 @@
-import ServiceBase from '@/services/ServiceBase';
 import FileInfo from '@/models/FileInfo';
 import {
     ActionType,
@@ -12,6 +11,9 @@ import {
 import path from 'path';
 import fs, { realpath } from 'fs';
 import { rejects } from 'assert';
+import MainServiceBase from './MainServiceBase';
+import RendererNotificationManager from './RendererNotificationManager';
+import { Logger } from 'winston';
 const https = require('https')
 https.globalAgent.options.rejectUnauthorized = false;
 const util = require('util');
@@ -41,7 +43,7 @@ interface DownloadManagerOnProgressEvent {
     downloadedCount: number;
 }
 
-class DownloadManager extends ServiceBase {
+class DownloadManager extends MainServiceBase {
     private allFiles : FileInfo[];
 
     private lastProgressTrigger : number = 0;
@@ -54,8 +56,8 @@ class DownloadManager extends ServiceBase {
     private _downloadedFileCount : number = 0;
     private _isDownloading : boolean = false;
 
-    constructor() {
-        super()
+    constructor(notificationManager : RendererNotificationManager, logger : Logger) {
+        super(notificationManager, logger);
         this.allFiles = [];
     }
 
