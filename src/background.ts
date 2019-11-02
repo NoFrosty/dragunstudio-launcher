@@ -118,7 +118,7 @@ function initializeDownloadManager() {
     });
     ipcMain.on('delete-directory', async (event, directoryPath: string) => {
         try {
-            await downloadManager.deleteDirectory(directoryPath)
+            await DownloadManager.deleteDirectory(directoryPath)
             event.sender.send("delete-directory-finished", null)
         }
         catch(err) {
