@@ -5,14 +5,13 @@ import fs from 'fs';
 import {OSType} from '@/models/OSType';
 import { VersionInfo } from '@/models/VersionInfo';
 import ApplicationLibrary from './ApplicationLibrary';
-import { DownloadManagerSettings } from './DownloadManager';
+import { DownloadManagerSettings, DownloadManagerOnProgressEvent } from './DownloadManager';
 import { UpdateAction, UpdateActionCreateFile } from '@/models/UpdateActions';
 import { create } from 'domain';
 import RendererServiceBase from './RendererServiceBase';
 
 const format = require('string-format');
 var async   = require('async');
-var rimraf = require("rimraf");
 var request = require('request');
 
 type DownloadData = {
@@ -33,6 +32,26 @@ class InstallationManager extends RendererServiceBase {
     public totalReceivedForActualFile:number = 0;
     public total:number = 0;
     public isDownloading:boolean = false;
+
+    constructor() {
+        super();
+        this.registerIpcMainDeleteDirectoryCallback();
+        this.registerIpcMainDownloadUpdate();
+    }
+
+    private registerIpcMainDeleteDirectoryCallback() {
+        ipcRenderer.on('delete-directory-finished', (event, err: any) => {
+            if (err) {
+                this.logger.error(err);
+            }
+        });
+    }
+
+    private registerIpcMainDownloadUpdate() {
+        ipcRenderer.on('download-progress', (event, progress: DownloadManagerOnProgressEvent) => {
+            console.log(progress);
+        });
+    }
 
     public async installApplication(applicationId : string, installationPath : string){
         if (this.store.state.installedApplications.find(x => x.applicationId == applicationId)) {
@@ -133,69 +152,20 @@ class InstallationManager extends RendererServiceBase {
         let downloadManagerSettings : DownloadManagerSettings = {
             applicationId: applicationId,
             concurrentDownloadCount: 2,
-            rootPath: installationPath
+            rootPath: installationPath,
+            diffPath: installationPath + "/diff_temp"
         }
 
-        //let downloadManager = new DownloadManager()
         for(let action of updateActions) {
             switch(action.actionType) {
                 case ActionType.CreateFile:
                     let createAction = action as UpdateActionCreateFile;
                     ipcRenderer.send('push-download-file', createAction.newFile);
-                    //downloadManager.pushFile(createAction.newFile);
                     break;
             }
         }
 
-        //downloadManager.start(downloadManagerSettings);
-        //return downloadManager;*/
         ipcRenderer.send('start-download', downloadManagerSettings);
- 
-        return;
-        
-
-        this.isDownloading = true;
-
-        try {
-            let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/GetInstallationFiles/' + ApplicationLibrary.getOperatingSystem() + '/' + applicationId);
-            let response = responsepromise.data;
-            
-            for(let file of response.files){
-                this.total += file.compressedSize;
-            }
-            
-            if(!fs.existsSync(installationPath)){
-                fs.mkdirSync(installationPath, { recursive: true })
-            }
-            let installation : InstallationInfo = {
-                applicationId: applicationId,
-                exeName: "",
-                path: installationPath,
-                version: response.version,
-                versionId: response.versionId
-            };
-            this.store.commit('addNewApplication', installation);
-            async.eachLimit(response.files, 20, ((file:any,callback:Function)  => {
-                var filePath = installationPath;
-                if(file.directoryPath !="")
-                filePath += file.directoryPath
-                if(!fs.existsSync(filePath)){
-                    fs.mkdirSync(filePath, { recursive: true });
-                }
-                
-                this.download(process.env.VUE_APP_API_LINK + '/files/' + applicationId + '/' + file.fileId, filePath + '/' + file.fileName, function(){
-                    console.log('Finished Downloading' + file.fileName);
-                    callback();
-                });
-            }))
-        }
-        catch(e) {
-            this.notification.error(e.message)
-            throw e;
-        }
-        finally {
-            this.isDownloading = false;
-        }
     }
 
     public download (url:string, dest:string, callbackFinish:Function){
@@ -289,7 +259,8 @@ class InstallationManager extends RendererServiceBase {
         // rimraf(installation.path, function(error: any) {
         //     console.error('Error: ', error);
         // });
-        rimraf.sync(installation.path);
+        ipcRenderer.send('delete-directory', installation.path);
+        //rimraf.sync(installation.path);
         // TODO: Do real unsintall here!
         this.store.commit('removeApplication', installation);
     }

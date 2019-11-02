@@ -1,39 +1,38 @@
 import FileInfo from '@/models/FileInfo';
-import {
-    ActionType,
-    UpdateAction,
-    UpdateActionCopyFile,
-    UpdateActionCreateFile,
-    UpdateActionDeleteFile,
-    UpdateActionUpdateFile
-} from '@/models/UpdateActions';
-
-import path from 'path';
-import fs, { realpath } from 'fs';
-import { rejects } from 'assert';
 import MainServiceBase from './MainServiceBase';
 import RendererNotificationManager from './RendererNotificationManager';
 import { Logger } from 'winston';
-const https = require('https')
-https.globalAgent.options.rejectUnauthorized = false;
-const util = require('util');
-const stream = require('stream');
-var streams = require('memory-streams');
 
+import path from 'path';
+import fs from 'fs';
+const util = require('util');
 const request = require('request')
 var progress = require('request-progress');
+const fsExtra = require('fs-extra');
 
-const electron = require("electron");
 
-
+interface DiffInfo {
+    diffId : string
+    diffSize : number
+}
 interface DownloadManagerSettings {
     concurrentDownloadCount : number;
     rootPath : string;
+    diffPath : string;
     applicationId : string;
+}
 
-    onError? : Function;
-    onFinish? : Function;
-    onProgress? : (progress: DownloadManagerOnProgressEvent) => void;
+interface DownloadManagerContext {
+    executionSettings?: DownloadManagerSettings;
+    totalFileSize: number;
+    totalFileCount: number;
+    downloadedSingleFileSize: number;
+    downloadedTotalFileSize: number;
+    downloadedFileCount: number;
+    isDownloading: boolean;
+    allFiles: (FileInfo | DiffInfo)[];
+
+    onProgress? : (err: any, progress: DownloadManagerOnProgressEvent) => void;
 }
 
 interface DownloadManagerOnProgressEvent {
@@ -41,168 +40,182 @@ interface DownloadManagerOnProgressEvent {
     totalFileSize: number;
     downloadedSize: number;
     downloadedCount: number;
+    isFinished: boolean;
 }
 
 class DownloadManager extends MainServiceBase {
-    private allFiles : FileInfo[];
-
     private lastProgressTrigger : number = 0;
 
-    private settings? : DownloadManagerSettings;
     private _intervalId : number = 0;
-    private _totalFileSize : number = 0;
-    private _downloadedFileSize : number = 0;
-    private _totalDownloadedSize : number = 0;
-    private _downloadedFileCount : number = 0;
-    private _isDownloading : boolean = false;
+    private context : DownloadManagerContext;
 
     constructor(notificationManager : RendererNotificationManager, logger : Logger) {
         super(notificationManager, logger);
-        this.allFiles = [];
+        this.context = DownloadManager.createEmptyContext();
     }
 
-    public get totalFileSize() : number {
-        return this._totalFileSize;
+    reset() {
+        this.context = DownloadManager.createEmptyContext();
     }
-    public get totalFileCount() : number {
-        return this.allFiles.length;
-    }
-    public get totalDownloadedFileSize() : number {
-        return this._totalDownloadedSize;
-    }
-    public get downloadedFileCount() : number {
-        return this._downloadedFileCount;
-    }
-    public get downloadedSize() : number {
-        return this._downloadedFileSize;
-    }
-    public get isDownloading() : boolean {
-        return this._isDownloading;
-    }
-    
 
     async pushFile(fileInfo : FileInfo) {
-        this.allFiles.push(fileInfo);
-        this._totalFileSize += fileInfo.compressedSize;
-    }
-
-    public start(settings : DownloadManagerSettings) {
-        this.settings = settings;
-        this.logger.debug("Starting download!")
-        if (this.settings.onProgress) {
-            //this._intervalId = setInterval(this.doProgressUpdate, 250, this);
+        this.logger.debug("Pushing file", fileInfo)
+        if (this.context) {
+            this.context.allFiles.push(fileInfo);
+            this.context.totalFileSize += fileInfo.compressedSize;
+            this.context.totalFileCount++;
         }
-        this._isDownloading = true;
-        setTimeout(this.download, 1, this);
-        /*
-        this.download().then(() => {
-            clearInterval(this._intervalId);
-            this.doProgressUpdate(this);
-            this.logger.debug("Download ended!")
-            this._isDownloading = false;
-        })*/
     }
-    public pause() {
+    async pushDiff(diffInfo : DiffInfo) {
+        if (this.context) {
+            this.context.allFiles.push(diffInfo);
+            this.context.totalFileSize += diffInfo.diffSize;
+            this.context.totalFileCount++;
+        }
+    }
 
+    public start(settings: DownloadManagerSettings, onProgress? : (progress: DownloadManagerOnProgressEvent) => void) {
+        this.context.executionSettings = settings;
+        this.context.onProgress = onProgress;
+
+        this.logger.info("Starting download!")
+        this.context.isDownloading = true;
+        
+        this.download().then(() => {
+            this.sendProgressUpdate();
+            this.context.isDownloading = false;
+            this.logger.info("Download ended!")
+        }).catch(err => {
+            this.logger.error(err)
+        })
     }
     public stop() {
-
+        this.reset();
+        throw new Error("Not implemented");
     }
 
-    private doProgressUpdate($this : DownloadManager) {
-        $this.logger.debug("Download progress interval!")
-        if ($this._isDownloading && $this.settings) {
-            if ($this.settings.onProgress) {
+    
+    private sendProgressUpdate() {
+        this.logger.debug("Download progress interval!")
+        if (this.context.isDownloading) {
+            if (this.context.onProgress) {
                 let progress : DownloadManagerOnProgressEvent = {
-                    downloadedSize: $this.downloadedSize + $this.totalDownloadedFileSize,
-                    downloadedCount: $this.downloadedFileCount,
-                    totalFileSize: $this.totalFileSize,
-                    totalFileCount: $this.totalFileCount,
+                    downloadedSize: this.context.downloadedTotalFileSize + this.context.downloadedSingleFileSize,
+                    downloadedCount: this.context.downloadedFileCount,
+                    totalFileSize: this.context.totalFileSize,
+                    totalFileCount: this.context.totalFileCount,
+                    isFinished: !this.context.isDownloading
                 };
-                $this.settings.onProgress(progress);
+                this.context.onProgress(null, progress);
             }
+        }
+    }
+    private sendErrorUpdate(err: any) {
+        if (this.context.onProgress) {
+            let progress : DownloadManagerOnProgressEvent = {
+                downloadedSize: this.context.downloadedTotalFileSize + this.context.downloadedSingleFileSize,
+                downloadedCount: this.context.downloadedFileCount,
+                totalFileSize: this.context.totalFileSize,
+                totalFileCount: this.context.totalFileCount,
+                isFinished: !this.context.isDownloading
+            };
+            this.context.onProgress(err, progress);
         }
     }
 
 
-    private async download(self : DownloadManager) {
+    private static isFile(file: FileInfo | DiffInfo): file is FileInfo {
+        return (file as FileInfo).fileId !== undefined;
+    }
+
+    private async download() {
         try {
-            for(let i in self.allFiles) {
-                let file = self.allFiles[i];
-                await self.downloadFile(file);
+            this.logger.info(util.format("Will download %s files", this.context.allFiles.length))
+            for(let i in this.context.allFiles) {
+                let file = this.context.allFiles[i] as FileInfo;
+                await this.downloadFile(file);
             }
         }
-        catch(e) {
-            self.logger.error(e);
-            console.error(e)
+        catch(err) {
+            this.logger.error(err);
+            this.sendErrorUpdate(err);
         }
     }
 
-
-
-    private downloadFile(file : FileInfo) {
+    private async downloadFile(file : FileInfo | DiffInfo) {
         this.logger.debug("New file to download!", file)
+        if(this.context.executionSettings) {
+            let url : string;
+            let directoryPath : string;
+            let filePath : string;
+            let size : number;
 
-        if (this.settings) {
-
-            let url = process.env.VUE_APP_API_LINK + '/files/' + this.settings.applicationId + '/' + file.fileId
-            let directoryPath = path.join(this.settings.rootPath, file.directoryPath);
-            let filePath = path.join(directoryPath, file.fileName);
+            if (DownloadManager.isFile(file)) {
+                url = process.env.VUE_APP_API_LINK + '/files/' + this.context.executionSettings.applicationId + '/' + file.fileId + '/download'
+                directoryPath = path.join(this.context.executionSettings.rootPath, file.directoryPath);
+                filePath = path.join(directoryPath, file.fileName);
+                size = file.compressedSize
+            }
+            else {
+                url = process.env.VUE_APP_API_LINK + '/files/diff/' + this.context.executionSettings.applicationId + '/' + file.diffId
+                directoryPath = this.context.executionSettings.diffPath;
+                filePath = path.join(directoryPath, file.diffId);
+                size = file.diffSize
+            }
 
             if(!fs.existsSync(directoryPath)){
                 fs.mkdirSync(directoryPath, { recursive: true });
             }
 
-            let $this = this;
-            this.logger.debug("Requesting new file download")
-
-        //return new Promise( (resolve, reject) => {
-            //progress(
-                //request(url)
-                let s = fs.createReadStream("D:\\Projects\\Evopeons\\Temp\\f455f96e-73db-4c1b-83b0-e2e592ee1748\\Packages\\3275efa3-e245-4e56-9af4-8fa5898c3207\\" + file.directoryPath + "\\" + file.fileName)
-                s.on("error", function(err) { console.error(err); /*reject(err);*/ })
-            //)
-            //.on('progress', (state:any) => { console.log(state) })
-            .on('data', (chunk : Buffer) => { this._downloadedFileSize += chunk.length; console.log(this._downloadedFileSize) })
-            //.pipe(fs.createWriteStream(filePath, { autoClose: true }).on("error", function(err) { console.error(err); rejects(err); }))
-            //.on('end', function() { w.close(); resolve(); })
-            //.pipe(process.stdout)
-            //.on('close', resolve )
-            //.on('finish', resolve)
-            //.on('end', () => { this._downloadedFileCount++; console.log("end", this._downloadedFileCount)})
-            .on('end', () => { s.close(); this._downloadedFileCount++; console.log("end", this._downloadedFileCount)})
-        //});
-        //this._downloadedFileCount++;
-        //this._totalDownloadedSize += file.compressedSize;
-        
+            this.logger.info(util.format("Downloading file: '%s'", filePath));
+            return new Promise( (resolve, reject) => {
+                let strm = progress(
+                    request(url, { autoClose: true })
+                    .on("error", function(err : any) { reject(err); }),
+                    { throttle: 250 }
+                )
+                strm
+                .on('progress', (state : any) => {
+                    if (!this.context.isDownloading) {
+                        // Test here!
+                        strm.close();
+                    }
+                    this.context.downloadedSingleFileSize = state.size.transferred;
+                    this.sendProgressUpdate();
+                })
+                .pipe(
+                    fs.createWriteStream(filePath, { autoClose: true })
+                    .on("error", function(err) { reject(err); })
+                )
+                .on('close', () => {
+                    this.context.downloadedFileCount++;
+                    this.context.downloadedTotalFileSize = size;
+                    this.context.downloadedSingleFileSize = 0;
+                    resolve();
+                })
+                .on('error', (err:any) => {
+                    reject(err);
+                })
+            });
         }
-            /*
-            progress(req, {
-                throttle: 250
-            })
-            .on('progress', (state:any) => {
-                console.log($this);
-                $this.logger.info("File downlaod progressed", state)
-                $this._downloadedFileSize = state.size.transferred;
-            })
-            .on('error', (err:any) => {
-                $this.logger.error(err)
-                reject(err);
-            })
-            .on('close', () => {
-                $this.logger.info("File download completed", file);
-                $this._downloadedFileCount++;
-                $this._totalDownloadedSize += file.compressedSize;
-                $this._downloadedFileSize = 0;
-                resolve();
-            })
-            .pipe(fs.createWriteStream(filePath, {
-                    autoClose: true
-                })
-                .on('error', function (err) {
-                    console.log(err);
-                })
-            )*/
+    }
+
+    private static createEmptyContext(settings?: DownloadManagerSettings) : DownloadManagerContext {
+        let context : DownloadManagerContext = {
+            isDownloading: false,
+            downloadedFileCount: 0,
+            downloadedSingleFileSize: 0,
+            downloadedTotalFileSize: 0,
+            totalFileSize: 0,
+            totalFileCount: 0,
+            allFiles: [],
+            executionSettings: settings
+        }
+        return context;
+    }
+
+    public static async deleteDirectory(directoryPath: string) {
+        return fsExtra.remove(directoryPath);
     }
 }
 

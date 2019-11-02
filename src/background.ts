@@ -7,7 +7,7 @@ import {
     createProtocol,
     installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
-import { DownloadManager, DownloadManagerSettings } from './services/DownloadManager'
+import { DownloadManager, DownloadManagerSettings, DownloadManagerOnProgressEvent } from './services/DownloadManager'
 import FileInfo from './models/FileInfo'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -107,12 +107,22 @@ process.on('uncaughtException', function(err) {
 
 function initializeDownloadManager() {
     downloadManager = new DownloadManager(mainNotificationManager, logger);
-
-    ipcMain.on('start-download', (event, settings : DownloadManagerSettings) => {
-        console.log("starting download", settings);
-        downloadManager.start(settings);
+    
+    ipcMain.on('start-download', (event, settings: DownloadManagerSettings) => {
+        downloadManager.start(settings, (progress: DownloadManagerOnProgressEvent) => {
+            event.sender.send("download-progress", progress);
+        });
     });
-    ipcMain.on('push-download-file', (event, file : FileInfo) => {
+    ipcMain.on('push-download-file', (event, file: FileInfo) => {
         downloadManager.pushFile(file);
+    });
+    ipcMain.on('delete-directory', async (event, directoryPath: string) => {
+        try {
+            await downloadManager.deleteDirectory(directoryPath)
+            event.sender.send("delete-directory-finished", null)
+        }
+        catch(err) {
+            event.sender.send("delete-directory-finished", err)
+        }
     });
 }
