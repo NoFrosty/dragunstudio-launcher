@@ -86,7 +86,7 @@ class InstallationManager extends RendererServiceBase {
             }
         }
         catch(e) {
-            this.notifier.Error(e.message)
+            this.notification.error(e.message)
             throw e;
         }
         finally {
@@ -190,7 +190,7 @@ class InstallationManager extends RendererServiceBase {
             }))
         }
         catch(e) {
-            this.notifier.Error(e.message)
+            this.notification.error(e.message)
             throw e;
         }
         finally {
