@@ -1,7 +1,7 @@
 'use strict'
 
-import logger from '@/services/logger'
-import mainNotificationManager from '@/services/MainNotificationManager'
+import logger from './services/logger'
+import mainNotificationManager from './services/MainNotificationManager'
 import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import {
     createProtocol,

@@ -16,7 +16,7 @@ abstract class RendererServiceBase implements ServiceBase {
     // So we are temporarily not injecting the services but using Service Locator anti pattern.
     constructor() {
         this._store = services.resolve<Store<ApplicationState>>('store');
-        this._notificationManager = services.resolve<RendererNotificationManager>('rendererNotificationManager');
+        this._notificationManager = services.resolve<RendererNotificationManager>('notificationManager');
         this._logger = services.resolve<Logger>('logger');
     }
 
