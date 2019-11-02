@@ -9,6 +9,7 @@ const util = require('util');
 const request = require('request')
 var progress = require('request-progress');
 const fsExtra = require('fs-extra');
+require('https').globalAgent.options.rejectUnauthorized = false;
 
 
 interface DiffInfo {
@@ -32,10 +33,11 @@ interface DownloadManagerContext {
     isDownloading: boolean;
     allFiles: (FileInfo | DiffInfo)[];
 
-    onProgress? : (err: any, progress: DownloadManagerOnProgressEvent) => void;
+    onProgress? : (progress: DownloadManagerOnProgressEvent) => void;
 }
 
 interface DownloadManagerOnProgressEvent {
+    err: any;
     totalFileCount: number;
     totalFileSize: number;
     downloadedSize: number;
@@ -100,26 +102,28 @@ class DownloadManager extends MainServiceBase {
         if (this.context.isDownloading) {
             if (this.context.onProgress) {
                 let progress : DownloadManagerOnProgressEvent = {
+                    err: null,
                     downloadedSize: this.context.downloadedTotalFileSize + this.context.downloadedSingleFileSize,
                     downloadedCount: this.context.downloadedFileCount,
                     totalFileSize: this.context.totalFileSize,
                     totalFileCount: this.context.totalFileCount,
                     isFinished: !this.context.isDownloading
                 };
-                this.context.onProgress(null, progress);
+                this.context.onProgress(progress);
             }
         }
     }
     private sendErrorUpdate(err: any) {
         if (this.context.onProgress) {
             let progress : DownloadManagerOnProgressEvent = {
+                err: err,
                 downloadedSize: this.context.downloadedTotalFileSize + this.context.downloadedSingleFileSize,
                 downloadedCount: this.context.downloadedFileCount,
                 totalFileSize: this.context.totalFileSize,
                 totalFileCount: this.context.totalFileCount,
                 isFinished: !this.context.isDownloading
             };
-            this.context.onProgress(err, progress);
+            this.context.onProgress(progress);
         }
     }
 
@@ -176,10 +180,6 @@ class DownloadManager extends MainServiceBase {
                 )
                 strm
                 .on('progress', (state : any) => {
-                    if (!this.context.isDownloading) {
-                        // Test here!
-                        strm.close();
-                    }
                     this.context.downloadedSingleFileSize = state.size.transferred;
                     this.sendProgressUpdate();
                 })
