@@ -32,6 +32,7 @@ interface UpdateActionUpdateFile extends UpdateAction {
     oldFile: FileInfo
     newFile: FileInfo
     diffId: string
+    diffSize: number
 }
 
 export {
