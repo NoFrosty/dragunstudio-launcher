@@ -130,9 +130,12 @@
         },
         methods: {
             onProgress(progress) {
-                this.percentage = progress.downloadedSize / progress.totalFileSize * 100;
-                this.totalReceived = humanize.filesize(progress.downloadedSize);
-                this.totalToReceive = humanize.filesize(progress.totalFileSize);
+                if(progress){
+                    this.percentage = progress.downloadedSize / progress.totalFileSize * 100;
+                    this.totalReceived = humanize.filesize(progress.downloadedSize);
+                    this.totalToReceive = humanize.filesize(progress.totalFileSize);
+
+                }
             },
             onStartInstall(installData) {
                 installationManager.installApplicationMultiThread(
