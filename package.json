@@ -20,7 +20,7 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
   },
-  "main": "main/background.js",
+  "main": "background.js",
   "dependencies": {
     "awilix": "^4.2.2",
     "axios": "^0.19.0",
