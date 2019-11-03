@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import axios from 'axios'
 import Buefy from 'buefy'
-import AsyncComputed from 'vue-async-computed'
 import App from './App.vue'
 import router from './router'
 import store from './store/store'
 import { asValue, asClass } from 'awilix'
 import services from '@/services/services'
+const AsyncComputed = require('vue-async-computed')
 
 
 Vue.config.productionTip = false
