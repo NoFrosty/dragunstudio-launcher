@@ -6,7 +6,7 @@ import router from './router'
 import store from './store/store'
 import { asValue, asClass } from 'awilix'
 import services from '@/services/services'
-const AsyncComputed = require('vue-async-computed')
+const AsyncComputed = require('vue-async-computed').default
 
 
 Vue.config.productionTip = false
