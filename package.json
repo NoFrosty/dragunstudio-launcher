@@ -41,7 +41,8 @@
     "vuex": "^3.1.1",
     "vuex-electron": "^1.0.3",
     "web-request": "^1.0.7",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "bspatch": "src/packages/bspatch"
   },
   "devDependencies": {
     "@types/node": "^12.12.5",

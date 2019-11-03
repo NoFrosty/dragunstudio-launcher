@@ -6,8 +6,14 @@ import router from './router'
 import store from './store/store'
 import { asValue, asClass } from 'awilix'
 import services from '@/services/services'
+const bspatch = require('bspatch');
 const AsyncComputed = require('vue-async-computed').default
 
+let oldFile = "C:\\Users\\Calvi\\Desktop\\Test\\TestFile\\old.txt";
+let diff = "C:\\Users\\Calvi\\Desktop\\Test\\TestFile\\diff";
+let output = "C:\\Users\\Calvi\\Desktop\\Test\\TestFile\\out.txt";
+
+bspatch.patchSync(oldFile, output, diff); // Sync
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
