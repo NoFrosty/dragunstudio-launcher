@@ -9,6 +9,7 @@ import {
 } from 'vue-cli-plugin-electron-builder/lib'
 import { DownloadManager, DownloadManagerSettings, DownloadManagerOnProgressEvent } from './services/DownloadManager'
 import FileInfo from './models/FileInfo'
+import DiffInfo from './models/DiffInfo'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -116,6 +117,9 @@ function initializeDownloadManager() {
     });
     ipcMain.on('push-download-file', (event, file: FileInfo) => {
         downloadManager.pushFile(file);
+    });
+    ipcMain.on('push-download-diff', (event, diff: DiffInfo) => {
+        downloadManager.pushDiff(diff);
     });
     ipcMain.on('delete-directory', async (event, directoryPath: string) => {
         try {

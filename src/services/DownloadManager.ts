@@ -1,4 +1,5 @@
 import FileInfo from '@/models/FileInfo';
+import DiffInfo from '@/models/DiffInfo';
 import MainServiceBase from './MainServiceBase';
 import RendererNotificationManager from './RendererNotificationManager';
 import { Logger } from 'winston';
@@ -12,10 +13,6 @@ const fsExtra = require('fs-extra');
 require('https').globalAgent.options.rejectUnauthorized = false;
 
 
-interface DiffInfo {
-    diffId : string
-    diffSize : number
-}
 interface DownloadManagerSettings {
     concurrentDownloadCount : number;
     rootPath : string;

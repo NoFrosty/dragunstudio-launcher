@@ -6,9 +6,10 @@ import {OSType} from '@/models/OSType';
 import { VersionInfo } from '@/models/VersionInfo';
 import ApplicationLibrary from './ApplicationLibrary';
 import { DownloadManagerSettings, DownloadManagerOnProgressEvent } from './DownloadManager';
-import { UpdateAction, UpdateActionCreateFile } from '@/models/UpdateActions';
+import { UpdateAction, UpdateActionCreateFile, UpdateActionUpdateFile } from '@/models/UpdateActions';
 import { create } from 'domain';
 import RendererServiceBase from './RendererServiceBase';
+import DiffInfo from '@/models/DiffInfo';
 
 const format = require('string-format');
 var async   = require('async');
@@ -43,7 +44,13 @@ class InstallationManager extends RendererServiceBase {
     private registerIpcMainDownloadUpdate() {
         ipcRenderer.on('download-progress', (event: any, progress: DownloadManagerOnProgressEvent) => {
             this.onProgress(progress);
+            if(progress.isFinished)
+                this.applyActions();
         });
+    }
+
+    private applyActions(){
+        console.log("Test");
     }
 
 
@@ -98,7 +105,12 @@ class InstallationManager extends RendererServiceBase {
                     ipcRenderer.send('push-download-file', createAction.newFile);
                     break;
                 case ActionType.UpdateFile:
-                    // TODO: FINISH TIS YOU LITTLE PIECE OF SHIT
+                    let updateAction = action as UpdateActionUpdateFile;
+                    let diff :DiffInfo = {
+                        diffId: updateAction.diffId,
+                        diffSize: updateAction.diffSize
+                    }
+                    ipcRenderer.send('push-download-diff', diff);
                     break;
             }
         }
