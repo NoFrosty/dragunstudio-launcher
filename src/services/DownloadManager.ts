@@ -29,6 +29,7 @@ interface DownloadManagerContext {
     downloadedFileCount: number;
     isDownloading: boolean;
     allFiles: (FileInfo | DiffInfo)[];
+    downloadedFiles: (FileInfo | DiffInfo)[];
 
     onProgress? : (progress: DownloadManagerOnProgressEvent) => void;
     onStop? : (stop: DownloadManagerOnStopEvent) => void;
@@ -43,6 +44,7 @@ interface DownloadManagerOnProgressEvent {
 }
 interface DownloadManagerOnStopEvent extends DownloadManagerOnProgressEvent {
     allFiles: (FileInfo | DiffInfo)[];
+    downloadedFiles: (FileInfo | DiffInfo)[];
 }
 
 
@@ -100,7 +102,8 @@ class DownloadManager extends MainServiceBase {
                 downloadedCount: context.downloadedFileCount,
                 totalFileSize: context.totalFileSize,
                 totalFileCount: context.totalFileCount,
-                allFiles: context.allFiles
+                allFiles: context.allFiles,
+                downloadedFiles: context.downloadedFiles
             };
             context.onStop(progress);
         }
@@ -114,7 +117,8 @@ class DownloadManager extends MainServiceBase {
                 downloadedCount: context.downloadedFileCount,
                 totalFileSize: context.totalFileSize,
                 totalFileCount: context.totalFileCount,
-                allFiles: context.allFiles
+                allFiles: context.allFiles,
+                downloadedFiles: context.downloadedFiles
             };
             context.onStop(progress);
         }
@@ -184,6 +188,7 @@ class DownloadManager extends MainServiceBase {
                     context.downloadedFileCount++;
                     context.downloadedTotalFileSize += size;
                     context.downloadedSingleFileSize = 0;
+                    context.downloadedFiles.push(file);
                     resolve();
                 })
                 .on('error', (err:any) => {
@@ -202,7 +207,8 @@ class DownloadManager extends MainServiceBase {
             totalFileSize: 0,
             totalFileCount: 0,
             allFiles: allFiles,
-            executionSettings: settings
+            executionSettings: settings,
+            downloadedFiles: []
         }
         return context;
     }
