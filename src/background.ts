@@ -7,9 +7,10 @@ import {
     createProtocol,
     installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
-import { DownloadManager, DownloadManagerSettings, DownloadManagerOnProgressEvent } from './services/DownloadManager'
+import { DownloadManager, DownloadManagerContext, DownloadManagerSettings, DownloadManagerOnProgressEvent, DownloadManagerOnStopEvent } from './services/DownloadManager'
 import FileInfo from './models/FileInfo'
 import DiffInfo from './models/DiffInfo'
+import { settings } from 'cluster'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -110,16 +111,17 @@ process.on('uncaughtException', function(err) {
 function initializeDownloadManager() {
     downloadManager = new DownloadManager(mainNotificationManager, logger);
     
-    ipcMain.on('start-download', (event, settings: DownloadManagerSettings) => {
-        downloadManager.start(settings, (progress: DownloadManagerOnProgressEvent) => {
-            event.sender.send("download-progress", progress);
-        });
-    });
-    ipcMain.on('push-download-file', (event, file: FileInfo) => {
-        downloadManager.pushFile(file);
-    });
-    ipcMain.on('push-download-diff', (event, diff: DiffInfo) => {
-        downloadManager.pushDiff(diff);
+    ipcMain.on('start-download', (event, payload: { files: (FileInfo | DiffInfo)[], settings: DownloadManagerSettings }) => {
+        downloadManager.start(
+            payload.files,
+            payload.settings,
+            (progress: DownloadManagerOnProgressEvent) => {
+                event.sender.send("download-progress", progress);
+            },
+            (stop: DownloadManagerOnStopEvent) => {
+                event.sender.send("download-stop", stop);
+            },
+        );
     });
     ipcMain.on('delete-directory', async (event, directoryPath: string) => {
         try {
