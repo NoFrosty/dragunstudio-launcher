@@ -30,8 +30,8 @@ interface DownloadManagerContext {
     isDownloading: boolean;
     allFiles: (FileInfo | DiffInfo)[];
 
-    onProgress : (progress: DownloadManagerOnProgressEvent) => void;
-    onStop : (stop: DownloadManagerOnStopEvent) => void;
+    onProgress? : (progress: DownloadManagerOnProgressEvent) => void;
+    onStop? : (stop: DownloadManagerOnStopEvent) => void;
 }
 
 interface DownloadManagerOnProgressEvent {
