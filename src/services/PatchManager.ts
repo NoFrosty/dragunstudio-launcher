@@ -1,6 +1,7 @@
+const bspatch = require('bspatch');
 export default class PatchManager {
-
-    public async Patch(oldPath:string, newPath:string, diffArchivedPath:string){
-        
+    
+    public async Patch(oldFilePath:string, newFilePath:string, diffFilePath:string){
+        bspatch.patchSync(oldFilePath, newFilePath, diffFilePath);
     }
 }
