@@ -21,7 +21,7 @@ interface DownloadManagerSettings {
 }
 
 interface DownloadManagerContext {
-    executionSettings?: DownloadManagerSettings;
+    executionSettings: DownloadManagerSettings;
     totalFileSize: number;
     totalFileCount: number;
     downloadedSingleFileSize: number;
@@ -30,7 +30,8 @@ interface DownloadManagerContext {
     isDownloading: boolean;
     allFiles: (FileInfo | DiffInfo)[];
 
-    onProgress? : (progress: DownloadManagerOnProgressEvent) => void;
+    onProgress : (progress: DownloadManagerOnProgressEvent) => void;
+    onStop : (stop: DownloadManagerOnStopEvent) => void;
 }
 
 interface DownloadManagerOnProgressEvent {
@@ -39,88 +40,83 @@ interface DownloadManagerOnProgressEvent {
     totalFileSize: number;
     downloadedSize: number;
     downloadedCount: number;
-    isFinished: boolean;
+}
+interface DownloadManagerOnStopEvent extends DownloadManagerOnProgressEvent {
+    allFiles: (FileInfo | DiffInfo)[];
 }
 
+
 class DownloadManager extends MainServiceBase {
-    private lastProgressTrigger : number = 0;
-
-    private _intervalId : number = 0;
-    private context : DownloadManagerContext;
-
     constructor(notificationManager : RendererNotificationManager, logger : Logger) {
         super(notificationManager, logger);
-        this.context = DownloadManager.createEmptyContext();
     }
 
-    reset() {
-        this.context = DownloadManager.createEmptyContext();
-    }
+    public start(
+        allFiles: (FileInfo | DiffInfo)[],
+        settings : DownloadManagerSettings,
+        onProgress: (progress: DownloadManagerOnProgressEvent) => void,
+        onStop: (progress: DownloadManagerOnStopEvent) => void) {
 
-    async pushFile(fileInfo : FileInfo) {
-        this.logger.debug("Pushing file", fileInfo)
-        if (this.context) {
-            this.context.allFiles.push(fileInfo);
-            this.context.totalFileSize += fileInfo.compressedSize;
-            this.context.totalFileCount++;
-        }
-    }
-    async pushDiff(diffInfo : DiffInfo) {
-        if (this.context) {
-            this.context.allFiles.push(diffInfo);
-            this.context.totalFileSize += diffInfo.diffSize;
-            this.context.totalFileCount++;
-        }
-    }
-
-    public start(settings: DownloadManagerSettings, onProgress? : (progress: DownloadManagerOnProgressEvent) => void) {
-        this.context.executionSettings = settings;
-        this.context.onProgress = onProgress;
+        let context = DownloadManager.createEmptyContext(allFiles, settings);
+        context.onProgress = onProgress;
+        context.onStop = onStop;
 
         this.logger.info("Starting download!")
-        this.context.isDownloading = true;
+        context.isDownloading = true;
         
-        this.download().then(() => {
-            this.sendProgressUpdate();
-            this.context.isDownloading = false;
+        this.download(context).then(() => {
+            this.sendStopEvent(context);
+            context.isDownloading = false;
             this.logger.info("Download ended!")
         }).catch(err => {
             this.logger.error(err)
         })
     }
     public stop() {
-        this.reset();
         throw new Error("Not implemented");
     }
-
     
-    private sendProgressUpdate() {
+    private sendProgressUpdate(context: DownloadManagerContext) {
         this.logger.debug("Download progress interval!")
-        if (this.context.isDownloading) {
-            if (this.context.onProgress) {
+        if (context.isDownloading) {
+            if (context.onProgress) {
                 let progress : DownloadManagerOnProgressEvent = {
                     err: null,
-                    downloadedSize: this.context.downloadedTotalFileSize + this.context.downloadedSingleFileSize,
-                    downloadedCount: this.context.downloadedFileCount,
-                    totalFileSize: this.context.totalFileSize,
-                    totalFileCount: this.context.totalFileCount,
-                    isFinished: !this.context.isDownloading
+                    downloadedSize: context.downloadedTotalFileSize + context.downloadedSingleFileSize,
+                    downloadedCount: context.downloadedFileCount,
+                    totalFileSize: context.totalFileSize,
+                    totalFileCount: context.totalFileCount
                 };
-                this.context.onProgress(progress);
+                context.onProgress(progress);
             }
         }
     }
-    private sendErrorUpdate(err: any) {
-        if (this.context.onProgress) {
-            let progress : DownloadManagerOnProgressEvent = {
-                err: err,
-                downloadedSize: this.context.downloadedTotalFileSize + this.context.downloadedSingleFileSize,
-                downloadedCount: this.context.downloadedFileCount,
-                totalFileSize: this.context.totalFileSize,
-                totalFileCount: this.context.totalFileCount,
-                isFinished: !this.context.isDownloading
+    private sendStopEvent(context: DownloadManagerContext) {
+        this.logger.debug("Download progress (stop)!")
+        if (context.onStop) {
+            let progress : DownloadManagerOnStopEvent = {
+                err: null,
+                downloadedSize: context.downloadedTotalFileSize + context.downloadedSingleFileSize,
+                downloadedCount: context.downloadedFileCount,
+                totalFileSize: context.totalFileSize,
+                totalFileCount: context.totalFileCount,
+                allFiles: context.allFiles
             };
-            this.context.onProgress(progress);
+            context.onStop(progress);
+        }
+    }
+
+    private sendErrorUpdate(context: DownloadManagerContext, err: any) {
+        if (context.onStop) {
+            let progress : DownloadManagerOnStopEvent = {
+                err: err,
+                downloadedSize: context.downloadedTotalFileSize + context.downloadedSingleFileSize,
+                downloadedCount: context.downloadedFileCount,
+                totalFileSize: context.totalFileSize,
+                totalFileCount: context.totalFileCount,
+                allFiles: context.allFiles
+            };
+            context.onStop(progress);
         }
     }
 
@@ -129,37 +125,37 @@ class DownloadManager extends MainServiceBase {
         return (file as FileInfo).fileId !== undefined;
     }
 
-    private async download() {
+    private async download(context: DownloadManagerContext) {
         try {
-            this.logger.info(util.format("Will download %s files", this.context.allFiles.length))
-            for(let i in this.context.allFiles) {
-                let file = this.context.allFiles[i] as FileInfo;
-                await this.downloadFile(file);
+            this.logger.info(util.format("Will download %s files", context.allFiles.length))
+            for(let i in context.allFiles) {
+                let file = context.allFiles[i] as FileInfo;
+                await this.downloadFile(context, file);
             }
         }
         catch(err) {
             this.logger.error(err);
-            this.sendErrorUpdate(err);
+            this.sendErrorUpdate(context, err);
         }
     }
 
-    private async downloadFile(file : FileInfo | DiffInfo) {
+    private async downloadFile(context: DownloadManagerContext, file : FileInfo | DiffInfo) {
         this.logger.debug("New file to download!", file)
-        if(this.context.executionSettings) {
+        if(context.executionSettings) {
             let url : string;
             let directoryPath : string;
             let filePath : string;
             let size : number;
 
             if (DownloadManager.isFile(file)) {
-                url = process.env.VUE_APP_API_LINK + '/files/' + this.context.executionSettings.applicationId + '/' + file.fileId + '/download'
-                directoryPath = path.join(this.context.executionSettings.rootPath, file.directoryPath);
+                url = process.env.VUE_APP_API_LINK + '/files/' + context.executionSettings.applicationId + '/' + file.fileId + '/download'
+                directoryPath = path.join(context.executionSettings.rootPath, file.directoryPath);
                 filePath = path.join(directoryPath, file.fileName);
                 size = file.compressedSize
             }
             else {
-                url = process.env.VUE_APP_API_LINK + '/files/diff/' + this.context.executionSettings.applicationId + '/' + file.diffId
-                directoryPath = this.context.executionSettings.diffPath;
+                url = process.env.VUE_APP_API_LINK + '/files/diff/' + context.executionSettings.applicationId + '/' + file.diffId
+                directoryPath = context.executionSettings.diffPath;
                 filePath = path.join(directoryPath, file.diffId);
                 size = file.diffSize
             }
@@ -177,17 +173,17 @@ class DownloadManager extends MainServiceBase {
                 )
                 strm
                 .on('progress', (state : any) => {
-                    this.context.downloadedSingleFileSize = state.size.transferred;
-                    this.sendProgressUpdate();
+                    context.downloadedSingleFileSize = state.size.transferred;
+                    this.sendProgressUpdate(context);
                 })
                 .pipe(
                     fs.createWriteStream(filePath, { autoClose: true })
                     .on("error", function(err:any) { reject(err); })
                 )
                 .on('close', () => {
-                    this.context.downloadedFileCount++;
-                    this.context.downloadedTotalFileSize += size;
-                    this.context.downloadedSingleFileSize = 0;
+                    context.downloadedFileCount++;
+                    context.downloadedTotalFileSize += size;
+                    context.downloadedSingleFileSize = 0;
                     resolve();
                 })
                 .on('error', (err:any) => {
@@ -197,7 +193,7 @@ class DownloadManager extends MainServiceBase {
         }
     }
 
-    private static createEmptyContext(settings?: DownloadManagerSettings) : DownloadManagerContext {
+    private static createEmptyContext(allFiles: (FileInfo | DiffInfo)[], settings: DownloadManagerSettings) : DownloadManagerContext {
         let context : DownloadManagerContext = {
             isDownloading: false,
             downloadedFileCount: 0,
@@ -205,7 +201,7 @@ class DownloadManager extends MainServiceBase {
             downloadedTotalFileSize: 0,
             totalFileSize: 0,
             totalFileCount: 0,
-            allFiles: [],
+            allFiles: allFiles,
             executionSettings: settings
         }
         return context;
@@ -219,5 +215,7 @@ class DownloadManager extends MainServiceBase {
 export {
     DownloadManager,
     DownloadManagerSettings,
-    DownloadManagerOnProgressEvent
+    DownloadManagerOnProgressEvent,
+    DownloadManagerOnStopEvent,
+    DownloadManagerContext
 }

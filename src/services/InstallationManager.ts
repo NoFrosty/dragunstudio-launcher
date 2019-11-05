@@ -5,11 +5,12 @@ import fs from 'fs';
 import {OSType} from '@/models/OSType';
 import { VersionInfo } from '@/models/VersionInfo';
 import ApplicationLibrary from './ApplicationLibrary';
-import { DownloadManagerSettings, DownloadManagerOnProgressEvent } from './DownloadManager';
+import { DownloadManagerSettings, DownloadManagerOnProgressEvent, DownloadManagerOnStopEvent } from './DownloadManager';
 import { UpdateAction, UpdateActionCreateFile, UpdateActionUpdateFile } from '@/models/UpdateActions';
 import { create } from 'domain';
 import RendererServiceBase from './RendererServiceBase';
 import DiffInfo from '@/models/DiffInfo';
+import FileInfo from '@/models/FileInfo';
 
 const format = require('string-format');
 var async   = require('async');
@@ -44,8 +45,10 @@ class InstallationManager extends RendererServiceBase {
     private registerIpcMainDownloadUpdate() {
         ipcRenderer.on('download-progress', (event: any, progress: DownloadManagerOnProgressEvent) => {
             this.onProgress(progress);
-            if(progress.isFinished)
-                this.applyActions();
+        });
+        ipcRenderer.on('download-stop', (event: any, progress: DownloadManagerOnStopEvent) => {
+            this.onProgress(progress);
+            // this.applyActions();
         });
     }
 
@@ -98,11 +101,12 @@ class InstallationManager extends RendererServiceBase {
             diffPath: installationPath + "/diff_temp"
         }
 
+        let allFiles: (FileInfo | DiffInfo)[] = [];
         for(let action of updateActions) {
             switch(action.actionType) {
                 case ActionType.CreateFile:
                     let createAction = action as UpdateActionCreateFile;
-                    ipcRenderer.send('push-download-file', createAction.newFile);
+                    allFiles.push(createAction.newFile);
                     break;
                 case ActionType.UpdateFile:
                     let updateAction = action as UpdateActionUpdateFile;
@@ -110,12 +114,12 @@ class InstallationManager extends RendererServiceBase {
                         diffId: updateAction.diffId,
                         diffSize: updateAction.diffSize
                     }
-                    ipcRenderer.send('push-download-diff', diff);
+                    allFiles.push(diff);
                     break;
             }
         }
 
-        ipcRenderer.send('start-download', downloadManagerSettings);
+        ipcRenderer.send('start-download', { allFiles: allFiles, settings: downloadManagerSettings });
     }
 
     public async checkUpdateAvailable(applicationId : string){
