@@ -45,6 +45,7 @@ interface DownloadManagerOnProgressEvent {
 interface DownloadManagerOnStopEvent extends DownloadManagerOnProgressEvent {
     allFiles: (FileInfo | DiffInfo)[];
     downloadedFiles: (FileInfo | DiffInfo)[];
+    executionSettings: DownloadManagerSettings;
 }
 
 
@@ -103,7 +104,8 @@ class DownloadManager extends MainServiceBase {
                 totalFileSize: context.totalFileSize,
                 totalFileCount: context.totalFileCount,
                 allFiles: context.allFiles,
-                downloadedFiles: context.downloadedFiles
+                downloadedFiles: context.downloadedFiles,
+                executionSettings: context.executionSettings
             };
             context.onStop(progress);
         }
@@ -118,7 +120,8 @@ class DownloadManager extends MainServiceBase {
                 totalFileSize: context.totalFileSize,
                 totalFileCount: context.totalFileCount,
                 allFiles: context.allFiles,
-                downloadedFiles: context.downloadedFiles
+                downloadedFiles: context.downloadedFiles,
+                executionSettings: context.executionSettings
             };
             context.onStop(progress);
         }
