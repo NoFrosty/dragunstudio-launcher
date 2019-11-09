@@ -6,6 +6,7 @@ import { Logger } from 'winston';
 
 import path from 'path';
 import fs from 'fs';
+const unzipper = require('unzipper');
 const util = require('util');
 const request = require('request')
 var progress = require('request-progress');
@@ -180,11 +181,10 @@ class DownloadManager extends MainServiceBase {
                     context.downloadedSingleFileSize = state.size.transferred;
                     this.sendProgressUpdate(context);
                 })
-                .pipe(
-                    fs.createWriteStream(filePath, { autoClose: true })
-                    .on("error", function(err:any) { reject(err); })
-                )
-                .on('close', () => {
+                if(DownloadManager.isFile(file)){
+                    strm.pipe(unzipper.Extract({path: context.executionSettings.rootPath}));
+                }
+                strm.on('close', () => {
                     context.downloadedFileCount++;
                     context.downloadedTotalFileSize += size;
                     context.downloadedSingleFileSize = 0;
@@ -192,7 +192,7 @@ class DownloadManager extends MainServiceBase {
                     resolve();
                 })
                 .on('error', (err:any) => {
-                    reject(err);
+                    console.error(err);
                 })
             });
         }
