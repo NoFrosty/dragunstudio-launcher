@@ -6,6 +6,7 @@ import { Logger } from 'winston';
 
 import path from 'path';
 import fs from 'fs';
+const unzipper = require('unzipper');
 const util = require('util');
 const request = require('request')
 var progress = require('request-progress');
@@ -45,6 +46,7 @@ interface DownloadManagerOnProgressEvent {
 interface DownloadManagerOnStopEvent extends DownloadManagerOnProgressEvent {
     allFiles: (FileInfo | DiffInfo)[];
     downloadedFiles: (FileInfo | DiffInfo)[];
+    executionSettings: DownloadManagerSettings;
 }
 
 
@@ -103,7 +105,8 @@ class DownloadManager extends MainServiceBase {
                 totalFileSize: context.totalFileSize,
                 totalFileCount: context.totalFileCount,
                 allFiles: context.allFiles,
-                downloadedFiles: context.downloadedFiles
+                downloadedFiles: context.downloadedFiles,
+                executionSettings: context.executionSettings
             };
             context.onStop(progress);
         }
@@ -118,7 +121,8 @@ class DownloadManager extends MainServiceBase {
                 totalFileSize: context.totalFileSize,
                 totalFileCount: context.totalFileCount,
                 allFiles: context.allFiles,
-                downloadedFiles: context.downloadedFiles
+                downloadedFiles: context.downloadedFiles,
+                executionSettings: context.executionSettings
             };
             context.onStop(progress);
         }
@@ -158,7 +162,7 @@ class DownloadManager extends MainServiceBase {
                 size = file.compressedSize
             }
             else {
-                url = process.env.VUE_APP_API_LINK + '/files/diff/' + context.executionSettings.applicationId + '/' + file.diffId
+                url = process.env.VUE_APP_API_LINK + '/files/diff/' + context.executionSettings.applicationId + '/' + file.diffId + '/download'
                 directoryPath = context.executionSettings.diffPath;
                 filePath = path.join(directoryPath, file.diffId);
                 size = file.diffSize
@@ -180,11 +184,15 @@ class DownloadManager extends MainServiceBase {
                     context.downloadedSingleFileSize = state.size.transferred;
                     this.sendProgressUpdate(context);
                 })
-                .pipe(
-                    fs.createWriteStream(filePath, { autoClose: true })
-                    .on("error", function(err:any) { reject(err); })
-                )
-                .on('close', () => {
+                if(DownloadManager.isFile(file)){
+                    strm.pipe(unzipper.Extract({path: context.executionSettings.rootPath}));
+                }else{
+                    strm.pipe(
+                        fs.createWriteStream(filePath, { autoClose: true })
+                        .on("error", function(err:any) { reject(err); })
+                    )
+                }
+                strm.on('close', () => {
                     context.downloadedFileCount++;
                     context.downloadedTotalFileSize += size;
                     context.downloadedSingleFileSize = 0;
@@ -192,7 +200,7 @@ class DownloadManager extends MainServiceBase {
                     resolve();
                 })
                 .on('error', (err:any) => {
-                    reject(err);
+                    console.error(err);
                 })
             });
         }

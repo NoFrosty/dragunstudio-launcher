@@ -51,7 +51,8 @@
 
             <div class="overview-download-bottom">
                 <div class="overview-download-bottom-left">
-                    <b-button size="is-large" class="is-primary" @click="confirm">Play</b-button>
+                    <b-button size="is-large" class="is-primary" @click="onStartUpdate" v-if="updateAvailable">Update</b-button>
+                    <b-button size="is-large" class="is-primary" @click="confirm" v-else>Play</b-button>
                 </div>
                 <div class="overview-download-bottom-right">
                     <b-progress class="progress" type="is-primary" :precision="2" :value="percentage" show-value format="percent"></b-progress>
@@ -63,6 +64,7 @@
                                 <button class="button is-primary is-auto" slot="trigger">
                                     <b-icon pack="fas" icon="cog"></b-icon>
                                 </button>
+                                <b-dropdown-item aria-role="listitem" @click="checkForUpdates">Check for updates</b-dropdown-item>
                                 <b-dropdown-item aria-role="listitem">Settings</b-dropdown-item>
                                 <b-dropdown-item aria-role="listitem">Repair</b-dropdown-item>
                                 <b-dropdown-item aria-role="listitem" @click="uninstallApplication">Uninstall</b-dropdown-item>
@@ -101,6 +103,7 @@
                 percentage: 0,
                 totalReceived: null,
                 totalToReceive: null,
+                updateAvailable: false
             }
         },
         components: {
@@ -154,6 +157,12 @@
             },
             uninstallApplication(){
                 installationManager.uninstallApplication(this.selectedApplication.applicationId);
+            },
+            async checkForUpdates(){
+                this.updateAvailable = await installationManager.checkUpdateAvailable(this.selectedApplication.applicationId);
+            },
+            onStartUpdate(){
+                installationManager.updateApplication(this.$store.state.selectedApplicationId,this.onProgress);
             }
         },
         mounted: async function () {
