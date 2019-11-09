@@ -192,7 +192,7 @@ class InstallationManager extends RendererServiceBase {
             }
         }
 
-        ipcRenderer.send('start-download', { allFiles: allFiles, settings: downloadManagerSettings });
+        ipcRenderer.send('start-download', { files: allFiles, settings: downloadManagerSettings });
     }
 
     public getFileHash(path:string){
