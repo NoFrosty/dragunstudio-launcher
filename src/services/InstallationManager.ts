@@ -49,6 +49,7 @@ class InstallationManager extends RendererServiceBase {
             console.log(progress);
             this.logger.info("Application is downloaded");
             this.onProgress(progress);
+            this.applyActions(progress);
             
         });
     }
@@ -56,9 +57,15 @@ class InstallationManager extends RendererServiceBase {
     private async applyActions(downloadManagerEvent:DownloadManagerOnStopEvent){
         console.log("testtest", downloadManagerEvent.downloadedCount, downloadManagerEvent.totalFileCount);
         const {fileInfos, diffInfos} = this.getDiffInfo(downloadManagerEvent.allFiles);
+        console.log("fileInfos : ",fileInfos, diffInfos);
         let lastVersion = await this.getLastVersion(downloadManagerEvent.executionSettings.applicationId);
-        let url = format("{root}/update?toVersionId={toVersionId}", {
+        let installation = this.store.state.installedApplications.find((x: InstallationInfo) => x.applicationId == downloadManagerEvent.executionSettings.applicationId);
+        if(!installation) {
+            throw "Application is not installed";
+        }
+        let url = format("{root}/update?fromVersionId={fromVersionId}&toVersionId={toVersionId}", {
             root: process.env.VUE_APP_API_LINK,
+            fromVersionId: installation.versionId,
             toVersionId: lastVersion.versionId
         });
         let updateResponse = await axios.get(url);
@@ -66,20 +73,24 @@ class InstallationManager extends RendererServiceBase {
         for(let action of updateActions) {
             switch(action.actionType) {
                 case ActionType.CreateFile:
+                    console.log("Create");
                     //Normally all work is already done !
                     break;
                 case ActionType.UpdateFile:
+                    console.log("Update");
                     var updateAction = action as UpdateActionUpdateFile;
                     var downloadedDiffInfo = this.findByDiffId(diffInfos, updateAction.diffId);
                     if (downloadedDiffInfo){
                         var updateDirectoryPath = path.join(downloadManagerEvent.executionSettings.rootPath, updateAction.newFile.directoryPath);
                         var updateFilePath = path.join(updateDirectoryPath, updateAction.newFile.fileName);
                         var diffPath = path.join(downloadManagerEvent.executionSettings.diffPath, downloadedDiffInfo.diffId);
+                        console.log(diffPath);
                         bspatch.patchSync(updateFilePath, updateFilePath, diffPath); // Sync
                         console.log('File : ' + updateFilePath + ' patched!');
                     }
                     break;
                 case ActionType.DeleteFile:
+                    console.log("Delete");
                     var deleteAction = action as UpdateActionDeleteFile;
                     var deleteDirectoryPath = path.join(downloadManagerEvent.executionSettings.rootPath, deleteAction.file.directoryPath);
                     var deleteFilePath = path.join(deleteDirectoryPath, deleteAction.file.fileName);
@@ -89,6 +100,7 @@ class InstallationManager extends RendererServiceBase {
                     });
                     break;
                 case ActionType.CopyFile:
+                    console.log("Copy");
                     var copyAction = action as UpdateActionCopyFile;
                     var sourceFilePath = path.join(path.join(downloadManagerEvent.executionSettings.rootPath, copyAction.sourceFile.directoryPath), copyAction.sourceFile.fileName);
                     var destinationFilePath = path.join(path.join(downloadManagerEvent.executionSettings.rootPath, copyAction.destinationFile.directoryPath), copyAction.destinationFile.fileName);
@@ -97,9 +109,9 @@ class InstallationManager extends RendererServiceBase {
                         console.log('File : ' + sourceFilePath + ' copyed to : ' + destinationFilePath + '!');
                     });
                     break;
-
             }
         }
+        this.store.commit('changeApplicationVersion', {applicationId : installation.applicationId, versionId: lastVersion.versionId}); 
     }
     private findByDiffId(array:DiffInfo[], diffId:string){
         return array.find(x => x.diffId == diffId);

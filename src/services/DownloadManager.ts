@@ -162,7 +162,7 @@ class DownloadManager extends MainServiceBase {
                 size = file.compressedSize
             }
             else {
-                url = process.env.VUE_APP_API_LINK + '/files/diff/' + context.executionSettings.applicationId + '/' + file.diffId
+                url = process.env.VUE_APP_API_LINK + '/files/diff/' + context.executionSettings.applicationId + '/' + file.diffId + '/download'
                 directoryPath = context.executionSettings.diffPath;
                 filePath = path.join(directoryPath, file.diffId);
                 size = file.diffSize
@@ -186,6 +186,11 @@ class DownloadManager extends MainServiceBase {
                 })
                 if(DownloadManager.isFile(file)){
                     strm.pipe(unzipper.Extract({path: context.executionSettings.rootPath}));
+                }else{
+                    strm.pipe(
+                        fs.createWriteStream(filePath, { autoClose: true })
+                        .on("error", function(err:any) { reject(err); })
+                    )
                 }
                 strm.on('close', () => {
                     context.downloadedFileCount++;
