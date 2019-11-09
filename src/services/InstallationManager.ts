@@ -222,6 +222,62 @@ class InstallationManager extends RendererServiceBase {
         this.store.commit('removeApplication', installation);
     }
 
+    public async updateApplication(
+        applicationId : string,
+        onProgress: (progress: DownloadManagerOnProgressEvent) => void) {
+
+        this.onProgress = onProgress;
+
+        this.logger.info("Application update started!")
+
+        var installation = this.store.state.installedApplications.find((x: InstallationInfo) => x.applicationId == applicationId);
+        if(!installation) {
+            throw "Application is not installed";
+        }
+        let lastVersion = await this.getLastVersion(applicationId);
+
+        this.logger.info("Last version fetched!", lastVersion);
+
+        let url = format("{root}/update?fromVersionId={fromVersionId}&toVersionId={toVersionId}", {
+            root: process.env.VUE_APP_API_LINK,
+            fromVersionId: installation.versionId,
+            toVersionId: lastVersion.versionId
+        });
+        let updateResponse = await axios.get(url);
+        let updateActions = updateResponse.data as UpdateAction[];
+
+        this.logger.info("Update actions are fetched: " + updateActions.length);
+        
+        let downloadManagerSettings : DownloadManagerSettings = {
+            applicationId: applicationId,
+            concurrentDownloadCount: 2,
+            rootPath: installation.path,
+            diffPath: installation.path + "/diff_temp"
+        }
+
+        let allFiles: (FileInfo | DiffInfo)[] = [];
+        for(let action of updateActions) {
+            switch(action.actionType) {
+                case ActionType.CreateFile:
+                    var createAction = action as UpdateActionCreateFile;
+                    allFiles.push(createAction.newFile);
+                    break;
+                case ActionType.UpdateFile:
+                    var updateAction = action as UpdateActionUpdateFile;
+                    var diff :DiffInfo = {
+                        type: "DiffInfo",
+                        diffId: updateAction.diffId,
+                        diffSize: updateAction.diffSize
+                    }
+                    allFiles.push(diff);
+                    break;
+            }
+        }
+
+        ipcRenderer.send('start-download', { files: allFiles, settings: downloadManagerSettings });
+
+    }
+
     private async getLastVersion(applicationId : string) : Promise<VersionInfo> {
         let os = ApplicationLibrary.getOperatingSystem();
         let url = format("{root}/version/last?applicationId={appId}&operatingSystem={os}", {
