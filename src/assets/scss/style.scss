@@ -1,51 +1,95 @@
 html {
-    background-color: rgba($color: #000000, $alpha: 0.0);
     overflow: hidden;
 }
 body {
     //border-radius: $window-border-radius;
     overflow: hidden;
-    background-color: rgba($color: #000000, $alpha: 0.0);
 }
 
 #window{
-    background-image: url('./assets/Background-4K.jpg');
+    background-image: url('./assets/images/background/ufo-1265186.png');
     background-size: cover;
     display: flex;
     flex-direction: column;
     height: 100vh;
     border: darken($primary, 30%) solid 1px;
 } 
-.loading-overlay{
-    .loading-background{
-        background-color: rgba($color: #000000, $alpha: 0.5);
+
+
+.boot{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    .loading{
+        width: 59%;
+        align-self: center;
+        padding-bottom: 2em;
     }
-    &.is-active{
-        flex-direction: column;
-    }
-    h1{
-        color:$primary;
+    .boot-body{
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
+        .field-box{
+            padding-left: 8em;
+        }
     }
 }
 
+button .is-secondary{
+    background-color: $primary-clear;
+    border-color: transparent;
+    color: #fff;
+}
+.title-colored, .title-white{
+    font-size: 3em;
+}
+.login{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    .login-body{
+        width: 35%;
+        .field-box{
+            flex-direction: column;
+            display: flex;
+            height: 100%;
+            padding-left: 8em;
+            img{
+                width: 50%;
+            }
+            .login-heading{
+                font-size: 1.95em;
+            }
+            .login-subheading{
+                margin-bottom: 2em;
+                font-size: 0.85em;
+                color: #787877;
+            }
+            .field{
+                margin-bottom: 2.1em;
+            }
+        }
+    }
+}
+
+.title-colored{
+    font-weight: bold;
+    color: $primary;
+}
+.title-white{
+    font-weight: bold;
+    color: $white;
+}
 .window-controller {
     display: flex;
-    //flex-direction: row-reverse;
     justify-content: flex-end;
     height: $window-bar-height;
     padding-right: 1rem;
     padding-left: 1rem;
     background-color: $window-controller-background-color;
-
-    .title-blue{
+    .title-colored, .title-white{
         font-size: x-large;
-        font-weight: bold;
-        color: $primary;
-    }
-    .title-white{
-        font-size: x-large;
-        font-weight: bold;
-        color: $white;
     }
     a{
         margin-left: 0.5em;
@@ -129,35 +173,6 @@ body {
             border-color: #00aeff;
         }
     }
-    
-}
-
-.is-sidebar-menu {
-    background-color: $window-controller-background-color;
-}
-.columns{
-    .is-fullheight {
-        &:not(:last-child) {
-          margin-bottom: 0;
-        }
-        min-height: 100vh;
-        max-height: 100vh;
-        height: 100vh;
-        display: flex;
-        flex-direction: row;
-        justify-content: stretch;
-        margin: 0;
-        &.is-without-navbar {
-          min-height: 100vh;
-          max-height: 100vh;
-          height: 100vh;
-        }
-
-  
-    //.column {
-    //  overflow-y: auto;
-    //}
-  }
 }
 
 .content-container {
@@ -193,20 +208,6 @@ a.navbar-item, .navbar-link{
     margin-bottom: 0rem;
 }
 
-
-/*
-.dropdown{
-    .dropdown-trigger{
-        button{
-            min-width: $dropdown-menu-min-width;
-            &.is-auto{
-                min-width: auto;
-            }
-            
-        }
-    }
-}
-*/
 .scrollable{
     position: absolute;
     padding: 1rem;
@@ -361,15 +362,11 @@ a.navbar-item, .navbar-link{
     .animation-content{
         z-index: 1;
         
-        
-        //border-radius: 1.5rem;
-        
         &:not(.modal-card){
             background-color: #000000a8;
         }
         .modal-background {
             background-color: rgba(10, 10, 10, 0.86);
-            //border-radius: $window-border-radius;
         }
         .modal-view{
             label{

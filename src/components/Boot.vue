@@ -1,47 +1,25 @@
 <template>
-<section class="login is-fullheight">
-    <div class="login-body">
-        <div class="login-page">
-            <div class="login-form-wrapper">
-                <div class="field-box">
-                    <div class="logo">
-                    <img src="@/assets/logo.png"/>
-                    </div>
-                    <h1 class="login-heading">Welcome back !</h1>
-                    <p class="login-subheading" v-if="this.currentAction == 'Server is Down'">Sorry, our servers seems offline or maybe your internet connection is down.</p>
-                    <div class="field" style="width: 12rem;" v-if="this.currentAction == 'Server is Down'">
-                        <div class="buttons">
-                                <b-button class="is-fullwidth" type="submit is-primary" @click="goOffline">Go Offline</b-button>
-                                <b-button class="is-fullwidth" type="submit is-primary" @click="retry">Retry</b-button>
-                        </div>
-                    </div>
+<section class="boot">
+    <div class="boot-body">
+        <div class="field-box">
+            <div class="">
+                <span class="title-colored">Evo</span>
+                <span class="title-white">Launcher</span>
+            </div>
+            <h1 class="login-heading">Welcome back !</h1>
+            <p class="login-subheading" v-if="this.currentAction == 'Server is Down'">Sorry, our servers seems offline or maybe your internet connection is down.</p>
+            <div class="field" style="width: 12rem;" v-if="this.currentAction == 'Server is Down'">
+                <div class="buttons">
+                        <b-button class="is-fullwidth" type="submit is-primary" @click="goOffline">Go Offline</b-button>
+                        <b-button class="is-fullwidth" type="submit is-primary" @click="retry">Retry</b-button>
                 </div>
             </div>
         </div>
-        <b-loading :is-full-page="true" :active.sync="this.currentAction == 'Checking Server Status' || this.currentAction == 'Checking Server Status' || (!loaded && !isServerDown)" >
-            <b-icon
-                pack="fas"
-                icon="sync-alt"
-                size="is-large"
-                custom-class="fa-spin">
-            </b-icon>
-            <h1>{{this.currentAction}}</h1>
-        </b-loading>
     </div>
-      
+    <div class="loading" :active.sync="this.currentAction == 'Checking Server Status' || this.currentAction == 'Checking Server Status' || (!loaded && !isServerDown)">
+        <b-progress type="is-primary" showValue>{{this.currentAction}}</b-progress>
+    </div>
   </section>
-  <!--
-    <div>
-        <p v-if="currentAction == 'health-check'">Checking server!</p>
-        <p v-if="currentAction == 'loading'">Loading!</p>
-        <p v-if="isServerDown">
-            Server Down!
-            <button @click="goOffline">Go Offline</button>
-            <button @click="retry">Retry</button>
-        </p>
-        
-    </div>
-    -->
 </template>
 
 <script>

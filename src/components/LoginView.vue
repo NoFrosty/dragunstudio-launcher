@@ -1,82 +1,98 @@
 <template>
     <section class="login is-fullheight">
-      <div class="login-body">
-          <div class="login-page">
-              <div class="login-form-wrapper">
-                <div class="field-box">
-                    <div class="logo">
-                    <img src="@/assets/logo.png"/>
-                    </div>
-                    <h1 class="login-heading">Welcome back !</h1>
-                    <p class="login-subheading">We don't need a healer for this, right?</p>
-                    <form @submit.prevent="attemptSignIn">
-                      <div class="field">
+        <div class="login-body">
+            <div class="field-box">
+                <div class="">
+                    <span class="title-colored">Evo</span>
+                    <span class="title-white">Launcher</span>
+                </div>
+                <h1 class="login-heading">Welcome back !</h1>
+                <p class="login-subheading">We don't need a healer for this, right?</p>
+                <form @submit.prevent="attemptSignIn">
+                    <div class="field">
                         <p class="control has-icons-left has-icons-right">
-                          <b-field>
-                                <b-input size="is-medium" icon-pack="fa"
-                                    icon="envelope" v-model="email" type="email"
-                                    name="email"
-                                    placeholder="Email" required>
+                            <b-field>
+                                <b-input size="is-medium" icon-pack="fa" icon="envelope" v-model="email"
+                                    type="email" name="email" placeholder="Email" required>
                                 </b-input>
                             </b-field>
                         </p>
-                      </div>
-                      <div class="field">
+                    </div>
+                    <div class="field">
                         <p class="control has-icons-left has-icons-right">
                             <b-field>
-                                <b-input size="is-medium" icon-pack="fa"
-                                    icon="lock" v-model="password" type="password"
-                                    name="password"
-                                    placeholder="Password"
-                                    password-reveal required
+                                <b-input size="is-medium" icon-pack="fa" icon="lock" v-model="password" 
+                                    type="password" name="password" placeholder="Password" password-reveal required
                                     @keyup.native.enter="attemptSignIn">
                                 </b-input>
                             </b-field>
                         </p>
-                      </div>
-                      <div class="field is-grouped is-grouped-centered login-btn-group">
-                        <div class="buttons">
-                          <b-button type="submit is-primary" @click="attemptSignIn">Login</b-button>
-                          <b-button type="is-warning">Register</b-button>
-                          <b-button type="is-danger">Forgot Password</b-button>
-                          <b-button type="is-info" tag="router-link" :to="{name:'launcher'}">Without login</b-button>
+                    </div>
+                    <div class="field">
+                        <div class="level">
+                            <!-- Left side -->
+                            <div class="level-left">
+                                <router-link to="#">Register</router-link>
+                            </div>
+                            <div class="level-right">
+                                <router-link to="#">Forgot password</router-link>
+                            </div>
                         </div>
-                      </div>
-                    </form>
-                </div>
-              </div>
-              <!-- is-8 ends -->
-          </div>
-        <!-- div.container ends -->
-      </div>
-  </section>
+                    </div>
+                    <div class="field">
+                        <div class="level">
+                            <b-switch :value="false">
+                                Stay signed in ?
+                            </b-switch>
+                            <div class="level-right">
+                                <b-button type="submit is-primary" @click="attemptSignIn">Login</b-button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
 </template>
 <script>
     import { authenticationService } from '@/services/services'
-
+    
     export default {
         data() {
             return {
-                email: '',
-                password: '',
-                wrongIdentifier: false
+                email: null,
+                password: null,
+                wrongIdentifier: false,
+                emailHasError: false,
             }
         },
         components: {
         },
         methods: {
             attemptSignIn: async function() {
-                var isLogged = await authenticationService.AttemptSignIn({
-                    email: this.email,
-                    password: this.password
-                });
-                if(isLogged) {
-                    this.wrongIdentifier = false;
-                    this.$router.push({ name: "launcher" });
+                if(!this.email || !this.password){
+                    if(!this.email || this.email.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/))
+                        this.emailHasError = true;
+                    else
+                        this.emailHasError = false;
+                    if(!this.password)
+                        this.passwordHasError = true;
+                    else
+                        this.passwordHasError = false;
                 }
                 else{
-                    this.wrongIdentifier = true;
-                    
+                    var isLogged = await authenticationService.AttemptSignIn({
+                        email: this.email,
+                        password: this.password
+                    });
+                    if(isLogged) {
+                        this.wrongIdentifier = false;
+                        this.$router.push({ name: "launcher" });
+                    }
+                    else{
+                        this.wrongIdentifier = true;
+                        
+                    }
                 }
             }
         },
@@ -87,46 +103,3 @@
         }
     }
 </script>
-
-<style>
-.logo{
-  text-align: center;
-}
-.login{
-      height: 100%;
-      display: flex;
-}
-.login-body{
-      width: 100%;
-}
-.login .login-page{
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-.login .login-sidebar, .login-form-wrapper{
-  height: 100%;
-  flex-grow: 1;
-}
-.field-box img{
-  width: 50%;
-}
-.field-box .field{margin-bottom: 2.1em;}
-.login-form-wrapper .field-box{
-  flex-direction: column;
-  display: flex;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-}
-.login-form-wrapper .field-box .login-heading{
-  font-size: 1.95em;
-  text-align: center;
-}
-.login-form-wrapper .field-box .login-subheading{
-  margin-bottom: 2em;
-  font-size: 0.85em;
-  color: #787877;
-  text-align: center;
-}
-</style>

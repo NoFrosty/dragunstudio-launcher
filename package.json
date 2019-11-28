@@ -36,6 +36,7 @@
     "rimraf": "^3.0.0",
     "string-format": "^2.0.0",
     "unzipper": "^0.10.5",
+    "vee-validate": "^3.1.1",
     "vue": "^2.6.10",
     "vue-async-computed": "^3.7.0",
     "vue-class-component": "^7.0.2",
