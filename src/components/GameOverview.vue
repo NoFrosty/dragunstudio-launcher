@@ -169,7 +169,7 @@
             let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
             this.news = newsResponse.data;
 
-            
+            this.checkForUpdates();
         },
     }
 </script>
