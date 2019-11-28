@@ -2,45 +2,29 @@
     <div class="window-content">
         <nav class="sidebar">
             <ul class="nav">
-                <li class="nav-item nav-profile">
-                    <a href="#" class="nav-link">
-                        <div class="nav-profile-image">
-                            <img src="http://www.bootstrapdash.com/demo/purple/jquery/template/assets/images/faces/face1.jpg" alt="profile">
-                            <span class="login-status online"></span>
-                            <!--change to offline or busy as needed-->
-                        </div>
-                        <div class="nav-profile-text">
-                            <span class="nav-profile-text-name">Frosty</span>
-                            <span class="nav-profile-text-status">Playing Warcraft IV</span>
-                        </div>
-                        <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+                <li class="nav-item nav-profile is-not-hoverable" v-if="isSignedIn">
+                    <UserPanel/>
+                </li>
+                <li class="nav-item is-not-hoverable" v-else>
+                    <a class="nav-link" href="#">
+                        <button class="button is-primary is-fullwidth">Login</button>
                     </a>
                 </li>
                 <!--My Games-->
-                <li class="nav-item sidebar-title is-not-hoverable">
+                <li class="nav-item sidebar-title is-not-hoverable is-not-selectable">
                     <span class="nav-link">
                         <div class="border-bottom">
                             <h1 class="">MY GAMES</h1>
                         </div>
                     </span>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span class="menu-title">Warcraft IV</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span class="menu-title">Portal 3</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span class="menu-title">WoW 2</span>
+                <li class="nav-item" v-for="application in applications" :key="application.applicationid">
+                    <a class="nav-link" @click="changeApplication(application)">
+                        <span class="menu-title">{{application.name}}</span>
                     </a>
                 </li>
                 <!--My Friends-->
-                <li class="nav-item sidebar-title is-not-hoverable">
+                <li class="nav-item sidebar-title is-not-hoverable is-not-selectable">
                     <span class="nav-link">
                         <div class="border-bottom">
                             <h1 class="">MY FRIENDS</h1>
@@ -62,13 +46,6 @@
                         <div class="level-item">
                             <DropDownApplicationSelection/>
                         </div>
-                    </div>
-
-                    <!-- Right side -->
-                    <div class="level-right">
-                        <p class="level-item">
-                            <UserPanel />
-                        </p>
                     </div>
                 </nav>
                 <div v-if="isOffline">
@@ -119,30 +96,52 @@ import UserPanel from "@/components/UserPanel.vue";
 import DropDownApplicationSelection from "@/components/DropDownApplicationSelection.vue";
 import GameOverview from "@/components/GameOverview.vue";
 import AuthenticationService from "@/services/AuthenticationService";
-
+import axios from 'axios';
+import { applicationLibrary } from '@/services/services';
 export default {
     name: "evopeons-launcher",
     data() {
         return {
             GAME_TABS: GAME_TABS,
-            activeGameTab: GAME_TABS.OVERVIEW
+            activeGameTab: GAME_TABS.OVERVIEW,
+            currentApplication: null,
+            applications:null,
         };
     },
     computed: {
         isOffline: function() {
             return this.$store.state.isOffline;
-        }
+        },
+        isSignedIn: function() {
+                return this.$store.state.isSignedIn;
+            },
     },
     methods: {
         onGameTabChange: function(index) {
             this.activeGameTab = index;
-        }
+        },
+        changeApplication: function(application) {
+            this.currentApplication = application;
+                this.$store.commit('setSelectedApplicationId', this.currentApplication.applicationId);
+            },
     },
     components: {
         UserPanel,
         GameOverview,
         DropDownApplicationSelection
     },
-    created: function() {}
+    created: function() {},
+    async mounted() {
+        this.applications = await applicationLibrary.getAllGameList();
+            if(!this.$store.state.selectedApplicationId)
+                this.$store.commit('setSelectedApplicationId', this.applications[0].applicationId);
+            this.currentApplication =  this.applications.find(x => x.applicationId == this.$store.state.selectedApplicationId)
+            this.$store.subscribe((mutation, state) => {
+                if (mutation.type === 'setSelectedApplicationId') {
+                    if(state.selectedApplicationId != this.currentApplication.applicationId)
+                        this.changeApplication();
+                }
+            });
+    }
 };
 </script>

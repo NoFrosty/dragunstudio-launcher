@@ -1,33 +1,34 @@
 <template>
-    <section class="user-panel">
-        <b-dropdown v-if="isSignedIn"
-                    position="is-bottom-left"
-                    aria-role="menu">
-                    <button class="button is-primary" slot="trigger">
-                        <span>{{this.$store.state.username}}</span>
-                        <b-icon pack="fas" icon="caret-down"></b-icon>
-                    </button>
-                    <b-dropdown-item v-if="isOffline" v-on:click="goOnline" value="settings">
-                        <b-icon pack="fas" icon="plug"></b-icon>
-                        Go Online
-                    </b-dropdown-item>
-                    <b-dropdown-item value="settings">
-                        <b-icon pack="fas" icon="user-friends"></b-icon>
-                        Friends
-                    </b-dropdown-item>
-                    <b-dropdown-item value="settings">
-                        <b-icon pack="fas" icon="cog"></b-icon>
-                        Settings
-                    </b-dropdown-item>
-                    <b-dropdown-item v-on:click="logout" value="logout" aria-role="menuitem">
-                        <b-icon pack="fas" icon="sign-out-alt"></b-icon>
-                        Logout
-                    </b-dropdown-item>
-                </b-dropdown>
-        <div class="user-not-logged" v-else>
-            <b-button type="is-primary" @click="isComponentModalActive = true" tag="router-link" :to="{name:'login'}">Log in</b-button>
-        </div>
-    </section>
+    <b-dropdown aria-role="list">
+        <a href="#" class="nav-link" slot="trigger">
+            <div class="nav-profile-image">
+                <img src="http://www.bootstrapdash.com/demo/purple/jquery/template/assets/images/faces/face1.jpg" alt="profile">
+                <span class="login-status online"></span>
+                <!--change to offline or busy as needed-->
+            </div>
+            <div class="nav-profile-text">
+                <span class="nav-profile-text-name">{{this.$store.state.username}}</span>
+                <span class="nav-profile-text-status">Playing Warcraft IV</span>
+            </div>
+            <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+        </a>
+        <b-dropdown-item v-if="isOffline" v-on:click="goOnline" value="settings">
+        <b-icon pack="fas" icon="plug"></b-icon>
+        Go Online
+        </b-dropdown-item>
+        <b-dropdown-item value="settings">
+            <b-icon pack="fas" icon="user-friends"></b-icon>
+            Friends
+        </b-dropdown-item>
+        <b-dropdown-item value="settings">
+            <b-icon pack="fas" icon="cog"></b-icon>
+            Settings
+        </b-dropdown-item>
+        <b-dropdown-item v-on:click="logout" value="logout" aria-role="menuitem">
+            <b-icon pack="fas" icon="sign-out-alt"></b-icon>
+            Logout
+        </b-dropdown-item>
+    </b-dropdown>
 </template>
 
 <script>
