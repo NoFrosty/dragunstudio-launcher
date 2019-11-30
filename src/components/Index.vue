@@ -18,7 +18,7 @@
                         </div>
                     </span>
                 </li>
-                <li class="nav-item" v-for="application in applications" :key="application.applicationid">
+                <li class="nav-item item-game" v-for="application in applications" :key="application.applicationid">
                     <a class="nav-link" @click="changeApplication(application)">
                         <span class="menu-title">{{application.name}}</span>
                     </a>
@@ -40,14 +40,6 @@
         </nav>
         <div class="main-panel">
             <div class="top-bar">
-                <nav class="level">
-                    <!-- Left side -->
-                    <div class="level-left">
-                        <div class="level-item">
-                            <DropDownApplicationSelection/>
-                        </div>
-                    </div>
-                </nav>
                 <div v-if="isOffline">
                     <h1>NO DESCRIPTION IN OFFLINE MODE!</h1>
                 </div>
@@ -93,7 +85,6 @@ const GAME_TABS = {
     ACHIEVEMENTS: 2
 };
 import UserPanel from "@/components/UserPanel.vue";
-import DropDownApplicationSelection from "@/components/DropDownApplicationSelection.vue";
 import GameOverview from "@/components/GameOverview.vue";
 import AuthenticationService from "@/services/AuthenticationService";
 import axios from 'axios';
@@ -122,15 +113,13 @@ export default {
         },
         changeApplication: function(application) {
             this.currentApplication = application;
-                this.$store.commit('setSelectedApplicationId', this.currentApplication.applicationId);
-            },
+            this.$store.commit('setSelectedApplicationId', this.currentApplication.applicationId);
+        }
     },
     components: {
         UserPanel,
         GameOverview,
-        DropDownApplicationSelection
     },
-    created: function() {},
     async mounted() {
         this.applications = await applicationLibrary.getAllGameList();
             if(!this.$store.state.selectedApplicationId)
@@ -138,8 +127,11 @@ export default {
             this.currentApplication =  this.applications.find(x => x.applicationId == this.$store.state.selectedApplicationId)
             this.$store.subscribe((mutation, state) => {
                 if (mutation.type === 'setSelectedApplicationId') {
-                    if(state.selectedApplicationId != this.currentApplication.applicationId)
-                        this.changeApplication();
+                    console.log("state.selectedApplicationId",state.selectedApplicationId);
+                    console.log("this.currentApplication.applicationId",this.currentApplication.applicationId);
+                    if(state.selectedApplicationId != this.currentApplication.applicationId){
+                        this.$store.commit('setSelectedApplicationId', this.currentApplication.applicationId);
+                    }
                 }
             });
     }

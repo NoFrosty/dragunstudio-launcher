@@ -17,10 +17,6 @@
         Go Online
         </b-dropdown-item>
         <b-dropdown-item value="settings">
-            <b-icon pack="fas" icon="user-friends"></b-icon>
-            Friends
-        </b-dropdown-item>
-        <b-dropdown-item value="settings">
             <b-icon pack="fas" icon="cog"></b-icon>
             Settings
         </b-dropdown-item>

@@ -118,33 +118,38 @@ button .is-secondary{
         overflow: hidden;
         flex-wrap: nowrap;
         flex-direction: column;
-        margin-bottom: 60px;
+        padding-left: 2.25em;
+        padding-right: 2.25em;
         .nav-item {
-            padding:0 0 0 2.25rem;
             transition-duration: 0.25s;
             transition-property: background;
             -webkit-transition-property: background;
+            &.item-game, &.item-friend{
+                margin-left: 1em;
+            }
             .nav-link {
                 display: flex;
                 align-items: center;
                 white-space: nowrap;
-                padding: 1rem 0 1rem 0;
+                padding: 1em 0 1em 0;
                 color: $text;
                 transition-duration: 0.45s;
                 transition-property: color;
                 -webkit-transition-property: color;
             }
+            /*
             &:hover {
                 &:not(.is-not-hoverable){
                     background-color: $primary-clear;
                 }
             }
+            */
             &.nav-profile {
                 .nav-link {
                     height: auto;
                     line-height: 1;
                     border-top: 0;
-                    padding: 1.25rem 0;
+                    padding: 1.25em 0;
                     .nav-profile-image {
                         width: 44px;
                         height: 44px;
@@ -155,7 +160,7 @@ button .is-secondary{
                         }
                     }
                     .nav-profile-text {
-                        margin-left: 1rem;
+                        margin-left: 1em;
                         display: flex;
                         flex-direction: column;
                         .nav-profile-text-name{
@@ -174,7 +179,8 @@ button .is-secondary{
                 
             }
             &.sidebar-title {
-                margin-top: 1rem;
+                margin-top: 1em;
+                margin-left: 0;
                 .nav-link {
                     border-top: 0;
                     display: block;
@@ -182,7 +188,7 @@ button .is-secondary{
                     .border-bottom {
                         border-bottom: 1px solid #ebedf2 !important;
                         h1{
-                            margin-bottom: 1rem !important;
+                            margin-bottom: 1em !important;
                         }
                     }
                 }
@@ -201,9 +207,9 @@ button .is-secondary{
         flex-direction: column;
         .level{
             margin-bottom: 0;
-            margin-right: 3rem;
-            margin-left: 3rem;
-            margin-top: 1rem;
+            margin-right: 3em;
+            margin-left: 3em;
+            margin-top: 1em;
         }
         .game-tabs {
             .tab-content {
@@ -212,7 +218,7 @@ button .is-secondary{
         }
     }
     .content-container {
-        padding: 2rem;
+        padding: 2em;
     }
 }
 
