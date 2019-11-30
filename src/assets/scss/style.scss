@@ -305,20 +305,17 @@ a.navbar-item, .navbar-link{
             display: flex;
             flex-direction: row;
             flex-grow: 1;
-            .overview-panel-left{
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-                overflow: auto;
-                position: relative;
+            .tile{
+                height: fit-content;
             }
-            .overview-panel-right{
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-                overflow: auto;
-                position: relative;
+            .carousel{
+                .carousel-list{
+                    border-radius: 4px;
+                }
             }
+        }
+        .overview-news{
+            display: flex;
         }
         .overview-download{
             display: flex;

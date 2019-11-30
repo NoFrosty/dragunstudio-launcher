@@ -127,8 +127,6 @@ export default {
             this.currentApplication =  this.applications.find(x => x.applicationId == this.$store.state.selectedApplicationId)
             this.$store.subscribe((mutation, state) => {
                 if (mutation.type === 'setSelectedApplicationId') {
-                    console.log("state.selectedApplicationId",state.selectedApplicationId);
-                    console.log("this.currentApplication.applicationId",this.currentApplication.applicationId);
                     if(state.selectedApplicationId != this.currentApplication.applicationId){
                         this.$store.commit('setSelectedApplicationId', this.currentApplication.applicationId);
                     }
