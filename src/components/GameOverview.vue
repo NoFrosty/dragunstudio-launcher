@@ -77,8 +77,20 @@
                             icon-next="arrow-right">
                                 <b-carousel-item v-bind:key="item.id" v-for="item in news">
                                     <section :class="`hero is-medium is-primary is-bold`">
+                                        <div class="hero-head">
+                                            <div class="tags has-addons">
+                                                <span class="tag is-black">News</span>
+                                                <span class="tag is-primary">Patch Note</span>
+                                                <span class="tag is-info">Evorine</span>
+                                            </div>
+                                        </div>
                                         <div class="hero-body has-text-centered">
                                             <h1 class="title">{{item.title}}</h1>
+                                        </div>
+                                        <div class="hero-foot has-text-right">
+                                            <p v-if="item.article.length<350" class="article">{{item.article}}</p>
+                                            <p v-else class="article">{{item.article.substring(0,350)+"..."}}</p>
+                                            <time class="has-text-right" datetime="2016-1-1">{{item.publishDate}}</time>
                                         </div>
                                     </section>
                                 </b-carousel-item>           
