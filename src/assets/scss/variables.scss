@@ -1,3 +1,9 @@
+$purple: #A831F3;
+$black-ter: #090D26;
+$primary: $purple;
+$primary-darker: darken($primary, 36.4%);
+$primary-lighter: lighten($primary, 13.58%);
+
 $window-border-radius: 1.5rem;
 $window-bar-height: 2.5rem;
 
@@ -27,11 +33,6 @@ $text: #FFFFFF;
 $title-color: #FFFFFF;
 $subtitle-color: #FFFFFF;
 
-$primary: #A61C81;
-$primary-dark: #090D26;
-$primary-clear: #3C4973;
-$primary-light: #F244E7;
-$link-hover: $cyan;
 
 $colors: (
     "white": ($white, $black),
@@ -50,12 +51,15 @@ $modal-card-head-background-color: $black-ter;
 $modal-card-foot-border-top: $black-ter;
 $window-controller-background-color: rgba($color: #000000, $alpha: 0.2);
 
-$input-background-color: $primary-dark;
-$input-border-color: $primary-clear;
+$input-background-color: $black-ter;
+$input-border-color: $primary-darker;
 $input-hover-border-color: $primary;
-$input-focus-border-color: $primary-light;
+$input-focus-border-color: $primary;
 $input-icon-color: $primary;
-$input-icon-active-color: $primary-light;
+$input-icon-active-color: $primary-darker;
 $input-color: $text;
 
-$progress-bar-background-color: $primary-dark;
+$link: $primary;
+$link-hover: $primary-lighter;
+
+$progress-bar-background-color: $black-ter;

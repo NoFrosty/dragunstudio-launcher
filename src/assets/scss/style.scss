@@ -12,7 +12,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    border: darken($primary, 30%) solid 1px;
+    border: darken($primary, 35%) solid 1px;
 } 
 
 
@@ -36,7 +36,7 @@ body {
 }
 
 button .is-secondary{
-    background-color: $primary-clear;
+    background-color: $primary-lighter;
     border-color: transparent;
     color: #fff;
 }
@@ -137,13 +137,6 @@ button .is-secondary{
                 transition-property: color;
                 -webkit-transition-property: color;
             }
-            /*
-            &:hover {
-                &:not(.is-not-hoverable){
-                    background-color: $primary-clear;
-                }
-            }
-            */
             &.nav-profile {
                 .nav-link {
                     height: auto;
