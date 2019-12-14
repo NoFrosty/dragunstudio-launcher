@@ -1,43 +1,33 @@
 <template>
     <div class="window-content">
         <nav class="sidebar">
-            <ul class="nav">
-                <li class="nav-item nav-profile is-not-hoverable" v-if="isSignedIn">
+            <div class="nav">
+                <div class="nav-item nav-profile">
                     <UserPanel />
-                </li>
-                <li class="nav-item is-not-hoverable" v-else>
-                    <a class="nav-link" href="#">
-                        <button class="button is-primary is-fullwidth">Login</button>
-                    </a>
-                </li>
+                </div>
                 <!--My Games-->
-                <li class="nav-item sidebar-title is-not-hoverable is-not-selectable">
+                <div class="nav-item sidebar-title">
                     <span class="nav-link">
-                        <div class="">
-                            <h1 class="">MY GAMES</h1>
-                        </div>
+                        <h1>MY GAMES</h1>
                     </span>
-                </li>
-                <li class="nav-item item-game" v-for="application in applications" :key="application.applicationId">
-                    <a class="nav-link" @click="changeApplication(application)">
-                        <img :src="'./images/app-icon/' + application.applicationId + '.png'" alt="icon">
-                        <span class="menu-title">{{application.name}}</span>
-                    </a>
-                </li>
+                </div>
+                <div class="nav-item">
+                    <ApplicationList />
+                </div>
                 <!--My Friends-->
-                <li class="nav-item sidebar-title is-not-hoverable is-not-selectable">
+                <div class="nav-item sidebar-title">
                     <span class="nav-link">
                         <div class="">
                             <h1 class="">MY FRIENDS</h1>
                         </div>
                     </span>
-                </li>
-                <li class="nav-item is-not-hoverable">
+                </div>
+                <div class="nav-item">
                     <a class="nav-link" href="#">
                         <button class="button is-primary is-fullwidth">Add a friend</button>
                     </a>
-                </li>
-            </ul>
+                </div>
+            </div>
         </nav>
         <div class="main-panel">
             <div class="top-bar">
@@ -85,6 +75,7 @@ const GAME_TABS = {
     ACTIVITIES: 1,
     ACHIEVEMENTS: 2
 };
+import ApplicationList from "@/components/ApplicationList.vue";
 import UserPanel from "@/components/UserPanel.vue";
 import GameOverview from "@/components/GameOverview.vue";
 import AuthenticationService from "@/services/AuthenticationService";
@@ -96,7 +87,6 @@ export default {
         return {
             GAME_TABS: GAME_TABS,
             activeGameTab: GAME_TABS.OVERVIEW,
-            currentApplication: null,
             applications:null,
         };
     },
@@ -111,28 +101,14 @@ export default {
     methods: {
         onGameTabChange: function(index) {
             this.activeGameTab = index;
-        },
-        changeApplication: function(application) {
-            this.currentApplication = application;
-            this.$store.commit('setSelectedApplicationId', this.currentApplication.applicationId);
         }
     },
     components: {
+        ApplicationList,
         UserPanel,
         GameOverview,
     },
     async mounted() {
-        this.applications = await applicationLibrary.getAllGameList();
-            if(!this.$store.state.selectedApplicationId)
-                this.$store.commit('setSelectedApplicationId', this.applications[0].applicationId);
-            this.currentApplication =  this.applications.find(x => x.applicationId == this.$store.state.selectedApplicationId)
-            this.$store.subscribe((mutation, state) => {
-                if (mutation.type === 'setSelectedApplicationId') {
-                    if(state.selectedApplicationId != this.currentApplication.applicationId){
-                        this.$store.commit('setSelectedApplicationId', this.currentApplication.applicationId);
-                    }
-                }
-            });
     }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div id="window">
+    <div id="window" class="is-not-selectable">
         <WindowsController />
         <router-view></router-view>
     </div>
