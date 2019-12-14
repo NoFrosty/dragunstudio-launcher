@@ -1,17 +1,23 @@
 <template>
-    <div class="application-list">
-        <div class="nav-item item-game" v-for="application in applications" :key="application.applicationId">
-            <a class="nav-link" @click="changeApplication(application)">
-                <img :src="'./images/app-icon/' + application.applicationId + '.png'" alt="icon">
-                <span class="menu-title">{{application.name}}</span>
+    <ul class="application-list">
+        <li 
+        class="application"
+        v-bind:class="{ 'not-installed': !isInstalleds[application.applicationId], 'selected': application.applicationId == selectedApplicationId }"
+        v-for="application in applications" 
+        :key="application.applicationId">
+            <a class="" @click="changeApplication(application)">
+                <div class="app-icon-container">
+                    <img class="app-icon" :src="'./images/app-icon/' + application.applicationId + '.png'" alt="icon">
+                </div>
+                <span class="app-title">{{application.name}}</span>
             </a>
-        </div>
-    </div>
+        </li>
+    </ul>
 </template>
 
 <script>
 import axios from 'axios';
-import { applicationLibrary } from '@/services/services';
+import { applicationLibrary, installationManager } from '@/services/services'
 
 export default {
     props: {
@@ -19,13 +25,24 @@ export default {
     },
     data() {
         return {
-            applications: null,
+            selectedApplicationId: null,
+            applications: null
         };
     },
     computed: {
+        isInstalleds: function(params) {
+            let ins = {};
+            if (this.applications) {
+                this.applications.forEach(app => {
+                    ins[app.applicationId] = installationManager.getInstallationInfo(app.applicationId) != undefined;
+                });
+            }
+            return ins;
+        }
     },
     methods: {
         setCurrentApplication: function(applicationId) {
+            this.selectedApplicationId = applicationId;
             this.$store.commit('setSelectedApplicationId', applicationId);
         },
         changeApplication: function(application) {
