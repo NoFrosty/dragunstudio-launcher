@@ -30,21 +30,25 @@
             </div>
         </nav>
         <div class="main-panel">
-            <div class="top-bar">
-                <div v-if="isOffline">
-                    <h1>NO DESCRIPTION IN OFFLINE MODE!</h1>
+            <div class="level">
+                <div class="top-bar level-left">
+                    <div v-if="isOffline">
+                        <h1>NO DESCRIPTION IN OFFLINE MODE!</h1>
+                    </div>
+                    <b-tabs
+                        v-else
+                        v-model="activeGameTab"
+                        v-on:change="onGameTabChange"
+                        class="game-tabs block"
+                    >
+                        <b-tab-item label="Overview" />
+                        <b-tab-item label="Activities" disabled />
+                        <b-tab-item label="Achievements" disabled />
+                    </b-tabs>
                 </div>
-                <b-tabs
-                    v-else
-                    v-model="activeGameTab"
-                    v-on:change="onGameTabChange"
-                    position="is-centered"
-                    class="game-tabs block"
-                >
-                    <b-tab-item label="Overview" />
-                    <b-tab-item label="Activities" />
-                    <b-tab-item label="Achievements" />
-                </b-tabs>
+                <div class="level-right">
+                    asdasd
+                </div>
             </div>
             <div class="content-container" v-if="!isOffline">
                 <GameOverview v-if="!isOffline" class="game-overview tab-content"

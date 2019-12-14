@@ -1,0 +1,18 @@
+.boot{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    .loading{
+        width: 59%;
+        align-self: center;
+        padding-bottom: 2em;
+    }
+    .boot-body{
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
+        .field-box{
+            padding-left: 8em;
+        }
+    }
+}
