@@ -49,8 +49,6 @@ const store = new Vuex.Store({
         },
         changeApplicationVersion(state,payload:{applicationId: string, versionId: string}) {
             let installedApp = state.installedApplications.find(x => x.applicationId == payload.applicationId);
-            console.log(payload);
-            console.log(state.installedApplications);
             if(!installedApp)
                 throw "Application is not installed !"
             installedApp.versionId = payload.versionId;

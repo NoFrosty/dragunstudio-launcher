@@ -47,7 +47,7 @@
                     </b-tabs>
                 </div>
                 <div class="level-right">
-                    asdasd
+                    <ApplicationCommandCenter :applicationId="activeApplicationId" />
                 </div>
             </div>
             <div class="content-container" v-if="!isOffline">
@@ -79,9 +79,10 @@ const GAME_TABS = {
     ACTIVITIES: 1,
     ACHIEVEMENTS: 2
 };
+import ApplicationCommandCenter from "@/components/ApplicationCommandCenter";
 import ApplicationList from "@/components/ApplicationList.vue";
-import UserPanel from "@/components/UserPanel.vue";
 import GameOverview from "@/components/GameOverview.vue";
+import UserPanel from "@/components/UserPanel.vue";
 import AuthenticationService from "@/services/AuthenticationService";
 import axios from 'axios';
 import { applicationLibrary } from '@/services/services';
@@ -99,8 +100,11 @@ export default {
             return this.$store.state.isOffline;
         },
         isSignedIn: function() {
-                return this.$store.state.isSignedIn;
-            },
+            return this.$store.state.isSignedIn;
+        },
+        activeApplicationId: function() {
+            return this.$store.state.selectedApplicationId;
+        },
     },
     methods: {
         onGameTabChange: function(index) {
@@ -108,9 +112,10 @@ export default {
         }
     },
     components: {
+        ApplicationCommandCenter,
         ApplicationList,
-        UserPanel,
         GameOverview,
+        UserPanel
     },
     async mounted() {
     }

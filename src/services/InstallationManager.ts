@@ -51,7 +51,6 @@ class InstallationManager extends RendererServiceBase {
             this.onProgress(progress);
         });
         ipcRenderer.on('download-stop', (event: any, progress: DownloadManagerOnStopEvent) => {
-            console.log(progress);
             this.logger.info("Application is downloaded");
             this.onProgress(progress);
             this.applyActions(progress);
@@ -60,9 +59,7 @@ class InstallationManager extends RendererServiceBase {
     }
 
     private async applyActions(downloadManagerEvent:DownloadManagerOnStopEvent){
-        console.log("testtest", downloadManagerEvent.downloadedCount, downloadManagerEvent.totalFileCount);
         const {fileInfos, diffInfos} = this.getDiffInfo(downloadManagerEvent.allFiles);
-        console.log("fileInfos : ",fileInfos, diffInfos);
         let lastVersion = await this.getLastVersion(downloadManagerEvent.executionSettings.applicationId);
         let installation = this.store.state.installedApplications.find((x: InstallationInfo) => x.applicationId == downloadManagerEvent.executionSettings.applicationId);
         if(!installation) {
@@ -78,40 +75,37 @@ class InstallationManager extends RendererServiceBase {
         for(let action of updateActions) {
             switch(action.actionType) {
                 case ActionType.CreateFile:
-                    console.log("Create");
                     //Normally all work is already done !
                     break;
                 case ActionType.UpdateFile:
-                    console.log("Update");
                     var updateAction = action as UpdateActionUpdateFile;
                     var downloadedDiffInfo = this.findByDiffId(diffInfos, updateAction.diffId);
                     if (downloadedDiffInfo){
                         var updateDirectoryPath = path.join(downloadManagerEvent.executionSettings.rootPath, updateAction.newFile.directoryPath);
                         var updateFilePath = path.join(updateDirectoryPath, updateAction.newFile.fileName);
                         var diffPath = path.join(downloadManagerEvent.executionSettings.diffPath, downloadedDiffInfo.diffId);
-                        console.log(diffPath);
                         bspatch.patchSync(updateFilePath, updateFilePath, diffPath); // Sync
-                        console.log('File : ' + updateFilePath + ' patched!');
+                        this.logger.info('File : ' + updateFilePath + ' patched!');
                     }
                     break;
                 case ActionType.DeleteFile:
-                    console.log("Delete");
                     var deleteAction = action as UpdateActionDeleteFile;
                     var deleteDirectoryPath = path.join(downloadManagerEvent.executionSettings.rootPath, deleteAction.file.directoryPath);
                     var deleteFilePath = path.join(deleteDirectoryPath, deleteAction.file.fileName);
+                    // TODO: Fix here. Should await
                     fs.unlink(deleteFilePath,function (err) {
                         if (err) throw err;
-                        console.log('File : ' + deleteFilePath + ' deleted!');
+                        //console.log('File : ' + deleteFilePath + ' deleted!');
                     });
                     break;
                 case ActionType.CopyFile:
-                    console.log("Copy");
                     var copyAction = action as UpdateActionCopyFile;
                     var sourceFilePath = path.join(path.join(downloadManagerEvent.executionSettings.rootPath, copyAction.sourceFile.directoryPath), copyAction.sourceFile.fileName);
                     var destinationFilePath = path.join(path.join(downloadManagerEvent.executionSettings.rootPath, copyAction.destinationFile.directoryPath), copyAction.destinationFile.fileName);
+                    // TODO: Fix here. Should await
                     fs.copyFile(sourceFilePath, destinationFilePath, function (err) {
                         if (err) throw err;
-                        console.log('File : ' + sourceFilePath + ' copyed to : ' + destinationFilePath + '!');
+                        //console.log('File : ' + sourceFilePath + ' copyed to : ' + destinationFilePath + '!');
                     });
                     break;
             }

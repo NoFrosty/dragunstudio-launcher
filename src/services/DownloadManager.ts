@@ -200,7 +200,7 @@ class DownloadManager extends MainServiceBase {
                     resolve();
                 })
                 .on('error', (err:any) => {
-                    console.error(err);
+                    this.logger.error(err);
                 })
             });
         }

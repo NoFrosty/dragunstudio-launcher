@@ -34,7 +34,6 @@ export default {
         let RepairService = services.resolve('repairService');
         RepairService.CheckStore();
         RepairService.CheckIfSelectedApplicationStillExists();
-        console.log('State', this.$store.state);
     }
 };
 </script>

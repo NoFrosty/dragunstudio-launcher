@@ -1,13 +1,10 @@
 <template>
-    <b-dropdown class="is-up" v-model="currentGameMode" aria-role="list" v-bind:value="value" v-on:change="onChange">
-        <button class="button is-primary" type="button" slot="trigger">
+    <b-dropdown v-model="currentGameMode" aria-role="list" v-bind:value="value" v-on:change="onChange" position="is-bottom-left">
+        <button class="button is-dark" type="button" slot="trigger">
             <template>
                 <b-icon pack="fas" :icon="GAME_MODE_ICONS[currentGameMode]"></b-icon>
-                <span>{{GAME_MODE_NAME[currentGameMode]}}</span>
             </template>
-            <b-icon icon="menu-down"></b-icon>
         </button>
-
         <b-dropdown-item v-for="mode in GameModeKeys" :key="mode" :value="GAME_MODE[mode]" aria-role="listitem">
             <div class="media">
                 <b-icon class="media-left" pack="fas" :icon="GAME_MODE_ICONS[GAME_MODE[mode]]"></b-icon>

@@ -23,10 +23,9 @@
         height: 44px;
         position: relative;
         .avatar {
-        width: 44px;
-        height: 44px;
-        border-radius: 100%;
-        border-width: 1em;
+            width: 44px;
+            height: 44px;
+            border-radius: 100%;
         }
         .login-status{
             position: absolute;
@@ -54,7 +53,7 @@
     @each $status, $color in $status-colors {
         &.#{$status} {
             .avatar {
-                border: $color solid 0.05em;
+                border: $color solid 0.15em;
             }
             .login-status {
                 background-color: $color;
