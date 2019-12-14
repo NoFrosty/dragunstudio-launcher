@@ -47,12 +47,12 @@ const store = new Vuex.Store({
         addNewApplication(state, installation: InstallationInfo) {
             state.installedApplications.push(installation);
         },
-        changeApplicationVersion(state,payload:{applicationId: string, versionId: string}) {
+        changeApplicationVersion(state, payload:{applicationId: string, versionId: string, version: string}) {
             let installedApp = state.installedApplications.find(x => x.applicationId == payload.applicationId);
             if(!installedApp)
                 throw "Application is not installed !"
             installedApp.versionId = payload.versionId;
-            state.installedApplications.push(installedApp);
+            installedApp.version = payload.version;
         },
         removeApplication(state, installation: InstallationInfo) {
             let appIndex = state.installedApplications.findIndex(x => x.applicationId == installation.applicationId);
@@ -82,7 +82,7 @@ const store = new Vuex.Store({
         addNewApplication ({ commit }, installation: InstallationInfo) {
             commit('addNewApplication', installation);
         },
-        changeApplicationVersion ({ commit }, payload:{applicationId: string, versionId: string}) {
+        changeApplicationVersion ({ commit }, payload:{applicationId: string, versionId: string, version: string}) {
             commit('changeApplicationVersion', payload);
         },
         removeApplication ({ commit }, installation: InstallationInfo) {

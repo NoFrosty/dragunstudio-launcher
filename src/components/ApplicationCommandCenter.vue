@@ -1,7 +1,7 @@
 <template>
     <div class="application-command-center level-item">
-        <div class="version">
-            Version: 1.54a
+        <div class="version" v-if="installation">
+            Version: {{installation.version}}
         </div>
 
         <DropDownGameMode class="" v-model="gameMode" />

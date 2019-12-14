@@ -54,7 +54,6 @@ class InstallationManager extends RendererServiceBase {
             this.logger.info("Application is downloaded");
             this.onProgress(progress);
             this.applyActions(progress);
-            
         });
     }
 
@@ -110,7 +109,7 @@ class InstallationManager extends RendererServiceBase {
                     break;
             }
         }
-        this.store.commit('changeApplicationVersion', {applicationId : installation.applicationId, versionId: lastVersion.versionId}); 
+        this.store.commit('changeApplicationVersion', {applicationId : installation.applicationId, versionId: lastVersion.versionId, version: lastVersion.version}); 
     }
     private findByDiffId(array:DiffInfo[], diffId:string){
         return array.find(x => x.diffId == diffId);
@@ -229,8 +228,10 @@ class InstallationManager extends RendererServiceBase {
         }
 
         ipcRenderer.send('delete-directory', installation.path);
-
+        console.log("grrrrr")
         this.store.commit('removeApplication', installation);
+        console.log("grrrrr2")
+
     }
 
     public async updateApplication(
