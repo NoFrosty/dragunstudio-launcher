@@ -216,8 +216,8 @@
                 if (!this.$store.state.selectedApplicationId) {
                     return null;
                 }
-                let app = this.$store.state.installedApplications.find(x => x.applicationId == this.$store.state.selectedApplicationId);
-                return app;
+                let ins = installationManager.getInstallationInfo(this.$store.state.selectedApplicationId);
+                return ins;
             }
         },
         asyncComputed: {

@@ -10,6 +10,7 @@ import RendererServiceBase from './RendererServiceBase';
 import DiffInfo from '@/models/DiffInfo';
 import FileInfo from '@/models/FileInfo';
 import path from 'path';
+import { ApplicationInfo } from '@/models/ApplicationInfo';
 const bspatch = require('bspatch');
 const format = require('string-format');
 const CryptoJS = require('crypto-js');
@@ -30,6 +31,10 @@ class InstallationManager extends RendererServiceBase {
         super();
         this.registerIpcMainDeleteDirectoryCallback();
         this.registerIpcMainDownloadUpdate();
+    }
+
+    public getInstallationInfo(applicationId: string) : InstallationInfo | undefined {
+        return this.store.state.installedApplications.find(x => x.applicationId == applicationId);
     }
 
     private registerIpcMainDeleteDirectoryCallback() {
