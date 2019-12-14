@@ -4,6 +4,14 @@ $primary: $purple;
 $primary-darker: darken($primary, 36.4%);
 $primary-lighter: lighten($primary, 13.58%);
 
+$status-colors: (
+    online: #87FEAB,
+    away: coral,
+    busy: #F04747,
+    offline: #717C8A
+);
+
+
 $window-border-radius: 1.5rem;
 $window-bar-height: 2.5rem;
 
@@ -14,7 +22,6 @@ $navbar-item-hover-color: #FFFFFF;
 $navbar-item-hover-background-color: transparent;
 $navbar-item-active-color: #FFFFFF;
 $navbar-item-active-background-color: transparent;
-
 
 $menu-item-color: #9e9d9d;
 $menu-item-hover-color: #FFFFFF;
@@ -28,10 +35,10 @@ $tabs-link-color: #9e9d9d;
 $tabs-link-hover-border-bottom-color: #9e9d9d;
 $tabs-link-hover-color: #FFFFFF;
 
-$dropdown-menu-min-width: -webkit-fill-available;
 $text: #FFFFFF;
 $title-color: #FFFFFF;
 $subtitle-color: #FFFFFF;
+
 
 
 $colors: (
@@ -63,3 +70,9 @@ $link: $primary;
 $link-hover: $primary-lighter;
 
 $progress-bar-background-color: $black-ter;
+
+$dropdown-menu-min-width: -webkit-fill-available;
+$dropdown-content-background-color: $black-ter;
+$dropdown-item-hover-background-color: rgba($primary, 0.3);
+$dropdown-item-hover-color: $text;
+$dropdown-item-color: $text;

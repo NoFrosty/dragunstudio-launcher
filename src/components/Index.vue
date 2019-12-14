@@ -3,7 +3,7 @@
         <nav class="sidebar">
             <ul class="nav">
                 <li class="nav-item nav-profile is-not-hoverable" v-if="isSignedIn">
-                    <UserPanel/>
+                    <UserPanel />
                 </li>
                 <li class="nav-item is-not-hoverable" v-else>
                     <a class="nav-link" href="#">
@@ -13,20 +13,21 @@
                 <!--My Games-->
                 <li class="nav-item sidebar-title is-not-hoverable is-not-selectable">
                     <span class="nav-link">
-                        <div class="border-bottom">
+                        <div class="">
                             <h1 class="">MY GAMES</h1>
                         </div>
                     </span>
                 </li>
-                <li class="nav-item item-game" v-for="application in applications" :key="application.applicationid">
+                <li class="nav-item item-game" v-for="application in applications" :key="application.applicationId">
                     <a class="nav-link" @click="changeApplication(application)">
+                        <img :src="'./images/app-icon/' + application.applicationId + '.png'" alt="icon">
                         <span class="menu-title">{{application.name}}</span>
                     </a>
                 </li>
                 <!--My Friends-->
                 <li class="nav-item sidebar-title is-not-hoverable is-not-selectable">
                     <span class="nav-link">
-                        <div class="border-bottom">
+                        <div class="">
                             <h1 class="">MY FRIENDS</h1>
                         </div>
                     </span>

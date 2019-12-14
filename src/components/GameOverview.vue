@@ -154,6 +154,7 @@
                                     <b-icon pack="fas" icon="cog"></b-icon>
                                 </button>
                                 <b-dropdown-item aria-role="listitem" @click="checkForUpdates">Check for updates</b-dropdown-item>
+                                <b-dropdown-item aria-role="listitem">Open in explorer</b-dropdown-item>
                                 <b-dropdown-item aria-role="listitem">Settings</b-dropdown-item>
                                 <b-dropdown-item aria-role="listitem">Repair</b-dropdown-item>
                                 <b-dropdown-item aria-role="listitem" @click="uninstallApplication">Uninstall</b-dropdown-item>

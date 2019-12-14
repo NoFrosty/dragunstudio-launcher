@@ -1,10 +1,9 @@
 <template>
     <b-dropdown aria-role="list">
-        <a href="#" class="nav-link" slot="trigger">
+        <a href="#" class="user-box online" slot="trigger">
             <div class="nav-profile-image">
-                <img src="http://www.bootstrapdash.com/demo/purple/jquery/template/assets/images/faces/face1.jpg" alt="profile">
-                <span class="login-status online"></span>
-                <!--change to offline or busy as needed-->
+                <img class="avatar" src="http://www.bootstrapdash.com/demo/purple/jquery/template/assets/images/faces/face1.jpg" alt="profile">
+                <span class="login-status"></span>
             </div>
             <div class="nav-profile-text">
                 <span class="nav-profile-text-name">{{this.$store.state.username}}</span>
