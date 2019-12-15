@@ -31,6 +31,8 @@ abstract class RendererServiceBase implements ServiceBase {
     public get logger() : Logger {
         return this._logger;
     }
+
+    public onInitialize(): void { }
 }
 
 export default RendererServiceBase;

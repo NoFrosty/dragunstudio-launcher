@@ -18,6 +18,7 @@ Vue.prototype.$services = services
 Vue.use(Buefy)
 Vue.use(AsyncComputed)
 
+
 /* eslint-disable no-new */
 new Vue({
   router,

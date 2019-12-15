@@ -12,7 +12,7 @@ const GAME_TABS = {
     ACHIEVEMENTS: 2
 };
 import WindowsController from "./components/WindowsController.vue";
-import services from "@/services/services";
+import services, { eventBus } from "@/services/services";
 
 export default {
     name: "evopeons-launcher",
@@ -34,6 +34,20 @@ export default {
         let RepairService = services.resolve('repairService');
         RepairService.CheckStore();
         RepairService.CheckIfSelectedApplicationStillExists();
+
+        for(var key in services.registrations) {
+            let service = services.resolve(key)
+            if (typeof service.onInitialize !== "undefined") {
+                service.onInitialize();
+            }
+        }
+
+        // Forward to login page on sign out event
+        eventBus.subscribe('on-signout', () => {
+            if (this.$router.currentRoute.name != "login") {
+                this.$router.push({ name: "login" });
+            }
+        });
     }
 };
 </script>

@@ -45,13 +45,12 @@
             }
         },
         methods: {
-        logout: async function() {
-            await authenticationService.SignOut();
-            this.$router.push({ name: "login" });
-        },
-        goOnline: async function() {
-            this.$router.push({ name: "boot" })
-        }
+            logout: async function() {
+                await authenticationService.SignOut();
+            },
+            goOnline: async function() {
+                this.$router.push({ name: "boot" })
+            }
         },
     }
 </script>

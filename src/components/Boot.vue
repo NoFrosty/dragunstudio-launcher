@@ -38,9 +38,6 @@
             }
         },
         methods: {
-            onGameTabChange: function (index) {
-                this.activeGameTab = index;
-            },
             testServerConnection: async function() {
                 this.currentAction = 'Checking Server Status';
                 try {
@@ -65,7 +62,7 @@
             initializeLauncher: async function() {
                 this.currentAction = 'Loading';
 
-                var result = await applicationLibrary.getAllGameList();
+                //var result = await applicationLibrary.getAllGameList();
                 
                 this.currentAction = 'Loaded';
 

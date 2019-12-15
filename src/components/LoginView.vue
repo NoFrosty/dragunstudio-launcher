@@ -44,7 +44,7 @@
                     </div>
                     <div class="field">
                         <div class="level">
-                            <b-switch :value="false">
+                            <b-switch v-model="staySignedIn">
                                 Stay signed in ?
                             </b-switch>
                             <div class="level-right">
@@ -64,8 +64,9 @@
     export default {
         data() {
             return {
-                email: null,
-                password: null,
+                email: "calvindogus@gmail.com",
+                password: "PhoeniX96&",
+                staySignedIn: false,
                 emailHasError: false,
             }
         },
@@ -78,7 +79,7 @@
                 var isLogged = await authenticationService.AttemptSignIn({
                     email: this.email,
                     password: this.password
-                });
+                }, this.staySignedIn);
                 if(isLogged) {
                     this.$router.push({ name: "launcher" });
                 }

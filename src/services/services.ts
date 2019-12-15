@@ -40,6 +40,8 @@ const patchManager = services.resolve<PatchManager>('patchManager');
 const notificationManager = services.resolve<RendererNotificationManager>('notificationManager');
 
 export {
+    store,
+    router,
     eventBus,
     services,
     authenticationService,
