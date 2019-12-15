@@ -4,9 +4,6 @@
             <b-modal :active.sync="isNewsModalActive" class="popup-news">
                <FullNews/>
             </b-modal>
-             <b-modal :active.sync="isInstallModalActive" class="popup-install" v-if="selectedApplication">
-               <Install :application="selectedApplication" v-on:start="onStartInstall" />
-            </b-modal>
         </section>
         <!--
         <section class="overview-news">
@@ -125,126 +122,32 @@
                     </div>
                 </div>
             </div>
-        <div class="overview-download">
-            <nav class="level" >
-                <!-- Left side -->
-                <div class="level-left" v-if="totalReceived || totalToReceive">
-                    <p class="level-item">{{totalReceived}} out of {{totalToReceive}}</p>
-                </div>
-                <!-- Right side -->
-                <div class="level-right">
-                    <p class="level-item">15 MIN PLEASE</p>
-                </div>
-            </nav>
-            <div class="update-progress">
-                <b-progress class="update-progress-bar" type="is-primary" :precision="2" :value="percentage" show-value format="percent"></b-progress>
-                <a class="update-progress-control">
-                    <b-icon pack="fas" icon="pause" size="is-medium" type="is-primary"></b-icon>
-                </a>
-            </div>
-        </div>
     </div>
 </template>
 <script>
-    import humanize from 'humanize'
-    import {
-        GAME_MODE
-    } from '@/services/constants.ts'
-    import DropDownGameMode from './DropDownGameMode.vue';
     import FullNews from './FullNews.vue'
-    import Install from './Install.vue'
     import axios from 'axios';
-
-    import { applicationLibrary, installationManager, eventBus } from '@/services/services'
 
     export default {
         data() {
             return {
-                gameMode: GAME_MODE.PUBLIC,
                 isNewsModalActive: false,
-                isInstallModalActive: false,
-                news: null,
-                percentage: 0,
-                totalReceived: null,
-                totalToReceive: null,
-                updateAvailable: false,
-                carousels: [
-                    { text: 'Slide 1', color: 'primary' },
-                    { text: 'Slide 2', color: 'info' },
-                    { text: 'Slide 3', color: 'success' },
-                    { text: 'Slide 4', color: 'warning' },
-                    { text: 'Slide 5', color: 'danger' }
-                ],
+                news: null
             }
-        },
-        components: {
-            DropDownGameMode,
-            FullNews,
-            Install
         },
         computed: {
             isSignedIn: function() {
                 return this.$store.state.isSignedIn;
             },
-            installation: function() {
-                if (!this.$store.state.selectedApplicationId) {
-                    return null;
-                }
-                let ins = installationManager.getInstallationInfo(this.$store.state.selectedApplicationId);
-                return ins;
-            }
-        },
-        asyncComputed: {
-            selectedApplication: async function() {
-                if (!this.$store.state.selectedApplicationId) {
-                    return null;
-                }
-                return await applicationLibrary.getGameFromId(this.$store.state.selectedApplicationId);
-            }
         },
         methods: {
-            onProgress(progress) {
-                if(progress){
-                    this.percentage = progress.downloadedSize / progress.totalFileSize * 100;
-                    this.totalReceived = humanize.filesize(progress.downloadedSize);
-                    this.totalToReceive = humanize.filesize(progress.totalFileSize);
-                }
-            },
-            onFinish(progress) {
-                this.onProgress(progress);
-            },
-            onStartInstall(installData) {
-                installationManager.installApplicationMultiThread(
-                    this.$store.state.selectedApplicationId,
-                    installData.path,
-                    this.onProgress
-                );
-            },
-            confirm() {
-                if(!this.$store.state.isSignedIn){
-                    this.$buefy.dialog.confirm({
-                        message: 'Continue without logged in?',
-                        onConfirm: () => this.$buefy.toast.open('User confirmed without logged in')
-                    })
-                }
-            },
-            uninstallApplication(){
-                installationManager.uninstallApplication(this.selectedApplication.applicationId);
-            },
-            async checkForUpdates(){
-                this.updateAvailable = await installationManager.checkUpdateAvailable(this.selectedApplication.applicationId);
-            },
-            onStartUpdate(){
-                installationManager.updateApplication(this.$store.state.selectedApplicationId,this.onProgress);
-            }
         },
         mounted: async function () {
             let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
             this.news = newsResponse.data;
-
-            eventBus.subscribe('on-update-progress', this.onProgress);
-            eventBus.subscribe('on-update-finish', this.onFinish);
-            //this.checkForUpdates();
         },
+        components: {
+            FullNews,
+        }
     }
 </script>
