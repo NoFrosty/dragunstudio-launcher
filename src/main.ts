@@ -9,7 +9,7 @@ import services from '@/services/services'
 const bspatch = require('bspatch');
 const AsyncComputed = require('vue-async-computed').default
 var CryptoJS = require("crypto-js");
-
+import './validate-configuration'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
@@ -17,6 +17,7 @@ Vue.prototype.$services = services
 
 Vue.use(Buefy)
 Vue.use(AsyncComputed)
+
 /* eslint-disable no-new */
 new Vue({
   router,

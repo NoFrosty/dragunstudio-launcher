@@ -8,24 +8,27 @@
                 </div>
                 <h1 class="login-heading">Welcome back !</h1>
                 <p class="login-subheading">We don't need a healer for this, right?</p>
-                <form @submit.prevent="attemptSignIn">
+                <ValidationObserver ref="observer" v-slot="{ passes }">
                     <div class="field">
                         <p class="control has-icons-left has-icons-right">
-                            <b-field>
-                                <b-input size="is-medium" icon-pack="fa" icon="envelope" v-model="email"
-                                    type="email" name="email" placeholder="Email" required>
-                                </b-input>
-                            </b-field>
+                            <ValidationProvider rules="required|email" name="Email" v-slot="{ errors, valid }">
+                                <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+                                    <b-input size="is-medium" icon-pack="fa" icon="envelope" v-model="email"
+                                        type="email" name="email" placeholder="Email">
+                                    </b-input>
+                                </b-field>
+                            </ValidationProvider>
                         </p>
                     </div>
                     <div class="field">
                         <p class="control has-icons-left has-icons-right">
-                            <b-field>
-                                <b-input size="is-medium" icon-pack="fa" icon="lock" v-model="password" 
-                                    type="password" name="password" placeholder="Password" password-reveal required
-                                    @keyup.native.enter="attemptSignIn">
-                                </b-input>
-                            </b-field>
+                            <ValidationProvider rules="required" name="Password" v-slot="{ errors, valid }">
+                                <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+                                    <b-input size="is-medium" icon-pack="fa" icon="lock" v-model="password" 
+                                        type="password" name="password" placeholder="Password" password-reveal required>
+                                    </b-input>
+                                </b-field>
+                            </ValidationProvider>
                         </p>
                     </div>
                     <div class="field">
@@ -45,54 +48,42 @@
                                 Stay signed in ?
                             </b-switch>
                             <div class="level-right">
-                                <b-button type="submit is-primary" @click="attemptSignIn">Login</b-button>
+                                <b-button type="submit is-primary" @click="passes(attemptSignIn)">Login</b-button>
                             </div>
                         </div>
                     </div>
-                </form>
+                </ValidationObserver>
             </div>
         </div>
     </section>
 </template>
 <script>
-    import { authenticationService } from '@/services/services'
-    
+    import { authenticationService, notificationManager } from '@/services/services'
+    import { ValidationObserver, ValidationProvider } from "vee-validate";
+
     export default {
         data() {
             return {
                 email: null,
                 password: null,
-                wrongIdentifier: false,
                 emailHasError: false,
             }
         },
         components: {
+            ValidationObserver,
+            ValidationProvider
         },
         methods: {
             attemptSignIn: async function() {
-                if(!this.email || !this.password){
-                    if(!this.email || this.email.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/))
-                        this.emailHasError = true;
-                    else
-                        this.emailHasError = false;
-                    if(!this.password)
-                        this.passwordHasError = true;
-                    else
-                        this.passwordHasError = false;
+                var isLogged = await authenticationService.AttemptSignIn({
+                    email: this.email,
+                    password: this.password
+                });
+                if(isLogged) {
+                    this.$router.push({ name: "launcher" });
                 }
                 else{
-                    var isLogged = await authenticationService.AttemptSignIn({
-                        email: this.email,
-                        password: this.password
-                    });
-                    if(isLogged) {
-                        this.wrongIdentifier = false;
-                        this.$router.push({ name: "launcher" });
-                    }
-                    else{
-                        this.wrongIdentifier = true;
-                        
-                    }
+                    notificationManager.error("Login failed! Email or password does not match!");
                 }
             }
         },

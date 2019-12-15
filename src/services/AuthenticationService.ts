@@ -3,25 +3,29 @@ import RendererServiceBase from './RendererServiceBase';
 
 class AuthenticationService extends RendererServiceBase {
 
-    async AttemptSignIn(credentials: {email : string, password : string}) {
+    async AttemptSignIn(credentials: {email : string, password : string}) : Promise<boolean> {
         let parameters = {
             Email: credentials.email,
             Password: credentials.password
         };
         
-        let loginResult = await axios.post(process.env.VUE_APP_API_LINK + "/authenticate", parameters);
-        if (loginResult.data.isSuccessfull) {
-            this.store.dispatch('signIn', { 
-                jwt: loginResult.data.token,
-                username: loginResult.data.username
-            });
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.store.state.jwt;
-            return true;
+        try {
+            let loginResult = await axios.post(process.env.VUE_APP_API_LINK + "/authenticate", parameters);
+            if (loginResult.data.isSuccessfull) {
+                this.store.dispatch('signIn', { 
+                    jwt: loginResult.data.token,
+                    username: loginResult.data.username
+                });
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.store.state.jwt;
+                return true;
+            }
+            else{
+                return false;
+            }
         }
-        else{
+        catch {
             return false;
-        }
-        
+        }        
     }
 
     async SignOut() {
