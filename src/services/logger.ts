@@ -13,7 +13,9 @@ if (process.env.NODE_ENV !== 'production') {
         format: winston.format.json(),
         level: process.env.EVOLAUNCHER_LOGGING_LEVEL
     }));
-};
+}
 
+// @ts-ignore
 logger.error = console.error;
+
 export default logger;

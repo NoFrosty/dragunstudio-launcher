@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex';
-import ApplicationState from '@/store/ApplicationState';
 import { InstallationInfo } from '@/models/InstallationInfo';
+import { ApplicationStatus, InstallationActionType } from '@/models/ApplicationStatus';
+import ApplicationState from '@/store/ApplicationState';
 
 Vue.use(Vuex)
 
@@ -11,7 +12,8 @@ const state : ApplicationState = {
     jwt: "",
     isOffline: undefined,
     selectedApplicationId: undefined,
-    installedApplications: []
+    installedApplications: [],
+    applicationStatuses: []
 }
 
 
@@ -49,8 +51,7 @@ const store = new Vuex.Store({
         },
         changeApplicationVersion(state, payload:{applicationId: string, versionId: string, version: string}) {
             let installedApp = state.installedApplications.find(x => x.applicationId == payload.applicationId);
-            if(!installedApp)
-                throw "Application is not installed !"
+            if(!installedApp) throw "Application is not installed !"
             installedApp.versionId = payload.versionId;
             installedApp.version = payload.version;
         },
@@ -66,6 +67,22 @@ const store = new Vuex.Store({
         },
         getInstalledApplication (state, applicationId: string) {
             return state.installedApplications.find(x => x.applicationId == applicationId);
+        },
+        setApplicationInstallationActionType (state, payload: { applicationId: string, actionType: InstallationActionType }) {
+            let status = state.applicationStatuses.find(x => x.applicationId == payload.applicationId);
+            if (!status) {
+                status = ApplicationStatus.createDefault(payload.applicationId);
+                state.applicationStatuses.push(status);
+            }
+            status.currentActionType = payload.actionType;
+        },
+        markApplicationAsHasUpdate (state, payload: { applicationId: string, hasUpdate: boolean }) {
+            let status = state.applicationStatuses.find(x => x.applicationId == payload.applicationId);
+            if (!status) {
+                status = ApplicationStatus.createDefault(payload.applicationId);
+                state.applicationStatuses.push(status);
+            }
+            status.hasUpdate = payload.hasUpdate;
         }
     },
     actions: {
@@ -96,6 +113,12 @@ const store = new Vuex.Store({
         },
         getInstalledApplication ({ commit }, applicationId: string) {
             commit('getInstalledApplication', applicationId);
+        },
+        setApplicationInstallationActionType ({ commit }, payload: { applicationId: string, actionType: InstallationActionType }) {
+            commit('setApplicationInstallationActionType', payload);
+        },
+        markApplicationAsHasUpdate ({ commit }, payload: { applicationId: string, hasUpdate: boolean }) {
+            commit('markApplicationAsHasUpdate', payload);
         }
     }
 })

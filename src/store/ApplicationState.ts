@@ -1,4 +1,5 @@
 import { InstallationInfo } from '@/models/InstallationInfo';
+import { ApplicationStatus } from '@/models/ApplicationStatus';
 
 interface ApplicationState {
     isSignedIn : boolean
@@ -6,7 +7,8 @@ interface ApplicationState {
     jwt : string,
     isOffline?: boolean,
     selectedApplicationId?: string,
-    installedApplications: InstallationInfo[]
+    installedApplications: InstallationInfo[],
+    applicationStatuses: ApplicationStatus[]
 }
 
 export default ApplicationState
