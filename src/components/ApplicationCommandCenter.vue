@@ -11,8 +11,8 @@
                 <b-icon pack="fas" icon="cog"></b-icon>
             </button>
             <b-dropdown-item aria-role="listitem" @click="checkForUpdates">Check for updates</b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">Open in explorer</b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">Settings</b-dropdown-item>
+            <b-dropdown-item aria-role="listitem" @click="openFileExplorer">Open in explorer</b-dropdown-item>
+            <b-dropdown-item aria-role="listitem" @click="openSettingsPanel">Settings</b-dropdown-item>
             <b-dropdown-item aria-role="listitem">Repair</b-dropdown-item>
             <b-dropdown-item aria-role="listitem" @click="uninstallApplication">Uninstall</b-dropdown-item>
         </b-dropdown>
@@ -33,11 +33,11 @@ import humanize from 'humanize'
 import DropDownGameMode from './DropDownGameMode.vue';
 import Install from './Install.vue'
 import { InstallationActionType } from '@/models/ApplicationStatus'
-
+import {shell} from 'electron'
 import {
     GAME_MODE
 } from '@/services/constants.ts'
-import { applicationLibrary, installationManager, eventBus } from '@/services/services'
+import { applicationLibrary, installationManager, eventBus, notificationManager } from '@/services/services'
 
 export default {
     props: {
@@ -98,11 +98,19 @@ export default {
                 this.installationProgress.totalToReceive = humanize.filesize(progress.totalFileSize);
             }
         },
-        uninstallApplication(){
-            installationManager.uninstallApplication(this.applicationId);
+        async uninstallApplication(){
+            if(await notificationManager.confirm("Are you sure you want to <b>uninstall</b> this application? This action cannot be undone.")){
+                installationManager.uninstallApplication(this.applicationId)
+            }
         },
         async checkForUpdates(){
             this.updateAvailable = await installationManager.checkUpdateAvailable(this.applicationId);
+        },
+        openFileExplorer(){
+            shell.openItem(installationManager.getInstallationInfo(this.applicationId).path);
+        },
+        openSettingsPanel(){
+            shell.beep();
         }
     },
     components: {

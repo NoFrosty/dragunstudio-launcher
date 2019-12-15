@@ -359,9 +359,12 @@ a.navbar-item, .navbar-link{
     }
     .animation-content{
         z-index: 1;
-        
+        &.modal-card{
+            border: darken($primary, 35%) solid 1px;
+            border-radius: $radius-large;
+        }
         &:not(.modal-card){
-            background-color: #000000a8;
+            background-color: $black;
         }
         .modal-background {
             background-color: rgba(10, 10, 10, 0.86);

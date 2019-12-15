@@ -54,9 +54,11 @@ $colors: (
     "danger": ($danger, $danger-invert),
 );
 
-$modal-card-body-background-color: $primary;
-$modal-card-head-background-color: $black-ter;
-$modal-card-foot-border-top: $black-ter;
+$modal-card-head-background-color: $black;
+$modal-card-body-background-color: $black-bis;
+$modal-card-head-border-bottom: 0;
+$modal-card-foot-border-top: 0;
+$modal-card-title-color: $text;
 $window-controller-background-color: rgba($color: #000000, $alpha: 0.2);
 
 $input-background-color: $black-ter;

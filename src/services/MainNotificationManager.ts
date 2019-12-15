@@ -4,7 +4,7 @@ class MainNotificationManager implements NotificationManager {
     alert(message: string, informationType: InformationType): void {
         throw new Error("Method not implemented.");
     }
-    confirm(message: string, informationType: InformationType): void {
+    confirm(message: string, informationType: InformationType): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
     notify(message: string, informationType: InformationType): void {

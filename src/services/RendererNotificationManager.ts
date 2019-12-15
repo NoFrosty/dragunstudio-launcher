@@ -1,12 +1,26 @@
-import { ToastProgrammatic } from 'buefy'
+import { ToastProgrammatic, DialogProgrammatic} from 'buefy'
 import { NotificationManager, InformationType } from './NotificationManager';
 
 class RendererNotificationManager implements NotificationManager {
     alert(message: string, informationType: InformationType): void {
         throw new Error("Method not implemented.");
     }
-    confirm(message: string, informationType: InformationType): void {
-        throw new Error("Method not implemented.");
+    async confirm(message: string, informationType: InformationType): Promise<boolean> {
+        return new Promise((resolve: any) =>{
+            DialogProgrammatic.confirm({
+                title: 'Confirmation',
+                message: message,
+                confirmText: 'Yes',
+                type: 'is-primary',
+                hasIcon: true,
+                onConfirm: () => {
+                    resolve(true)
+                },
+                onCancel: () => {
+                    resolve(false);
+                }
+            });
+        });
     }
     notify(message: string, informationType: InformationType): void {
         throw new Error("Method not implemented.");
