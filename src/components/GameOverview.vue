@@ -181,7 +181,7 @@
     import Install from './Install.vue'
     import axios from 'axios';
 
-    import { applicationLibrary, installationManager } from '@/services/services'
+    import { applicationLibrary, installationManager, eventBus } from '@/services/services'
 
     export default {
         data() {
@@ -234,8 +234,10 @@
                     this.percentage = progress.downloadedSize / progress.totalFileSize * 100;
                     this.totalReceived = humanize.filesize(progress.downloadedSize);
                     this.totalToReceive = humanize.filesize(progress.totalFileSize);
-
                 }
+            },
+            onFinish(progress) {
+                this.onProgress(progress);
             },
             onStartInstall(installData) {
                 installationManager.installApplicationMultiThread(
@@ -266,6 +268,8 @@
             let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
             this.news = newsResponse.data;
 
+            eventBus.subscribe('on-update-progress', this.onProgress);
+            eventBus.subscribe('on-update-finish', this.onFinish);
             //this.checkForUpdates();
         },
     }

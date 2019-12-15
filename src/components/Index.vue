@@ -86,6 +86,7 @@ import UserPanel from "@/components/UserPanel.vue";
 import AuthenticationService from "@/services/AuthenticationService";
 import axios from 'axios';
 import { applicationLibrary } from '@/services/services';
+
 export default {
     name: "evopeons-launcher",
     data() {
@@ -118,6 +119,7 @@ export default {
         UserPanel
     },
     async mounted() {
+        
     }
 };
 </script>

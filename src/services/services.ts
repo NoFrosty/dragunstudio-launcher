@@ -12,11 +12,14 @@ import RepairService from "@/services/RepairService";
 import RendererNotificationManager from "@/services/RendererNotificationManager";
 import PatchManager from "@/services/PatchManager";
 import logger from "@/services/logger";
+import { EventBus } from "ts-bus";
 
+const eventBus = new EventBus();
 
 services.register({
     store: asValue(store),
     router: asValue(router),
+    eventBus: asValue(eventBus),
     
     authenticationService: asClass(AuthenticationService).singleton(),
     applicationLibrary: asClass(ApplicationLibrary).singleton(),
@@ -37,6 +40,7 @@ const patchManager = services.resolve<PatchManager>('patchManager');
 const notificationManager = services.resolve<RendererNotificationManager>('notificationManager');
 
 export {
+    eventBus,
     services,
     authenticationService,
     applicationLibrary,

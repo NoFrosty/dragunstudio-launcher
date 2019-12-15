@@ -228,10 +228,7 @@ class InstallationManager extends RendererServiceBase {
         }
 
         ipcRenderer.send('delete-directory', installation.path);
-        console.log("grrrrr")
         this.store.commit('removeApplication', installation);
-        console.log("grrrrr2")
-
     }
 
     public async updateApplication(

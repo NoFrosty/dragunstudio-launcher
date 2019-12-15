@@ -212,13 +212,17 @@ class DownloadManager extends MainServiceBase {
             downloadedFileCount: 0,
             downloadedSingleFileSize: 0,
             downloadedTotalFileSize: 0,
-            totalFileSize: 0,
-            totalFileCount: 0,
+            totalFileSize: DownloadManager.getTotalFileSize(allFiles),
+            totalFileCount: allFiles.length,
             allFiles: allFiles,
             executionSettings: settings,
             downloadedFiles: []
         }
         return context;
+    }
+
+    private static getTotalFileSize(allFiles: (FileInfo | DiffInfo)[]) {
+        return allFiles.reduce((a, b) => a + ((DownloadManager.isFile(b) ? b.compressedSize : b.diffSize) || 0), 0)
     }
 
     public static async deleteDirectory(directoryPath: string) {

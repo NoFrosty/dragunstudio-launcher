@@ -36,7 +36,7 @@ import Install from './Install.vue'
 import {
     GAME_MODE
 } from '@/services/constants.ts'
-import { applicationLibrary, installationManager } from '@/services/services'
+import { applicationLibrary, installationManager, eventBus } from '@/services/services'
 
 export default {
         props: {
@@ -82,6 +82,13 @@ export default {
             );
         },
         onProgress(progress) {
+            if (progress.downloadedCount == progress.totalFileCount) {
+                eventBus.emitter.emit("on-update-finish", progress);
+            }
+            else {
+                eventBus.emitter.emit("on-update-progress", progress);
+            }
+
             if(progress){
                 this.installationProgress.percentage = progress.downloadedSize / progress.totalFileSize * 100;
                 this.installationProgress.totalReceived = humanize.filesize(progress.downloadedSize);
