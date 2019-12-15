@@ -12,13 +12,19 @@ const request = require('request')
 var progress = require('request-progress');
 const fsExtra = require('fs-extra');
 require('https').globalAgent.options.rejectUnauthorized = false;
-
+const progressSpeedUpdatePeriod = 2000;
 
 interface DownloadManagerSettings {
     concurrentDownloadCount : number;
     rootPath : string;
     diffPath : string;
     applicationId : string;
+}
+
+interface DownloadManagerSpeedContext {
+    lastCalculationTime: Date;
+    lastDownloadedSize: number;
+    lastSpeed: number;
 }
 
 interface DownloadManagerContext {
@@ -32,6 +38,8 @@ interface DownloadManagerContext {
     allFiles: (FileInfo | DiffInfo)[];
     downloadedFiles: (FileInfo | DiffInfo)[];
 
+    speedContext: DownloadManagerSpeedContext;
+
     onProgress? : (progress: DownloadManagerOnProgressEvent) => void;
     onStop? : (stop: DownloadManagerOnStopEvent) => void;
 }
@@ -42,6 +50,7 @@ interface DownloadManagerOnProgressEvent {
     totalFileSize: number;
     downloadedSize: number;
     downloadedCount: number;
+    speed: number;
 }
 interface DownloadManagerOnStopEvent extends DownloadManagerOnProgressEvent {
     allFiles: (FileInfo | DiffInfo)[];
@@ -89,8 +98,25 @@ class DownloadManager extends MainServiceBase {
                     downloadedSize: context.downloadedTotalFileSize + context.downloadedSingleFileSize,
                     downloadedCount: context.downloadedFileCount,
                     totalFileSize: context.totalFileSize,
-                    totalFileCount: context.totalFileCount
+                    totalFileCount: context.totalFileCount,
+                    speed: 0
                 };
+
+                // Calculate progress speed
+                let currentTime = new Date();
+                let deltaTime = (currentTime.getTime() - context.speedContext.lastCalculationTime.getTime());
+                if (deltaTime > progressSpeedUpdatePeriod) {
+                    let deltaDownloadedSize = progress.downloadedSize - context.speedContext.lastDownloadedSize;
+                    progress.speed = deltaDownloadedSize / (deltaTime / 1000);
+                    // Store back values for next calculation
+                    context.speedContext.lastDownloadedSize = progress.downloadedSize;
+                    context.speedContext.lastCalculationTime = currentTime;
+                    context.speedContext.lastSpeed = progress.speed;
+                }
+                else {
+                    // Get speed from previous progress
+                    progress.speed = context.speedContext.lastSpeed;
+                }
                 context.onProgress(progress);
             }
         }
@@ -106,7 +132,8 @@ class DownloadManager extends MainServiceBase {
                 totalFileCount: context.totalFileCount,
                 allFiles: context.allFiles,
                 downloadedFiles: context.downloadedFiles,
-                executionSettings: context.executionSettings
+                executionSettings: context.executionSettings,
+                speed: 0
             };
             context.onStop(progress);
         }
@@ -122,7 +149,8 @@ class DownloadManager extends MainServiceBase {
                 totalFileCount: context.totalFileCount,
                 allFiles: context.allFiles,
                 downloadedFiles: context.downloadedFiles,
-                executionSettings: context.executionSettings
+                executionSettings: context.executionSettings,
+                speed: 0
             };
             context.onStop(progress);
         }
@@ -216,7 +244,12 @@ class DownloadManager extends MainServiceBase {
             totalFileCount: allFiles.length,
             allFiles: allFiles,
             executionSettings: settings,
-            downloadedFiles: []
+            downloadedFiles: [],
+            speedContext: {
+                lastCalculationTime: new Date(),
+                lastDownloadedSize: 0,
+                lastSpeed: 0
+            }
         }
         return context;
     }

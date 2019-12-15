@@ -122,13 +122,19 @@
                     </div>
                 </div>
             </div>
+        <ApplicationUpdateProgress v-if="isUpdating" />
     </div>
 </template>
 <script>
-    import FullNews from './FullNews.vue'
     import axios from 'axios';
+    import FullNews from '@/components/FullNews.vue'
+    import ApplicationUpdateProgress from '@/components/ApplicationUpdateProgress.vue'
+    import { InstallationActionType } from '@/models/ApplicationStatus'
 
     export default {
+        props: {
+            applicationId: null
+        },
         data() {
             return {
                 isNewsModalActive: false,
@@ -139,6 +145,13 @@
             isSignedIn: function() {
                 return this.$store.state.isSignedIn;
             },
+            isUpdating() {
+                let status = this.$store.state.applicationStatuses.find(x => x.applicationId == this.applicationId);
+                if (status) {
+                    return status.currentActionType == InstallationActionType.Update;
+                }
+                return false;
+            }
         },
         methods: {
         },
@@ -147,7 +160,8 @@
             this.news = newsResponse.data;
         },
         components: {
-            FullNews,
+            ApplicationUpdateProgress,
+            FullNews
         }
     }
 </script>

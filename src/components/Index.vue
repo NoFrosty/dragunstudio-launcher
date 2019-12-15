@@ -51,7 +51,9 @@
                 </div>
             </div>
             <div class="content-container" v-if="!isOffline">
-                <GameOverview v-if="!isOffline" class="game-overview tab-content"
+                <GameOverview 
+                    :applicationId="activeApplicationId"
+                    v-if="!isOffline" class="game-overview tab-content"
                     v-bind:class="{ active: activeGameTab == GAME_TABS.OVERVIEW }"/>
                 <div class="game-activities tab-content"
                     v-bind:class="{ active: activeGameTab == GAME_TABS.ACTIVITIES }">

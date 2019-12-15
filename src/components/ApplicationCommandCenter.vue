@@ -32,6 +32,7 @@
 import humanize from 'humanize'
 import DropDownGameMode from './DropDownGameMode.vue';
 import Install from './Install.vue'
+import { InstallationActionType } from '@/models/ApplicationStatus'
 
 import {
     GAME_MODE
@@ -39,7 +40,7 @@ import {
 import { applicationLibrary, installationManager, eventBus } from '@/services/services'
 
 export default {
-        props: {
+    props: {
         applicationId: null
     },
     data() {
@@ -80,10 +81,12 @@ export default {
                 installData.path,
                 this.onProgress
             );
+            this.$store.commit('setApplicationInstallationActionType', { applicationId: this.applicationId, actionType: InstallationActionType.Update });
         },
         onProgress(progress) {
             if (progress.downloadedCount == progress.totalFileCount) {
                 eventBus.emitter.emit("on-update-finish", progress);
+                this.$store.commit('setApplicationInstallationActionType', { applicationId: this.applicationId, actionType: InstallationActionType.NoAction });
             }
             else {
                 eventBus.emitter.emit("on-update-progress", progress);
