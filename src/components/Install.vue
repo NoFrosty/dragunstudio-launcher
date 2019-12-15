@@ -34,11 +34,13 @@
     import { ApplicationInfo } from '@/models/ApplicationInfo';
     import { DownloadManager, DownloadManagerOnProgressEvent } from '../services/DownloadManager';
     const {dialog} = require('electron').remote;
+    const {remote} = require('electron')
+
 
     export default {
         data() {
             return {
-                path : null,
+                path : remote.app.getAppPath() + "\\" + this.application.name,
             }
         },
         props:{
@@ -49,7 +51,8 @@
                 const selectedPaths = await dialog.showOpenDialog({
                     properties: ['openDirectory']
                 });
-                this.path = selectedPaths.filePaths[0] + "\\" + this.application.name;
+                if(!selectedPaths.canceled)
+                    this.path = selectedPaths.filePaths[0] + "\\" + this.application.name;
             },
             install() {
                 this.$emit('start', {
