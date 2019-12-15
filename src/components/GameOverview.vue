@@ -63,11 +63,7 @@
                         <p class="article">Lasts Achievments : </p>
                     </div>
                 </div>
-                -->
-                <div class="tile is-ancestor">
-                    <div class="tile is-vertical is-8">
-                        <div class="tile is-parent">
-                            <b-carousel class="tile is-child"
+                <b-carousel class="tile is-child"
                             :arrow="true"
                             :autoplay="true"
                             :pause-info="false"
@@ -95,78 +91,56 @@
                                     </section>
                                 </b-carousel-item>           
                             </b-carousel>
+                -->
+                <div class="tile is-ancestor">
+                    <div class="tile is-vertical is-6">
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                            <p class="title">One</p>
+                            <p class="subtitle">Subtitle</p>
+                            </article>
+                        </div>
+                    </div>
+                    <div class="tile is-vertical">
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                            <p class="title">One</p>
+                            <p class="subtitle">Subtitle</p>
+                            </article>
                         </div>
                         <div class="tile">
-                            <div class="tile is-parent is-vertical">
+                            <div class="tile is-parent ">
                                 <article class="tile is-child box">
-                                <!-- Put any content you want -->
-                                </article>
-                                <article class="tile is-child box">
-                                <!-- Put any content you want -->
+                                <p class="title">One</p>
+                                <p class="subtitle">Subtitle</p>
                                 </article>
                             </div>
                             <div class="tile is-parent">
                                 <article class="tile is-child box">
-                                <!-- Put any content you want -->
+                                <p class="title">Two</p>
+                                <p class="subtitle">Subtitle</p>
                                 </article>
                             </div>
                         </div>
-                        
-                    </div>
-                    <div class="tile is-parent">
-                        <article class="tile is-child box">
-                        <!-- Put any content you want -->
-                        </article>
                     </div>
                 </div>
             </div>
-        <b-button size="is-large" class="is-primary" @click="isInstallModalActive = true" v-if="!installation">Install</b-button>
-        <div class="overview-download" v-else>
-            <div class="overview-download-top">
-                <div class="overview-download-top-right">
-                    <div>
-                        <a>
-                            <b-icon pack="fas" icon="pause" size="is-small" type="is-primary"></b-icon>
-                        </a>
-                        <a>
-                            <b-icon pack="fas" icon="play" size="is-small" type="is-primary"></b-icon>
-                        </a>
-                        <a>
-                            <b-icon pack="fas" icon="cog" size="is-small" type="is-primary"></b-icon>
-                        </a>
-                    </div>
+        <div class="overview-download">
+            <nav class="level" >
+                <!-- Left side -->
+                <div class="level-left" v-if="totalReceived || totalToReceive">
+                    <p class="level-item">{{totalReceived}} out of {{totalToReceive}}</p>
                 </div>
-            </div>
-
-            <div class="overview-download-bottom">
-                <div class="overview-download-bottom-left">
-                    <b-button size="is-large" class="is-primary" @click="onStartUpdate" v-if="updateAvailable">Update</b-button>
-                    <b-button size="is-large" class="is-primary" @click="confirm" v-else>Play</b-button>
+                <!-- Right side -->
+                <div class="level-right">
+                    <p class="level-item">15 MIN PLEASE</p>
                 </div>
-                <div class="overview-download-bottom-right">
-                    <b-progress class="progress" type="is-primary" :precision="2" :value="percentage" show-value format="percent"></b-progress>
-                    <nav class="level" >
-                        <!-- Left side -->
-                        <div class="level-left">
-                            <DropDownGameMode class="level-item" v-model="gameMode" />
-                            <b-dropdown aria-role="list" class="is-up">
-                                <button class="button is-primary is-auto" slot="trigger">
-                                    <b-icon pack="fas" icon="cog"></b-icon>
-                                </button>
-                                <b-dropdown-item aria-role="listitem" @click="checkForUpdates">Check for updates</b-dropdown-item>
-                                <b-dropdown-item aria-role="listitem">Open in explorer</b-dropdown-item>
-                                <b-dropdown-item aria-role="listitem">Settings</b-dropdown-item>
-                                <b-dropdown-item aria-role="listitem">Repair</b-dropdown-item>
-                                <b-dropdown-item aria-role="listitem" @click="uninstallApplication">Uninstall</b-dropdown-item>
-                            </b-dropdown>
-                        </div>
-
-                        <!-- Right side -->
-                        <div class="level-right" v-if="totalReceived || totalToReceive">
-                            <p class="level-item">{{totalReceived}} out of {{totalToReceive}}</p>
-                        </div>
-                    </nav>
-                </div>
+            </nav>
+            <div class="update-progress">
+                <b-progress class="update-progress-bar" type="is-primary" :precision="2" :value="percentage" show-value format="percent"></b-progress>
+                <a class="update-progress-control">
+                    <b-icon pack="fas" icon="pause" size="is-medium" type="is-primary"></b-icon>
+                </a>
             </div>
         </div>
     </div>

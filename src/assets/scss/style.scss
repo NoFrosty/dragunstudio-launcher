@@ -108,7 +108,6 @@ button .is-secondary{
     background-color: rgba($color: #000000, $alpha: 0.3);
 
     .nav {
-        overflow: hidden;
         flex-wrap: nowrap;
         flex-direction: column;
 
@@ -208,11 +207,6 @@ button .is-secondary{
     }
 }
 
-.content-container {
-    display: flex;
-    flex-grow: 1;
-}
-
 a.navbar-item, .navbar-link{
     padding: 0.5rem 1.75rem;
     font-size: 2rem;
@@ -248,17 +242,18 @@ a.navbar-item, .navbar-link{
 
 
 .content-container {
+    display: flex;
+    flex-grow: 1;
     > .game-overview{
         display: flex;
-        flex-direction: column;
+        flex-flow: column nowrap;
         flex-grow: 1;
         .overview-panel{
             display: flex;
             flex-direction: row;
             flex-grow: 1;
-            .tile{
-                height: fit-content;
-            }
+            max-height: 25rem;
+            max-width: 80rem;
             .carousel{
                 .carousel-list{
                     border-radius: 4px;
@@ -271,54 +266,15 @@ a.navbar-item, .navbar-link{
         .overview-download{
             display: flex;
             flex-direction: column;
-    
-            .overview-download-top{
-                display: flex;
-                flex-direction: row;
-                .overview-download-top-left{
-                    display: flex;
-                    flex-direction: column;
-                    flex-grow: 0.15;
-                    padding: 1rem;
-                }
-                .overview-download-top-right{
-                    display: flex;
-                    flex-direction: column;
-                    flex-grow: 1;
-                    align-items: flex-end;
-                    padding: 1rem;
-                }
-            }
-            .overview-download-bottom{
-                display: flex;
-                flex-direction: row;
-                .overview-download-bottom-left{
-                    display: flex;
-                    flex-direction: column;
-                    flex-grow: 0.15;
-                    padding: 1rem;
-                    .button{
-                        flex: 1;
-                    }
-                }
-                .overview-download-bottom-right{
-                    display: flex;
-                    flex-direction: column;
-                    flex-grow: 1;
-                    padding: 1rem;
-                }
-            }
+            margin-top: auto;
         }
     }
-
     > .game-activities {
 
     }
-
     > .game-achievements {
 
     }
-
     > .tab-content {
         &:not(.active) {
             display: none;
@@ -326,10 +282,18 @@ a.navbar-item, .navbar-link{
     }
 }
 
-
-
-
-
+.update-progress{
+    display: flex;
+    .update-progress-bar{
+        flex-grow: 1;
+        padding-right: 1rem;
+        align-self: center;
+        margin-bottom: 0;
+    }
+    .update-progress-control{
+        
+    }
+}
 
 .article{
     font-size: 0.9rem;
