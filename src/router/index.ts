@@ -22,7 +22,12 @@ export default new Router({
         {
             path: '/login',
             name: 'login',
-            component: require('@/components/LoginView').default
+            component: require('@/components/Login').default
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: require('@/components/Register').default
         }
     ]
 })

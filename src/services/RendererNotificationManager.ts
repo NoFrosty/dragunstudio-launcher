@@ -23,7 +23,12 @@ class RendererNotificationManager implements NotificationManager {
         });
     }
     notify(message: string, informationType: InformationType): void {
-        throw new Error("Method not implemented.");
+        ToastProgrammatic.open({
+            duration: 5000,
+            message: message,
+            position: 'is-top',
+            type: 'is-success'
+        });
     }
     error(message: string): void {
         ToastProgrammatic.open({

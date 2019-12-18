@@ -35,7 +35,7 @@
                         <div class="level">
                             <!-- Left side -->
                             <div class="level-left">
-                                <router-link to="#">Register</router-link>
+                                <router-link to="register">Register</router-link>
                             </div>
                             <div class="level-right">
                                 <router-link to="#">Forgot password</router-link>
@@ -67,7 +67,6 @@
                 email: "calvindogus@gmail.com",
                 password: "PhoeniX96&",
                 staySignedIn: false,
-                emailHasError: false,
             }
         },
         components: {

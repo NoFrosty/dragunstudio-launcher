@@ -36,6 +36,26 @@ class AuthenticationService extends RendererServiceBase {
         }        
     }
 
+    async AttemptSignUp(credentials: { username: string, firstName: string, lastName: string, country: string, email: string, password: string, birthday: Date}) {
+        let signUpResult;
+        let parameters = {
+            Username: credentials.username,
+            Email: credentials.email,
+            FirstName: credentials.firstName,
+            LastName: credentials.lastName,
+            Birthday: credentials.birthday,
+            Country: credentials.country,
+            Password: credentials.password
+        };
+        try {
+            signUpResult = await axios.post(process.env.VUE_APP_API_LINK + "/users", parameters);
+            return signUpResult.data;
+        }
+        catch {
+            return signUpResult;
+        }        
+    }
+
     async SignOut() {
         try {
             await axios.post(process.env.VUE_APP_API_LINK + "/authenticate/signout");
