@@ -89,23 +89,23 @@
                                 </b-carousel-item>           
                             </b-carousel>
                 -->
-                <div class="tile is-ancestor">
-                    <div class="tile is-vertical is-6">
+                <div class="tile is-ancestor" v-if="articles">
+                    <div class="tile is-vertical is-6" v-if="articles.length == 0">
                         <div class="tile is-parent">
                             <article class="tile is-child box">
-                            <p class="title">One</p>
-                            <p class="subtitle">Subtitle</p>
+                            <p class="title">{{articles[0].title}}</p>
+                            <p class="subtitle">{{articles[0].publishDate}}</p>
                             </article>
                         </div>
                     </div>
-                    <div class="tile is-vertical">
-                        <div class="tile is-parent">
+                    <div class="tile is-vertical" v-if="articles.length > 0">
+                        <div class="tile is-parent" v-if="articles.length > 0">
                             <article class="tile is-child box">
                             <p class="title">One</p>
                             <p class="subtitle">Subtitle</p>
                             </article>
                         </div>
-                        <div class="tile">
+                        <div class="tile" v-if="articles.length > 1">
                             <div class="tile is-parent ">
                                 <article class="tile is-child box">
                                 <p class="title">One</p>
@@ -138,7 +138,7 @@
         data() {
             return {
                 isNewsModalActive: false,
-                news: null
+                articles: null
             }
         },
         computed: {
@@ -156,8 +156,9 @@
         methods: {
         },
         mounted: async function () {
-            let newsResponse = await axios.get(process.env.VUE_APP_API_LINK + '/news');
-            this.news = newsResponse.data;
+            let articleResponse = await axios.get(process.env.VUE_APP_API_LINK + '/article');
+            this.articles = articleResponse.data;
+            console.log(this.articles)
         },
         components: {
             ApplicationUpdateProgress,

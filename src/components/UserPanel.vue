@@ -2,7 +2,9 @@
     <b-dropdown aria-role="list">
         <a href="#" class="user-box online" slot="trigger">
             <div class="nav-profile-image">
-                <img class="avatar" src="http://www.bootstrapdash.com/demo/purple/jquery/template/assets/images/faces/face1.jpg" alt="profile">
+                <figure class="image">
+                <img class="is-rounded avatar" src="http://www.bootstrapdash.com/demo/purple/jquery/template/assets/images/faces/face1.jpg" alt="profile">
+                </figure>
                 <span class="login-status"></span>
             </div>
             <div class="nav-profile-text">

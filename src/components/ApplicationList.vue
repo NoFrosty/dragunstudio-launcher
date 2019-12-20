@@ -6,9 +6,9 @@
         v-for="application in applications" 
         :key="application.applicationId">
             <a class="" @click="changeApplication(application)">
-                <div class="app-icon-container">
+                <figure class="image is-48x48 app-icon-container">
                     <img class="app-icon" :src="'./images/app-icon/' + application.applicationId + '.png'" alt="icon">
-                </div>
+                </figure>
                 <span class="app-title">{{application.name}}</span>
             </a>
         </li>
