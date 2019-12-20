@@ -90,32 +90,44 @@
                             </b-carousel>
                 -->
                 <div class="tile is-ancestor" v-if="articles">
-                    <div class="tile is-vertical is-6" v-if="articles.length == 0">
+                    <div class="tile is-vertical is-6" v-if="articles.length > 0">
                         <div class="tile is-parent">
                             <article class="tile is-child box">
-                            <p class="title">{{articles[0].title}}</p>
-                            <p class="subtitle">{{articles[0].publishDate}}</p>
+                                <p class="title">{{articles[0].title}}</p>
+                                <p class="subtitle">{{articles[0].publishDate}}</p>
+                                <span class="tag is-primary">
+                                    {{articles[0].applicationId}}
+                                </span>
                             </article>
                         </div>
                     </div>
-                    <div class="tile is-vertical" v-if="articles.length > 0">
-                        <div class="tile is-parent" v-if="articles.length > 0">
+                    <div class="tile is-vertical" v-if="articles.length > 1">
+                        <div class="tile is-parent" v-if="articles.length > 1">
                             <article class="tile is-child box">
-                            <p class="title">One</p>
-                            <p class="subtitle">Subtitle</p>
+                                <p class="title">{{articles[1].title}}</p>
+                                <p class="subtitle">{{articles[1].publishDate}}</p>
+                                <span class="tag is-primary">
+                                    {{articles[1].applicationId}}
+                                </span>
                             </article>
                         </div>
-                        <div class="tile" v-if="articles.length > 1">
-                            <div class="tile is-parent ">
-                                <article class="tile is-child box">
-                                <p class="title">One</p>
-                                <p class="subtitle">Subtitle</p>
-                                </article>
-                            </div>
+                        <div class="tile" v-if="articles.length > 2">
                             <div class="tile is-parent">
                                 <article class="tile is-child box">
-                                <p class="title">Two</p>
-                                <p class="subtitle">Subtitle</p>
+                                    <p class="title">{{articles[2].title}}</p>
+                                    <p class="subtitle">{{articles[2].publishDate}}</p>
+                                    <span class="tag is-primary">
+                                        {{articles[2].applicationId}}
+                                    </span>
+                                </article>
+                            </div>
+                            <div class="tile is-parent" v-if="articles.length > 3">
+                                <article class="tile is-child box">
+                                    <p class="title">{{articles[3].title}}</p>
+                                    <p class="subtitle">{{articles[3].publishDate}}</p>
+                                    <span class="tag is-primary">
+                                        {{articles[3].applicationId}}
+                                    </span>
                                 </article>
                             </div>
                         </div>
