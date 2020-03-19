@@ -1,6 +1,4 @@
-$purple: #A831F3;
-$black-ter: #090D26;
-$primary: $purple;
+$primary: #DD3439;
 $primary-darker: darken($primary, 36.4%);
 $primary-lighter: lighten($primary, 13.58%);
 
@@ -61,7 +59,7 @@ $modal-card-foot-border-top: 0;
 $modal-card-title-color: $text;
 $window-controller-background-color: rgba($color: #000000, $alpha: 0.2);
 
-$input-background-color: $black-ter;
+$input-background-color: #20201E;
 $input-border-color: $primary-darker;
 $input-hover-border-color: $primary;
 $input-focus-border-color: $primary;
