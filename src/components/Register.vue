@@ -207,7 +207,7 @@
                 </ValidationObserver>
             </div>
             <div class="links">
-                <router-link to="login" class="has-text-white">Already registered? <router-link to="" class="has-text-primary">Sign In</router-link></router-link>
+                <router-link to="login" class="has-text-white">Already registered? <router-link to="login" class="has-text-primary">Sign In</router-link>.</router-link>
             </div>
             
         </div>
