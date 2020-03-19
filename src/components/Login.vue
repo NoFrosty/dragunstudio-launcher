@@ -1,13 +1,10 @@
 <template>
-    <section class="login is-fullheight">
-        <div class="login-body">
+    <section class="login-register is-fullheight">
+        <div class="login-register-body">
             <div class="field-box">
-                <div class="">
-                    <span class="title-colored">Evo</span>
-                    <span class="title-white">Launcher</span>
-                </div>
-                <h1 class="login-heading">Welcome back !</h1>
-                <p class="login-subheading">We don't need a healer for this, right?</p>
+                <img class="logo" src="../assets/images/Evorine-Logo.png"/>
+                <h1 class="login-register-heading">Sign In</h1>
+                <!--<p class="login-subheading">We don't need a healer for this, right?</p>-->
                 <ValidationObserver ref="observer" v-slot="{ passes }">
                     <div class="field">
                         <p class="control has-icons-left has-icons-right">
@@ -33,27 +30,27 @@
                     </div>
                     <div class="field">
                         <div class="level">
-                            <!-- Left side -->
-                            <div class="level-left">
-                                <router-link to="register">Register</router-link>
-                            </div>
-                            <div class="level-right">
-                                <router-link to="#">Forgot password</router-link>
-                            </div>
+                            <b-checkbox :value="false" v-model="staySignedIn">
+                                Remember Me
+                            </b-checkbox>
                         </div>
                     </div>
                     <div class="field">
                         <div class="level">
-                            <b-switch v-model="staySignedIn">
-                                Stay signed in ?
-                            </b-switch>
+                            <div>
+                            </div>
                             <div class="level-right">
-                                <b-button type="submit is-primary" @click="passes(attemptSignIn)">Login</b-button>
+                                <b-button type="submit is-primary" @click="passes(attemptSignIn)">Sign In</b-button>
                             </div>
                         </div>
                     </div>
                 </ValidationObserver>
             </div>
+            <div class="links">
+                <router-link to="register" class="is-white">Create account</router-link>
+                <router-link to="#">Can't sign in ?</router-link>
+            </div>
+
         </div>
     </section>
 </template>
