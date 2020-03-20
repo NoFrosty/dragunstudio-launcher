@@ -48,7 +48,7 @@
             </div>
             <div class="links">
                 <router-link to="register" class="has-text-white">I'm a new user, <router-link to="register" class="has-text-primary">create an account</router-link>.</router-link>
-                <router-link to="#" class="has-text-white">Forgot your password? <router-link to="#" class="has-text-primary">Reset password</router-link>.</router-link>
+                <router-link to="forgotpassword" class="has-text-white">Forgot your password? <router-link to="forgotpassword" class="has-text-primary">Reset password</router-link>.</router-link>
             </div>
 
         </div>

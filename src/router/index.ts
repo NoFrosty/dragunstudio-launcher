@@ -25,6 +25,11 @@ export default new Router({
             component: require('@/components/Login').default
         },
         {
+            path: '/forgotpassword',
+            name: 'forgotpassword',
+            component: require('@/components/ForgotPassword').default
+        },
+        {
             path: '/register',
             name: 'register',
             component: require('@/components/Register').default
