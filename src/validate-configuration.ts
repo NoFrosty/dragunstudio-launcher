@@ -1,4 +1,4 @@
-import { required, email, alpha, confirmed } from "vee-validate/dist/rules";
+import { required, email, alpha, confirmed, digits } from "vee-validate/dist/rules";
 import { extend } from "vee-validate";
 
 extend("required", {
@@ -20,4 +20,6 @@ extend("confirmed",{
     ...confirmed,
     message: "Password does not match"
 });
+
+extend("digits", digits);
 
