@@ -10,6 +10,9 @@ class MainNotificationManager implements NotificationManager {
     notify(message: string, informationType: InformationType): void {
         throw new Error("Method not implemented.");
     }
+    success(message: string, informationType: InformationType): void {
+        throw new Error("Method not implemented.");
+    }
     error(message: string): void {
         throw new Error("Method not implemented.");
     }

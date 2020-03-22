@@ -27,6 +27,13 @@ class RendererNotificationManager implements NotificationManager {
             duration: 5000,
             message: message,
             position: 'is-top',
+        });
+    }
+    success(message: string, informationType: InformationType): void {
+        ToastProgrammatic.open({
+            duration: 5000,
+            message: message,
+            position: 'is-top',
             type: 'is-success'
         });
     }
