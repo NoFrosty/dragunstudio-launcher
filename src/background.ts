@@ -11,6 +11,7 @@ import { DownloadManager, DownloadManagerContext, DownloadManagerSettings, Downl
 import FileInfo from './models/FileInfo'
 import DiffInfo from './models/DiffInfo'
 import { settings } from 'cluster'
+const windowStateKeeper = require('electron-window-state');
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -22,14 +23,20 @@ let downloadManager: DownloadManager;
 protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }])
 
 function createWindow() {
+    let mainWindowState = windowStateKeeper({
+        defaultWidth: 1600,
+        defaultHeight: 900
+    });
     // Create the browser window.
     win = new BrowserWindow({
         title: 'Warp',
-        height: 900,
-        width: 1600,
         frame: false,
         transparent: true,
         fullscreenable: false,
+        x: mainWindowState.x,
+        y: mainWindowState.y,
+        height: mainWindowState.height,
+        width: mainWindowState.width,
         webPreferences: {
             nodeIntegration: true,
         },
@@ -44,6 +51,9 @@ function createWindow() {
         // Load the index.html when not in development
         win.loadURL('app://./index.html')
     }
+
+    
+    mainWindowState.manage(win);
 
     win.on('closed', () => {
         win = null
