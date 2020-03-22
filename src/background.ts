@@ -31,7 +31,8 @@ function createWindow() {
         fullscreenable: false,
         webPreferences: {
             nodeIntegration: true,
-        }
+        },
+        backgroundColor: '#141212',
     })
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
