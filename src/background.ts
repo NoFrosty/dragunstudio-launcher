@@ -32,7 +32,7 @@ function createWindow() {
         title: 'Warp',
         frame: false,
         transparent: true,
-        fullscreenable: false,
+        fullscreenable: true,
         x: mainWindowState.x,
         y: mainWindowState.y,
         height: mainWindowState.height,

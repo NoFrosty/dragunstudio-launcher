@@ -1,7 +1,7 @@
 <template>
     <div id="window" class="is-not-selectable">
         <WindowsController />
-        <router-view></router-view>
+        <router-view id="view"></router-view>
     </div>
 </template>
 

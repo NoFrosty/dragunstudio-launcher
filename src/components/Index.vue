@@ -1,11 +1,38 @@
 <template>
+    <div>
+        <b-navbar class="is-transparent" :transparent="true">
+        <template slot="brand">
+            <b-navbar-item tag="router-link" to="launcher">
+                <img
+                    src="../assets/images/Evorine-Logo.png"
+                    alt="Evorine"
+                >
+            </b-navbar-item>
+        </template>
+        <template slot="start">
+            <b-navbar-item href="#">
+                Project Crystal
+            </b-navbar-item>
+            <b-navbar-item href="#">
+                Evoland
+            </b-navbar-item>
+            <b-navbar-item href="#">
+                Azurna
+            </b-navbar-item>
+        </template>
+    </b-navbar>
+    <div class="columns">
+        <div class="column is-four-fifths">is-four-fifths</div>
+        <div class="column">Auto</div>
+    </div>
+    </div>
+    <!--
     <div class="window-content">
         <nav class="sidebar">
             <div class="nav">
                 <div class="nav-item nav-profile">
                     <UserPanel />
                 </div>
-                <!--My Games-->
                 <div class="nav-item sidebar-title">
                     <span class="nav-link">
                         <h1>MY GAMES</h1>
@@ -14,7 +41,6 @@
                 <div class="nav-item">
                     <ApplicationList />
                 </div>
-                <!--My Friends-->
                 <div class="nav-item sidebar-title">
                     <span class="nav-link">
                         <div class="">
@@ -73,6 +99,7 @@
             </div>
         </div>
     </div>
+    -->
 </template>
 
 <script>
@@ -86,8 +113,8 @@ import ApplicationList from "@/components/ApplicationList.vue";
 import GameOverview from "@/components/GameOverview.vue";
 import UserPanel from "@/components/UserPanel.vue";
 import AuthenticationService from "@/services/AuthenticationService";
-import axios from 'axios';
-import { applicationLibrary } from '@/services/services';
+import axios from "axios";
+import { applicationLibrary } from "@/services/services";
 
 export default {
     name: "evopeons-launcher",
@@ -95,7 +122,7 @@ export default {
         return {
             GAME_TABS: GAME_TABS,
             activeGameTab: GAME_TABS.OVERVIEW,
-            applications:null,
+            applications: null
         };
     },
     computed: {
@@ -107,7 +134,7 @@ export default {
         },
         activeApplicationId: function() {
             return this.$store.state.selectedApplicationId;
-        },
+        }
     },
     methods: {
         onGameTabChange: function(index) {
@@ -120,8 +147,6 @@ export default {
         GameOverview,
         UserPanel
     },
-    async mounted() {
-        
-    }
+    async mounted() {}
 };
 </script>

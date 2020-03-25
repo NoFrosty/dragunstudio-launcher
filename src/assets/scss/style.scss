@@ -16,15 +16,30 @@ body {
     height: 100vh;
     border: darken($primary, 35%) solid 1px;
 }
+#view{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    top: 1.5em;
+    left: 0;
+    right: 0;
+    &:not(.login-register){
+        margin-top: $window-bar-height;
+    }
+    .columns {
+        display: flex;
+        flex-grow: 1;
+    }
+}
 
 .window-controller {
     position: fixed;
+    z-index: 1;
     width: 100%;
     display: flex;
     justify-content: flex-end;
     height: $window-bar-height;
-    padding-right: 1rem;
-    padding-left: 1rem;
     a{
         margin-left: 0.5em;
         margin-right: 0.5em;
@@ -103,4 +118,21 @@ body {
     background-color: $primary;
     margin-top: $window-border-radius;
     margin-bottom: $window-border-radius;
+}
+
+.top-menu{
+    display: flex;
+    flex-direction: row;
+    .top-menu-logo{
+        height: fit-content;
+        display: flex;
+        width: 15em;
+    }
+    .top-menu-nav{
+        align-self: center;
+        .top-menu-nav-ul{
+            display: flex;
+            flex-direction: row;
+        }
+    }
 }

@@ -8,3 +8,7 @@
 .button + .dropdown {
     margin-left: 0.5em;
 }
+
+.navbar-item{
+    padding: $navbar-padding-vertical $navbar-padding-horizontal;
+}
