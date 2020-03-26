@@ -1,0 +1,10 @@
+.details{
+    display: flex;
+    height: 18em;
+    .details-not-installed{
+        display: flex;
+        flex-grow: 1;
+        padding: 1em;
+        background-color: rgba($color: #20201E, $alpha: 0.65);
+    }
+}

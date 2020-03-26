@@ -1,12 +1,39 @@
 <template>
     <div>
         <Navbar/>
-    <div class="columns">
-        <div class="column is-four-fifths">is-four-fifths</div>
-        <div class="column">
-            <UserPanel />
-        </div>
-    </div>
+        <section class="columns">
+            <section class="column is-four-fifths">Status</section>
+            <section class="column">
+                <UserPanel />
+            </section>
+            
+        </section>
+        <section class="details">
+            <section class="details-not-installed">
+                <section class="columns">
+                    <section class="column">
+                        <section>
+                            <h1>Game Name</h1>
+                        </section>
+                        <section>
+                            <h1>What is Game Name</h1>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id efficitur lacus. Fusce gravida tincidunt felis, eget congue sapien facilisis rutrum. Donec pretium metus eu massa tempor ultrices. Integer sit amet nibh sapien. Vivamus quis lacinia lacus, quis fringilla purus. Suspendisse dignissim scelerisque nisi, sed dictum magna. Vivamus nec dolor mollis, facilisis enim at, tristique est.</p>
+                        </section>
+                    </section>
+                    <section class="column">
+                        <section>
+                            <h1>Release Date</h1>
+                            <p>01/01/2020</p>
+                        </section>
+                        <section>
+                            <h1>Plateforme</h1>
+                            <p>Windows, Mac and Linux</p>
+                        </section>
+                        <b-button type="is-primary">Install/Buy</b-button>
+                    </section>
+                </section>
+            </section>
+        </section>
     </div>
     <!--
     <div class="window-content">
