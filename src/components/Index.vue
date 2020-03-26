@@ -8,7 +8,7 @@
             </div>
             
         </div>
-        <div class="details">
+        <div class="details" v-if="activeApplication">
             <div class="details-not-installed">
                 <div class="columns">
                     <div class="column details-not-installed-left">
@@ -16,10 +16,10 @@
                             <figure class="image is-64x64">
                                 <img src="https://bulma.io/images/placeholders/128x128.png">
                             </figure>
-                            <h1>fefsd</h1>
+                            <h1>{{activeApplication.name}}</h1>
                         </div>
                         <div class="details-info">
-                            <h1>What is Game Name</h1>
+                            <h1>What is {{activeApplication.name}}</h1>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id efficitur lacus. Fusce gravida tincidunt felis, eget congue sapien facilisis rutrum. Donec pretium metus eu massa tempor ultrices. Integer sit amet nibh sapien. Vivamus quis lacinia lacus, quis fringilla purus. Suspendisse dignissim scelerisque nisi, sed dictum magna. Vivamus nec dolor mollis, facilisis enim at, tristique est.</p>
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                         </div>
                         <div>
                             <h1>Plateforme</h1>
-                            <p>Windows, Mac and Linux</p>
+                            <p>{{compatiblePlatforme}}</p>
                         </div>
                         <b-button type="is-primary" @click="startInstallation">Install/Buy</b-button>
                     </div>
@@ -130,6 +130,7 @@ import UserPanel from "@/components/UserPanel.vue";
 import AuthenticationService from "@/services/AuthenticationService";
 import axios from "axios";
 import Install from './Install.vue'
+import {OSType} from '../models/OSType'
 import { applicationLibrary } from "@/services/services";
 import {
     GAME_MODE
@@ -154,6 +155,9 @@ export default {
         },
         activeApplicationId: function() {
             return this.$store.state.selectedApplicationId;
+        },
+        compatiblePlatforme: function(){
+            return OSType[this.activeApplication.supportedOperatingSystems]
         }
     },
     asyncComputed: {
