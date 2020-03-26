@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     white-space: nowrap;
-    padding: 1em 0 1em 0;
+    padding: 0.5em;
     color: $text;
     transition-duration: 0.45s;
     transition-property: color;
@@ -16,7 +16,6 @@
     height: auto;
     line-height: 1;
     border-top: 0;
-    padding: 1.25em 0;
 
     .nav-profile-image {
         width: 44px;
@@ -37,10 +36,12 @@
         flex-direction: column;
         .nav-profile-text-name{
             font-size: 1em;
+            text-align: left;
         }
         .nav-profile-text-status{
             margin-top: 0.2em;
             font-size: 0.8em;
+            text-align: left;
         }
         
     }

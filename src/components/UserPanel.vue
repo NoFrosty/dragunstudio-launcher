@@ -1,6 +1,6 @@
 <template>
     <b-dropdown aria-role="list">
-        <a href="#" class="user-box online" slot="trigger">
+        <button class="button is-primary user-box online" slot="trigger">
             <div class="nav-profile-image">
                 <figure class="image">
                 <img class="is-rounded avatar" src="http://www.bootstrapdash.com/demo/purple/jquery/template/assets/images/faces/face1.jpg" alt="profile">
@@ -12,7 +12,7 @@
                 <span class="nav-profile-text-status">Playing Warcraft IV</span>
             </div>
             <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
-        </a>
+        </button>
         <b-dropdown-item v-if="isOffline" v-on:click="goOnline" value="settings">
         <b-icon pack="fas" icon="plug"></b-icon>
         Go Online

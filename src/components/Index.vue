@@ -23,7 +23,9 @@
     </b-navbar>
     <div class="columns">
         <div class="column is-four-fifths">is-four-fifths</div>
-        <div class="column">Auto</div>
+        <div class="column">
+            <UserPanel />
+        </div>
     </div>
     </div>
     <!--
