@@ -170,7 +170,6 @@
         mounted: async function () {
             let articleResponse = await axios.get(process.env.VUE_APP_API_LINK + '/article');
             this.articles = articleResponse.data;
-            console.log(this.articles)
         },
         components: {
             ApplicationUpdateProgress,
