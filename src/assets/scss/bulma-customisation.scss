@@ -12,3 +12,11 @@
 .navbar-item{
     padding: $navbar-padding-vertical $navbar-padding-horizontal;
 }
+
+.column-is-fixed{
+    display: block;
+    padding: 0.75rem;
+    -webkit-box-flex: 0;
+    flex: none;
+    width: 17em;
+}

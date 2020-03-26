@@ -1,10 +1,45 @@
 .details{
     display: flex;
     height: 18em;
+    margin: 1em;
     .details-not-installed{
         display: flex;
         flex-grow: 1;
-        padding: 1em;
+        margin: 0.75em;
         background-color: rgba($color: #20201E, $alpha: 0.65);
+        >.columns{
+            margin: 0 !important;
+        }
+        .details-not-installed-left{
+           
+            .details-logo{
+                display: flex;
+                flex-direction: row;
+                h1{
+                    margin-left: 1em;
+                    align-self: center;
+                }
+            }
+            .details-info{
+                margin: 1em 0em;
+                p{
+                    text-align: justify;
+                }
+            }
+        }
+        .details-not-installed-right{
+            div:not(:first-child){
+                margin-top: 1em;
+            }
+            .button{
+                position: absolute;
+                bottom: 1em;
+                right: 1em;
+            }
+        }
+        
+        h1{
+            font-weight: bold;
+        }
     }
 }

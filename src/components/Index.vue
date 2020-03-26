@@ -1,39 +1,45 @@
 <template>
     <div>
         <Navbar/>
-        <section class="columns">
-            <section class="column is-four-fifths">Status</section>
-            <section class="column">
-                <UserPanel />
-            </section>
+        <div class="columns">
+            <div class="column">Status</div>
+            <div class="column column-is-fixed">
+                <UserPanel class="nav-profile"/>
+            </div>
             
-        </section>
-        <section class="details">
-            <section class="details-not-installed">
-                <section class="columns">
-                    <section class="column">
-                        <section>
-                            <h1>Game Name</h1>
-                        </section>
-                        <section>
+        </div>
+        <div class="details">
+            <div class="details-not-installed">
+                <div class="columns">
+                    <div class="column details-not-installed-left">
+                        <div class="details-logo">
+                            <figure class="image is-64x64">
+                                <img src="https://bulma.io/images/placeholders/128x128.png">
+                            </figure>
+                            <h1>fefsd</h1>
+                        </div>
+                        <div class="details-info">
                             <h1>What is Game Name</h1>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id efficitur lacus. Fusce gravida tincidunt felis, eget congue sapien facilisis rutrum. Donec pretium metus eu massa tempor ultrices. Integer sit amet nibh sapien. Vivamus quis lacinia lacus, quis fringilla purus. Suspendisse dignissim scelerisque nisi, sed dictum magna. Vivamus nec dolor mollis, facilisis enim at, tristique est.</p>
-                        </section>
-                    </section>
-                    <section class="column">
-                        <section>
+                        </div>
+                    </div>
+                    <div class="column-is-fixed is-relative column details-not-installed-right" >
+                        <div>
                             <h1>Release Date</h1>
                             <p>01/01/2020</p>
-                        </section>
-                        <section>
+                        </div>
+                        <div>
                             <h1>Plateforme</h1>
                             <p>Windows, Mac and Linux</p>
-                        </section>
-                        <b-button type="is-primary">Install/Buy</b-button>
-                    </section>
-                </section>
-            </section>
-        </section>
+                        </div>
+                        <b-button type="is-primary" @click="startInstallation">Install/Buy</b-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <b-modal :width="900" :active.sync="isInstallModalActive" class="popup-install" :can-cancel="false" v-if="activeApplication">
+            <Install :application="activeApplication" v-on:start="onStartInstall" />
+        </b-modal>
     </div>
     <!--
     <div class="window-content">
@@ -123,15 +129,20 @@ import GameOverview from "@/components/GameOverview.vue";
 import UserPanel from "@/components/UserPanel.vue";
 import AuthenticationService from "@/services/AuthenticationService";
 import axios from "axios";
+import Install from './Install.vue'
 import { applicationLibrary } from "@/services/services";
+import {
+    GAME_MODE
+} from '@/services/constants.ts'
 
 export default {
     name: "evopeons-launcher",
     data() {
         return {
-            GAME_TABS: GAME_TABS,
-            activeGameTab: GAME_TABS.OVERVIEW,
-            applications: null
+            applications: null,
+            applicationId: null,
+            isInstallModalActive: false,
+            gameMode: GAME_MODE.PUBLIC,
         };
     },
     computed: {
@@ -145,16 +156,34 @@ export default {
             return this.$store.state.selectedApplicationId;
         }
     },
+    asyncComputed: {
+        activeApplication: async function() {
+            if (!this.activeApplicationId) {
+                return null;
+            }
+            return await applicationLibrary.getGameFromId(this.activeApplicationId);
+        }
+    },
     methods: {
         onGameTabChange: function(index) {
             this.activeGameTab = index;
-        }
+        },
+        startInstallation() {
+            this.isInstallModalActive = true;
+        },
+        onStartInstall(installData) {
+            installationManager.installApplicationMultiThread(
+                this.applicationId,
+                installData.path,
+                this.onProgress
+            );
+            this.$store.commit('setApplicationInstallationActionType', { applicationId: this.applicationId, actionType: InstallationActionType.Update });
+        },
     },
     components: {
-        ApplicationCommandCenter,
-        GameOverview,
         Navbar,
-        UserPanel
+        UserPanel,
+        Install
     },
     async mounted() {}
 };

@@ -1,6 +1,6 @@
 <template>
     <b-dropdown aria-role="list">
-        <button class="button is-primary user-box online" slot="trigger">
+        <button class="button is-fullwidth is-primary user-box online" slot="trigger">
             <div class="nav-profile-image">
                 <figure class="image">
                 <img class="is-rounded avatar" src="http://www.bootstrapdash.com/demo/purple/jquery/template/assets/images/faces/face1.jpg" alt="profile">

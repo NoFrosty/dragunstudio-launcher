@@ -1,30 +1,33 @@
 <template>
     <div class="popup">
+        <a class="modal-close-btn" @click="$parent.close()"><b-icon pack="fas" icon="times" size="is-small" type="is-white"></b-icon></a>
         <div class="popup-inner">
-        <div class="popup-inner-photo">
-            <img src="https://images.pexels.com/photos/1666021/pexels-photo-1666021.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="">
-        </div>
         <div class="popup-inner-text">
-            <h1>{{this.application.name}} Installation </h1>
-            <div class="field">
-                <b-field grouped>
-                    <b-input :value="this.path" expanded readonly></b-input>
-                    <p class="control">
-                        <b-button type="is-primary" @click="openDial()">Select another path</b-button>
-                    </p>
-                </b-field>
-                <b-field label="Size">
+            <h1>Installation {{this.application.name}}</h1>
+            <div class="installation-form">
+                <b-field label="Size" custom-class="has-text-white">
                     15.13 Go
                 </b-field>
-                <b-field label="Options">
+                <b-field label="Location" custom-class="has-text-white">
+                    <b-field grouped>
+                        <b-input :value="this.path" expanded readonly></b-input>
+                        <p class="control">
+                            <b-button type="is-primary" @click="openDial()">Select another path</b-button>
+                        </p>
+                    </b-field>
+                </b-field>
+                <b-field label="Options" custom-class="has-text-white">
                     <b-checkbox :value="true" type="is-primary">
                         Keep this game updated automatically
                     </b-checkbox>
                 </b-field>
-                <div class="buttons">
-                    <b-button size="is-large" type="is-primary is-fullwidth" @click="install(); $parent.close()" expanded>Install</b-button>
-                </div>
+                <b-field custom-class="has-text-white">
+                    <b-checkbox :value="true" type="is-primary">
+                        Add desktop shortcut for Project Crystal
+                    </b-checkbox>
+                </b-field>
             </div>
+            <b-button type="is-primary" @click="install(); $parent.close()" expanded>Install</b-button>
         </div>
     </div>
   </div>

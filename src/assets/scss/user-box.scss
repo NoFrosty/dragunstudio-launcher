@@ -1,12 +1,16 @@
 .nav-profile {
-    .dropdown{
+    &.dropdown{
         width: -webkit-fill-available;
+        >.dropdown-trigger{
+            width: -webkit-fill-available;
+        }
     }
 }
 
 .user-box {
     display: flex;
     align-items: center;
+    justify-content: left;
     white-space: nowrap;
     padding: 0.5em;
     color: $text;

@@ -30,6 +30,7 @@ body {
     .columns {
         display: flex;
         flex-grow: 1;
+        margin: 1em;
     }
 }
 
@@ -133,6 +134,38 @@ body {
         .top-menu-nav-ul{
             display: flex;
             flex-direction: row;
+        }
+    }
+}
+
+.popup{
+    background-color: #1C1B20;
+    height: 30em;
+    border: 1px solid $primary;
+    .modal-close-btn{
+        position: absolute;
+        right: 0.5em;
+        top: 0.5em;
+    }
+    .popup-inner{
+        background-image: url("./assets/images/background/InstallImage.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        flex-grow: 1;
+        justify-content: flex-end;
+        .popup-inner-text{
+            padding: 1em;
+            width: 55%;
+            display: flex;
+            justify-content: start !important;
+            .installation-form{
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+            }
+            h1{
+                text-transform: none !important;
+            }
         }
     }
 }
