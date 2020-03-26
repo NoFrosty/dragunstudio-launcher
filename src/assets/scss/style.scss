@@ -21,11 +21,11 @@ body {
     flex-direction: column;
     position: absolute;
     bottom: 0;
-    top: 1.5em;
+    top: $window-bar-height;
     left: 0;
     right: 0;
-    &:not(.login-register){
-        margin-top: $window-bar-height;
+    &.login-register{
+        top: 0;
     }
     .columns {
         display: flex;
