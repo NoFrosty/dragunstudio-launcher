@@ -117,6 +117,7 @@ if (isDevelopment) {
 
 
 process.on('uncaughtException', function(err) {
+    // eslint-disable-next-line
     console.error("err", err);
 })
 
