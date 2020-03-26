@@ -1,26 +1,6 @@
 <template>
     <div>
-        <b-navbar class="is-transparent" :transparent="true">
-        <template slot="brand">
-            <b-navbar-item tag="router-link" to="launcher">
-                <img
-                    src="../assets/images/Evorine-Logo.png"
-                    alt="Evorine"
-                >
-            </b-navbar-item>
-        </template>
-        <template slot="start">
-            <b-navbar-item href="#">
-                Project Crystal
-            </b-navbar-item>
-            <b-navbar-item href="#">
-                Evoland
-            </b-navbar-item>
-            <b-navbar-item href="#">
-                Azurna
-            </b-navbar-item>
-        </template>
-    </b-navbar>
+        <Navbar/>
     <div class="columns">
         <div class="column is-four-fifths">is-four-fifths</div>
         <div class="column">
@@ -111,7 +91,7 @@ const GAME_TABS = {
     ACHIEVEMENTS: 2
 };
 import ApplicationCommandCenter from "@/components/ApplicationCommandCenter";
-import ApplicationList from "@/components/ApplicationList.vue";
+import Navbar from "@/components/Navbar.vue";
 import GameOverview from "@/components/GameOverview.vue";
 import UserPanel from "@/components/UserPanel.vue";
 import AuthenticationService from "@/services/AuthenticationService";
@@ -145,8 +125,8 @@ export default {
     },
     components: {
         ApplicationCommandCenter,
-        ApplicationList,
         GameOverview,
+        Navbar,
         UserPanel
     },
     async mounted() {}
