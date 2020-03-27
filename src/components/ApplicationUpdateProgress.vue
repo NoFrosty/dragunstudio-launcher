@@ -3,7 +3,7 @@
         <nav class="level" >
             <!-- Left side -->
             <div class="level-left" v-if="totalReceived || totalToReceive">
-                <p class="level-item">{{totalReceived}} out of {{totalToReceive}}</p>
+                <p class="level-item">{{totalReceived}}/{{totalToReceive}}</p>
             </div>
             <!-- Right side -->
             <div class="level-right">
@@ -12,9 +12,11 @@
         </nav>
         <div class="update-progress">
             <b-progress class="update-progress-bar" type="is-primary" :precision="2" :value="percentage" show-value format="percent"></b-progress>
+            <!--
             <a class="update-progress-control">
                 <b-icon pack="fas" icon="pause" size="is-medium" type="is-primary"></b-icon>
             </a>
+            -->
         </div>
     </div>
 </template>

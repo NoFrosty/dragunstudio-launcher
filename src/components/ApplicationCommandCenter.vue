@@ -32,17 +32,9 @@
             </div>
         </div>
         <div class="details-installed" v-if="installation">
-            <div class="columns details-news">
-                <div class="column-is-fixed is-23  column is-paddingless details-news-article" v-for="index in 5" :key="index">
-                    <div class="details-news-text-container">
-                        <b-taglist class="is-marginless">
-                            <b-tag type="is-primary">Gameplay Update</b-tag>
-                        </b-taglist>
-                        <h1>Patch 2020 Gameplay: LUL</h1>
-                    </div>
-                </div>
-            </div>
+            <NewsZone/>
             <div class="column-is-fixed is-17 is-relative column details-installed-right">
+                <ApplicationUpdateProgress v-if="isUpdating" />
                 <b-field grouped>
                     <b-dropdown class="is-up" aria-role="list" position="is-bottom-left" v-if="installation">
                         <button class="button is-dark is-auto is-medium" slot="trigger">
@@ -58,7 +50,9 @@
                     </b-dropdown>
                     <DropDownGameMode class="" v-model="gameMode" />
                 </b-field>
-                <b-button type="is-primary is-large" expanded>Play Now</b-button>
+                <b-button type="is-primary is-large" v-if="!isUpdating" expanded>Play Now</b-button>
+                <b-button type="is-primary is-large" v-if="isUpdating" disabled expanded>Play Now</b-button>
+                <!--<b-button type="is-primary is-large" v-if="!isUpdating" expanded>Update</b-button>-->
             </div>
         </div>
         <b-modal :width="900" :active.sync="isInstallModalActive" class="popup-install" :can-cancel="false"
@@ -100,7 +94,10 @@
 <script>
     import humanize from 'humanize'
     import DropDownGameMode from './DropDownGameMode.vue';
+    import NewsZone from './News/NewsZone.vue'
     import Install from './Install.vue'
+    import ApplicationUpdateProgress from '@/components/ApplicationUpdateProgress.vue'
+
     import {
         OSType
     } from '../models/OSType'
@@ -145,6 +142,13 @@
                 }
                 let ins = installationManager.getInstallationInfo(this.applicationId);
                 return ins;
+            },
+            isUpdating() {
+                let status = this.$store.state.applicationStatuses.find(x => x.applicationId == this.applicationId);
+                if (status) {
+                    return status.currentActionType == InstallationActionType.Update;
+                }
+                return false;
             }
         },
         asyncComputed: {
@@ -206,7 +210,9 @@
         },
         components: {
             DropDownGameMode,
-            Install
+            Install,
+            NewsZone,
+            ApplicationUpdateProgress
         }
     };
 </script>
