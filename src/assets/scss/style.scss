@@ -180,3 +180,20 @@ body {
         margin-bottom: 0.75em;
     }
 }
+
+.left-column{
+    display: flex;
+    flex-direction: column;
+    .left-column-alerts{
+        flex-grow: 1;
+    }
+}
+.right-column{
+    position: relative;
+    height: 100%;
+    .right-column-install{
+        display: flex;
+        width: -webkit-fill-available;
+        flex-direction: column;
+    }
+}

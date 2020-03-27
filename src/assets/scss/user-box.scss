@@ -1,8 +1,11 @@
-.nav-profile {
-    &.dropdown{
-        width: -webkit-fill-available;
-        >.dropdown-trigger{
+.nav-users{
+    flex-grow: 1;
+    .nav-users-profile {
+        &.dropdown{
             width: -webkit-fill-available;
+            >.dropdown-trigger{
+                width: -webkit-fill-available;
+            }
         }
     }
 }

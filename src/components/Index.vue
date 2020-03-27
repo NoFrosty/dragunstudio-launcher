@@ -1,13 +1,18 @@
 <template>
     <div>
-        <Navbar/>
+        <Navbar />
         <div class="columns">
-            <div class="column">Status</div>
-            <div class="column column-is-fixed is-17">
-                <UserPanel class="nav-profile"/>
+            <div class="column left-column">
+                <div class="left-column-alerts">Status</div>
+                <ApplicationOverview :applicationId="activeApplicationId" />
+            </div>
+            <div class="column column-is-fixed is-17 right-column" v-if="activeApplication">
+                <div class="nav-users">
+                    <UserPanel class="nav-users-profile" />
+                </div>
+                <ApplicationCommandCenter/>
             </div>
         </div>
-        <ApplicationCommandCenter :applicationId="activeApplicationId" />
     </div>
     <!--
     <div class="window-content">
@@ -86,47 +91,37 @@
 </template>
 
 <script>
-const GAME_TABS = {
-    OVERVIEW: 0,
-    ACTIVITIES: 1,
-    ACHIEVEMENTS: 2
-};
-import ApplicationCommandCenter from "@/components/ApplicationCommandCenter";
-import Navbar from "@/components/Navbar.vue";
-import GameOverview from "@/components/GameOverview.vue";
-import UserPanel from "@/components/UserPanel.vue";
-import {
-    GAME_MODE
-} from '@/services/constants.ts'
-
-export default {
-    name: "evopeons-launcher",
-    data() {
-        return {
-            applications: null,
-            applicationId: null,
-        };
-    },
-    computed: {
-        isOffline: function() {
-            return this.$store.state.isOffline;
+    import ApplicationOverview from "@/components/ApplicationOverview";
+    import ApplicationCommandCenter from "@/components/ApplicationCommandCenter";
+    import Navbar from "@/components/Navbar.vue";
+    import UserPanel from "@/components/UserPanel.vue";
+    import { applicationLibrary } from '@/services/services'
+    export default {
+        name: "evopeons-launcher",
+        data() {
+            return {
+            };
         },
-        isSignedIn: function() {
-            return this.$store.state.isSignedIn;
+        computed: {
+            activeApplicationId: function () {
+                return this.$store.state.selectedApplicationId;
+            },
         },
-        activeApplicationId: function() {
-            return this.$store.state.selectedApplicationId;
+        methods: {
         },
-    },
-    methods: {
-        onGameTabChange: function(index) {
-            this.activeGameTab = index;
-        }
-    },
-    components: {
-        Navbar,
-        UserPanel,
-        ApplicationCommandCenter
-    },
-};
+        components: {
+            Navbar,
+            UserPanel,
+            ApplicationOverview,
+            ApplicationCommandCenter,
+        },
+        asyncComputed: {
+            activeApplication: async function () {
+                if (!this.activeApplicationId) {
+                    return null;
+                }
+                return await applicationLibrary.getGameFromId(this.activeApplicationId);
+            }
+        },
+    };
 </script>
