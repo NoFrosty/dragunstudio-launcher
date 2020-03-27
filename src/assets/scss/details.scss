@@ -7,9 +7,6 @@
         flex-grow: 1;
         margin: 0.75em;
         background-color: rgba($color: #20201E, $alpha: 0.65);
-        >.columns{
-            margin: 0 !important;
-        }
         .details-not-installed-left{
            
             .details-logo{
@@ -40,6 +37,52 @@
         
         h1{
             font-weight: bold;
+        }
+    }
+    .details-installed{
+        display: flex;
+        flex-grow: 1;
+        margin: 0.75em;
+        width: calc(100% - 1.5em);
+        justify-content: space-between;
+        >.columns{
+            margin: 0 !important;
+        }
+        .details-news{
+            flex-shrink: 1;
+            flex-grow: unset;
+            overflow: hidden;
+            .details-news-article{
+                background-image: url("https://cdn.dribbble.com/users/5031/screenshots/3731564/mikael_gustafsson_dribbble.png");
+                background-repeat: no-repeat;
+                background-size: auto;
+                background-color: #20201E;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                .details-news-text-container{
+                    padding: 0.75em;
+                    background-color: rgba($color: #000000, $alpha: 0.8);
+                }
+                .news-article-more{
+                    align-self: flex-end;
+                }
+                h1{
+                    font-weight: bold;
+                }
+
+            }
+            .details-news-article:not(:first-child){
+                margin-left: 1em;
+            }
+        }
+        .details-installed-right{
+            &.column-is-fixed{
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                padding-right: 0 !important;
+                align-self: flex-end;
+            }
         }
     }
 }

@@ -1,8 +1,9 @@
 <template>
-    <b-dropdown v-model="currentGameMode" aria-role="list" v-bind:value="value" v-on:change="onChange" position="is-bottom-left">
-        <button class="button is-dark" type="button" slot="trigger">
+    <b-dropdown class="is-up" v-model="currentGameMode" aria-role="list" v-bind:value="value" v-on:change="onChange" position="is-bottom-left" expanded>
+        <button class="button is-medium is-dark is-fullwidth" type="button" slot="trigger">
             <template>
                 <b-icon pack="fas" :icon="GAME_MODE_ICONS[currentGameMode]"></b-icon>
+                <span>Public</span>
             </template>
         </button>
         <b-dropdown-item v-for="mode in GameModeKeys" :key="mode" :value="GAME_MODE[mode]" aria-role="listitem">
@@ -43,3 +44,9 @@
         }
     }
 </script>
+
+<style scoped>
+.button{
+    justify-content: flex-start;
+}
+</style>

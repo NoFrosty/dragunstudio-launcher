@@ -14,9 +14,14 @@
 }
 
 .column-is-fixed{
-    display: block;
-    padding: 0.75rem;
+    display: flex;
     -webkit-box-flex: 0;
     flex: none;
-    width: 17em;
+    flex-direction: column;
+    &.is-17{
+        width: 17em;
+    }
+    &.is-23{
+        width: 23em;
+    }
 }
