@@ -3,7 +3,7 @@
         <Navbar />
         <div class="columns">
             <div class="column left-column">
-                <div class="left-column-alerts">Status</div>
+                <div class="left-column-alerts"><PatchFull/></div>
                 <ApplicationOverview :applicationId="activeApplicationId" />
             </div>
             <div class="column column-is-fixed is-17 right-column" v-if="activeApplication">
@@ -96,6 +96,7 @@
     import Navbar from "@/components/Navbar.vue";
     import UserPanel from "@/components/UserPanel.vue";
     import { applicationLibrary } from '@/services/services'
+    import PatchFull from './PatchFull.vue'
     export default {
         name: "evopeons-launcher",
         data() {
@@ -114,6 +115,7 @@
             UserPanel,
             ApplicationOverview,
             ApplicationCommandCenter,
+            PatchFull
         },
         asyncComputed: {
             activeApplication: async function () {

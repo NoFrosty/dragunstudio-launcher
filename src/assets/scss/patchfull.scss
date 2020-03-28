@@ -1,0 +1,16 @@
+.patchfull{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    .patch-title{
+        font-size: xx-large;
+    }
+    .patch-subtitle-author{
+        font-size: large;
+        margin-right: 1em;
+        margin-bottom: 1em;
+    }
+    .patch-text{
+        margin-top: 2em;
+    }
+}
