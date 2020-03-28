@@ -25,3 +25,11 @@
         width: 23em;
     }
 }
+
+.breadcrumb{
+    &.has-pipe-separator{
+        li + li::before{
+            content: "|";
+        }
+    }
+}

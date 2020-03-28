@@ -21,7 +21,7 @@
 
 <script>
 import axios from 'axios';
-import { applicationLibrary, installationManager } from '@/services/services'
+import { applicationLibrary, installationManager, eventBus } from '@/services/services'
 
 export default {
     data() {
@@ -48,6 +48,7 @@ export default {
         },
         changeApplication: function(application) {
             this.$emit('input', application);
+            eventBus.emitter.emit("on-article-close", null);
             this.setCurrentApplication(application.applicationId);
         }
     },

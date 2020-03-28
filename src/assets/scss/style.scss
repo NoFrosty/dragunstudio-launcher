@@ -184,8 +184,10 @@ body {
 .left-column{
     display: flex;
     flex-direction: column;
+    max-height: -webkit-fill-available;
     .left-column-alerts{
         flex-grow: 1;
+        max-height: -webkit-fill-available;
     }
 }
 .right-column{

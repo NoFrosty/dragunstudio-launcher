@@ -3,8 +3,8 @@
         <Navbar />
         <div class="columns">
             <div class="column left-column">
-                <div class="left-column-alerts"><PatchFull/></div>
-                <ApplicationOverview :applicationId="activeApplicationId" />
+                <div class="left-column-alerts"><PatchFull v-if="article" :article="article"/></div>
+                <ApplicationOverview :applicationId="activeApplicationId" v-if="!article" />
             </div>
             <div class="column column-is-fixed is-17 right-column" v-if="activeApplication">
                 <div class="nav-users">
@@ -95,12 +95,13 @@
     import ApplicationCommandCenter from "@/components/ApplicationCommandCenter";
     import Navbar from "@/components/Navbar.vue";
     import UserPanel from "@/components/UserPanel.vue";
-    import { applicationLibrary } from '@/services/services'
+    import { applicationLibrary, eventBus } from '@/services/services'
     import PatchFull from './PatchFull.vue'
     export default {
         name: "evopeons-launcher",
         data() {
             return {
+                article:null
             };
         },
         computed: {
@@ -108,7 +109,14 @@
                 return this.$store.state.selectedApplicationId;
             },
         },
+        mounted: async function(){
+            eventBus.subscribe('on-article-open', this.onArticleReceived);
+            eventBus.subscribe('on-article-close', this.onArticleReceived);
+        },
         methods: {
+            onArticleReceived(article){
+                this.article = article
+            }
         },
         components: {
             Navbar,
