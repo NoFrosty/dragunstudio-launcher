@@ -18,8 +18,12 @@
                 </b-dropdown>
                 <DropDownGameMode class="" v-model="gameMode" />
             </b-field>
+            
+            <b-tooltip position="is-left" :label="installation.version" :active="true" :delay="2500" animated>
             <b-button type="is-primary is-large" v-if="!isUpdating" expanded>Play Now</b-button>
             <b-button type="is-primary is-large" v-if="isUpdating" disabled expanded>Play Now</b-button>
+            </b-tooltip>
+
             <!--<b-button type="is-primary is-large" v-if="!isUpdating" expanded>Update</b-button>-->
         </div>
         <div class="right-column-install" v-else>
