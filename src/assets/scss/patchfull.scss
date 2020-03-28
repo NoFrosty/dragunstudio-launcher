@@ -1,7 +1,8 @@
 .patchfull{
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    overflow: auto;
+    height: 30em;
     .patch-title{
         font-size: xx-large;
     }
