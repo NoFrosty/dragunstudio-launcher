@@ -8,7 +8,7 @@
                     <li class="is-active"><a href="#" aria-current="page">{{article.title}}</a></li>
                 </ul>
             </nav>
-            <h2 class="patch-subtitle-author">By Frosty - 3 Days ago</h2>
+            <h2 class="patch-subtitle-author">By Frosty - {{timeCalc}}</h2>
             <b-taglist class="patch-tags is-marginless">
                 <b-tag type="is-primary">Gameplay Update</b-tag>
             </b-taglist>
@@ -20,6 +20,7 @@
 </template>
 <script>
 import marked from 'marked'
+import moment from 'moment'
 import {eventBus} from '@/services/services'
 
 export default {
@@ -29,7 +30,11 @@ export default {
     computed:{
         articleContent() {
             return marked(this.article.content)
-        }
+        },
+        timeCalc() {
+            let date = new Date(this.article.publishDate)
+            return moment(this.article.publishDate).fromNow();
+        },
     },
     methods: {
         closeArticle() {
