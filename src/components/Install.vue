@@ -36,26 +36,33 @@
 <script>
     import { ApplicationInfo } from '@/models/ApplicationInfo';
     import { DownloadManager, DownloadManagerOnProgressEvent } from '../services/DownloadManager';
+    const os = require('os');
+    const currentPlatform = os.platform();
     const {dialog} = require('electron').remote;
     const {remote} = require('electron')
-
 
     export default {
         data() {
             return {
-                path : remote.app.getAppPath() + "\\" + this.application.name,
+                path : remote.app.getAppPath() + this.getSymbol() + this.application.name,
             }
         },
         props:{
             application: ApplicationInfo,
         },
         methods:{
+            getSymbol(){
+                if(currentPlatform == "win32")
+                    return "\\";
+                else
+                    return "/"
+            },
             openDial: async function() {
                 const selectedPaths = await dialog.showOpenDialog({
                     properties: ['openDirectory']
                 });
                 if(!selectedPaths.canceled)
-                    this.path = selectedPaths.filePaths[0] + "\\" + this.application.name;
+                    this.path = selectedPaths.filePaths[0] + this.getSymbol() + this.application.name;
             },
             install() {
                 this.$emit('start', {
