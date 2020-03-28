@@ -1,5 +1,5 @@
 <template>
-    <div id="window" class="is-not-selectable">
+    <div id="window" class="is-not-selectable" :style="{'background-image': 'url(' + backgroundImage + ')'}">
         <WindowsController />
         <router-view id="view"></router-view>
     </div>
@@ -13,19 +13,29 @@ const GAME_TABS = {
 };
 import WindowsController from "./components/WindowsController.vue";
 import services, { eventBus } from "@/services/services";
-
+import backgroundImageDefault from './assets/images/background/Background.jpg'
 export default {
     name: "evopeons-launcher",
     data() {
         return {
             GAME_TABS: GAME_TABS,
-            activeGameTab: GAME_TABS.OVERVIEW
+            activeGameTab: GAME_TABS.OVERVIEW,
+            backgroundImage: backgroundImageDefault,
         };
     },
     methods: {
         onGameTabChange: function(index) {
             this.activeGameTab = index;
+        },
+        onBackgroundChanged: function(background){
+            if(background)
+            this.backgroundImage = background
+            else
+            this.backgroundImage = backgroundImageDefault;
         }
+    },
+    mounted: async function(){
+        eventBus.subscribe('on-background-changed', this.onBackgroundChanged);
     },
     components: {
         WindowsController

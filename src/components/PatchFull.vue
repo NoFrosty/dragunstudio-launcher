@@ -3,7 +3,7 @@
         <div class="patch-info">
             <nav class="breadcrumb has-pipe-separator" aria-label="breadcrumbs">
                 <ul>
-                    <li><a @click="closeArticle">Project Crystal</a></li>
+                    <li><a @click="closeArticle">&#60; Project Crystal</a></li>
                     <li class="is-active"><a href="#">News</a></li>
                     <li class="is-active"><a href="#" aria-current="page">{{article.title}}</a></li>
                 </ul>
@@ -18,11 +18,6 @@
         </div>
     </div>
 </template>
-<style>
-#window{
-        background-image: url("../assets/images/background/PatchBackground.jpg") !important;
-}
-</style>
 <script>
 import marked from 'marked'
 import {eventBus} from '@/services/services'
@@ -39,6 +34,8 @@ export default {
     methods: {
         closeArticle() {
             eventBus.emitter.emit("on-article-close", null);
+            eventBus.emitter.emit("on-background-changed", null);
+
         }
     }
 }
