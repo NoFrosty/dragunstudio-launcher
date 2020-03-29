@@ -81,7 +81,8 @@
             };
         },
         mounted() {
-            this.updateAvailable = this.checkForUpdates();
+            if(this.installation)
+                this.updateAvailable = this.checkForUpdates();
         },
         computed: {
             activeApplicationId: function () {
