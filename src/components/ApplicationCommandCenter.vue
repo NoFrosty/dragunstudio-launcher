@@ -20,8 +20,9 @@
             </b-field>
             
             <b-tooltip position="is-left" :label="installation.version" :active="true" :delay="2500" animated>
-            <b-button type="is-primary is-large" v-if="!isUpdating" expanded>Play Now</b-button>
-            <b-button type="is-primary is-large" v-if="isUpdating" disabled expanded>Play Now</b-button>
+            <b-button type="is-primary is-large" v-if="!isUpdating && !updateAvailable" expanded>Play Now</b-button>
+            <b-button type="is-primary is-large" v-if="isUpdating && !updateAvailable" disabled expanded>Play Now</b-button>
+            <b-button type="is-primary is-large" v-if="updateAvailable" @click="updateApplication" expanded>Update</b-button>
             </b-tooltip>
 
             <!--<b-button type="is-primary is-large" v-if="!isUpdating" expanded>Update</b-button>-->
@@ -75,8 +76,12 @@
                     percentage: 0,
                     totalReceived: null,
                     totalToReceive: null
-                }
+                },
+                updateAvailable: false
             };
+        },
+        mounted() {
+            this.updateAvailable = this.checkForUpdates();
         },
         computed: {
             activeApplicationId: function () {
@@ -99,6 +104,9 @@
             }
         },
         methods: {
+            updateApplication(){
+                installationManager.updateApplication(this.activeApplicationId, this.onProgress);
+            },
             startInstallation() {
                 this.isInstallModalActive = true;
             },
@@ -120,6 +128,7 @@
                         applicationId: this.activeApplicationId,
                         actionType: InstallationActionType.NoAction
                     });
+                    this.updateAvailable = false;
                 } else {
                     eventBus.emitter.emit("on-update-progress", progress);
                 }

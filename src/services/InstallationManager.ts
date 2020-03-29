@@ -143,7 +143,6 @@ class InstallationManager extends RendererServiceBase {
         applicationId : string,
         installationPath : string,
         onProgress: (progress: DownloadManagerOnProgressEvent) => void) {
-
         this.onProgress = onProgress;
 
         this.logger.info("Application installation started!")
@@ -254,6 +253,7 @@ class InstallationManager extends RendererServiceBase {
         });
         let updateResponse = await axios.get(url);
         let updateActions = updateResponse.data as UpdateAction[];
+        this.logger.info(updateActions);
 
         this.logger.info("Update actions are fetched: " + updateActions.length);
         
@@ -280,6 +280,7 @@ class InstallationManager extends RendererServiceBase {
                     }
                     allFiles.push(diff);
                     break;
+                
             }
         }
 
