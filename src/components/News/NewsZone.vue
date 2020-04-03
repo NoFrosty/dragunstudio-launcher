@@ -1,6 +1,6 @@
 <template>
     <div class="columns details-news">
-        <NewsArticle v-for="article in articles" :key="article.id" :article="article"/>
+        <NewsArticle v-for="article in getArticles" :key="article.id" :article="article"/>
     </div>
 </template>
 
@@ -17,8 +17,19 @@ export default {
         }
     },
     mounted: async function(){
-        let articleResponse = await axios.get(process.env.VUE_APP_API_LINK + '/article');
-        this.articles = articleResponse.data;
+        this.getArticles;
+    },
+    asyncComputed: {
+        getArticles: async function(){
+            let parameters = {
+                isPublished: true,
+                applicationId: this.applicationId,
+                firstN: null
+            };
+            let articleResponse = await axios.get(process.env.VUE_APP_API_LINK + '/article/', parameters);
+            console.log(articleResponse.data)
+            return articleResponse.data;
+        }
     },
     components: {
         NewsArticle

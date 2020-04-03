@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="details-installed" v-if="installation">
-            <NewsZone />
+            <NewsZone :applicationId="activeApplication.applicationId" />
         </div>
     </div>
 </template>
