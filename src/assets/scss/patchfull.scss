@@ -14,5 +14,10 @@
         overflow: auto;
         max-height: -webkit-fill-available;
         position: relative;
+        direction: rtl;
+        .content{
+            direction: ltr;
+            margin-left: 1em;
+        }
     }
 }
