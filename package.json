@@ -1,5 +1,6 @@
 {
-  "name": "evopeons-launcher-client",
+  "name": "warplauncher",
+  "productName": "Warp Launcher",
   "version": "0.0.1",
   "private": true,
   "description": "Evorine multi application launcher",
@@ -12,7 +13,7 @@
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "electron:generate-icons": "electron-icon-builder --input=./public./images/icon.png --output=build --flatten"
+    "electron:generate-icons": "electron-icon-builder --input=./public/images/icon.png --output=build --flatten"
   },
   "main": "background.js",
   "dependencies": {
@@ -23,6 +24,7 @@
     "core-js": "^2.6.11",
     "countries-list": "^2.5.4",
     "crypto-js": "^3.3.0",
+    "electron-updater": "^4.2.5",
     "electron-window-state": "^5.0.3",
     "fs-extra": "^8.1.0",
     "humanize": "0.0.9",
@@ -95,5 +97,5 @@
     "evorine",
     "evolauncher"
   ],
-  "license": "© 2019 Evorine All Rights Reserved"
+  "license": "© 2019-2020 Evorine All Rights Reserved"
 }

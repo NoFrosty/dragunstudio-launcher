@@ -61,8 +61,8 @@
     export default {
         data() {
             return {
-                email: "calvindogus@gmail.com",
-                password: "PhoeniX96&",
+                email: "",
+                password: "",
                 staySignedIn: false,
             }
         },

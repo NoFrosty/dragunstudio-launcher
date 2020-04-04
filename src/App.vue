@@ -41,9 +41,6 @@ export default {
         WindowsController
     },
     created: function() {
-        let RepairService = services.resolve('repairService');
-        RepairService.CheckStore();
-        RepairService.CheckIfSelectedApplicationStillExists();
 
         for(var key in services.registrations) {
             let service = services.resolve(key)

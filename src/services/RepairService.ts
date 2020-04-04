@@ -1,12 +1,12 @@
 import ApplicationLibrary from './ApplicationLibrary';
 import RendererServiceBase from './RendererServiceBase';
 
-export default class RepairService extends RendererServiceBase {
+class RepairService extends RendererServiceBase {
     private applicationLibrary : ApplicationLibrary;
 
-    constructor(applicationLibrary : ApplicationLibrary) {
+    constructor() {
         super()
-        this.applicationLibrary = applicationLibrary;
+        this.applicationLibrary = new ApplicationLibrary();
     }
 
     CheckAll() {
@@ -35,3 +35,5 @@ export default class RepairService extends RendererServiceBase {
         }
     }
 }
+
+export default RepairService
