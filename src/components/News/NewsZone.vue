@@ -22,12 +22,11 @@ export default {
     asyncComputed: {
         getArticles: async function(){
             let parameters = {
-                isPublished: true,
-                applicationId: this.applicationId,
+                
+                
                 firstN: null
             };
-            let articleResponse = await axios.get(process.env.VUE_APP_API_LINK + '/article/', parameters);
-            console.log(articleResponse.data)
+            let articleResponse = await axios.get(process.env.VUE_APP_API_LINK + '/applications/' + this.applicationId + '/articles');
             return articleResponse.data;
         }
     },

@@ -16,7 +16,14 @@ class ApplicationLibrary extends RendererServiceBase {
             return apps;
         }
         else {
-            let result = await axios.get<ApplicationInfo[]>(process.env.VUE_APP_API_LINK + '/application');
+            let parameters={
+                isPublished: false
+            }
+            let result = await axios.get<ApplicationInfo[]>(process.env.VUE_APP_API_LINK + '/applications', {
+                params:{
+                    isPublished: false
+                }
+            });
             let apps = result.data.filter(x => (x.supportedOperatingSystems & currentOS) === currentOS);
             localStorage.setItem("Applications", JSON.stringify(apps));
             return result.data;
