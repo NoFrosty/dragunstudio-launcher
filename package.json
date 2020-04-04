@@ -1,16 +1,9 @@
 {
   "name": "evopeons-launcher-client",
   "version": "0.0.1",
-  "description": "Evorine multi application launcher",
-  "keywords": [
-    "launcher",
-    "game",
-    "evorine",
-    "evolauncher"
-  ],
-  "author": "Evorine",
-  "license": "© 2019 Evorine All Rights Reserved",
   "private": true,
+  "description": "Evorine multi application launcher",
+  "author": "Evorine",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -18,7 +11,8 @@
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "electron:generate-icons": "electron-icon-builder --input=./public./images/icon.png --output=build --flatten"
   },
   "main": "background.js",
   "dependencies": {
@@ -61,6 +55,7 @@
     "@vue/eslint-config-typescript": "^4.0.0",
     "babel-eslint": "^10.1.0",
     "electron": "^8.2.0",
+    "electron-icon-builder": "^1.0.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.13.1",
@@ -93,5 +88,12 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "keywords": [
+    "launcher",
+    "game",
+    "evorine",
+    "evolauncher"
+  ],
+  "license": "© 2019 Evorine All Rights Reserved"
 }
