@@ -1,5 +1,5 @@
 'use strict'
-
+/* global __static */
 import logger from './services/logger'
 import mainNotificationManager from './services/MainNotificationManager'
 import { app, protocol, BrowserWindow, ipcMain } from 'electron'
@@ -11,6 +11,7 @@ import { DownloadManager, DownloadManagerContext, DownloadManagerSettings, Downl
 import FileInfo from './models/FileInfo'
 import DiffInfo from './models/DiffInfo'
 import { settings } from 'cluster'
+import path from 'path'
 const windowStateKeeper = require('electron-window-state');
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -41,6 +42,7 @@ function createWindow() {
             nodeIntegration: true,
         },
         backgroundColor: '#141212',
+        icon: path.join(__static, 'images/icon.png')
     })
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
