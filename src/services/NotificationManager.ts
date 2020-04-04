@@ -1,15 +1,10 @@
-enum InformationType {
-    Information,
-    Error,
-    Warning
-}
-
 interface NotificationManager {
-    alert(message : string, informationType : InformationType) : void;
-    confirm(message : string, informationType : InformationType) : Promise<boolean>;
+    alert(message : string) : void;
+    confirm(message : string) : Promise<boolean>;
     
-    notify(message : string, informationType : InformationType) : void;
-    success(message : string, informationType : InformationType) : void;
+    notify(message : string) : void;
+    success(message : string) : void;
+    success(message : string) : void;
     error(message : string) : void;
     warning(message : string) : void;
     information(message : string) : void;
@@ -18,5 +13,5 @@ interface NotificationManager {
 }
 
 export {
-    NotificationManager, InformationType
+    NotificationManager
 }

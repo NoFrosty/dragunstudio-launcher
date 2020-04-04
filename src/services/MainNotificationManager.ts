@@ -1,16 +1,16 @@
-import { NotificationManager, InformationType } from './NotificationManager';
+import { NotificationManager } from './NotificationManager';
 
 class MainNotificationManager implements NotificationManager {
-    alert(message: string, informationType: InformationType): void {
+    alert(message: string): void {
         throw new Error("Method not implemented.");
     }
-    confirm(message: string, informationType: InformationType): Promise<boolean> {
+    confirm(message: string): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
-    notify(message: string, informationType: InformationType): void {
+    notify(message: string): void {
         throw new Error("Method not implemented.");
     }
-    success(message: string, informationType: InformationType): void {
+    success(message: string): void {
         throw new Error("Method not implemented.");
     }
     error(message: string): void {

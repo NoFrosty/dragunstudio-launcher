@@ -1,11 +1,11 @@
 import { ToastProgrammatic, DialogProgrammatic} from 'buefy'
-import { NotificationManager, InformationType } from './NotificationManager';
+import { NotificationManager } from './NotificationManager';
 
 class RendererNotificationManager implements NotificationManager {
-    alert(message: string, informationType: InformationType): void {
+    alert(message: string): void {
         throw new Error("Method not implemented.");
     }
-    async confirm(message: string, informationType: InformationType): Promise<boolean> {
+    async confirm(message: string): Promise<boolean> {
         return new Promise((resolve: any) =>{
             DialogProgrammatic.confirm({
                 title: 'Confirmation',
@@ -22,14 +22,14 @@ class RendererNotificationManager implements NotificationManager {
             });
         });
     }
-    notify(message: string, informationType: InformationType): void {
+    notify(message: string): void {
         ToastProgrammatic.open({
             duration: 5000,
             message: message,
             position: 'is-top',
         });
     }
-    success(message: string, informationType: InformationType): void {
+    success(message: string): void {
         ToastProgrammatic.open({
             duration: 5000,
             message: message,
