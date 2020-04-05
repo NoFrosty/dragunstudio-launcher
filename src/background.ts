@@ -33,7 +33,6 @@ function createWindow() {
     win = new BrowserWindow({
         title: 'Warp Launcher',
         frame: false,
-        transparent: true,
         fullscreenable: true,
         x: mainWindowState.x,
         y: mainWindowState.y,
