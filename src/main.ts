@@ -10,6 +10,7 @@ const bspatch = require('bspatch');
 const AsyncComputed = require('vue-async-computed').default
 var CryptoJS = require("crypto-js");
 import './validate-configuration'
+import i18n from './i18n'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
@@ -23,9 +24,13 @@ Vue.use(AsyncComputed)
 new Vue({
   router,
   store,
+
   beforeCreate(){
     this.$store.commit('initialiseStore')
   },
-  render: h => h(App),
+
+  i18n,
+
   //defaultIconPack: 'fas',
+  render: h => h(App)
 }).$mount('#window')

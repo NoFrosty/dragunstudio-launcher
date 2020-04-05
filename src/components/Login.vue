@@ -3,6 +3,17 @@
         <div class="login-register-body">
             <div class="field-box">
                 <img class="logo" src="../assets/images/Evorine-Logo.png"/>
+                <div class="lang-dropdown">
+      <select v-model="$i18n.locale">
+        <option
+          v-for="(lang, i) in languageArray"
+          :key="`lang${i}`"
+          :value="lang"
+        >
+          {{ lang }}
+        </option>
+      </select>
+    </div>
                 <h1 class="login-register-heading">Sign In</h1>
                 <!--<p class="login-subheading">We don't need a healer for this, right?</p>-->
                 <ValidationObserver ref="observer" v-slot="{ passes }">
@@ -22,7 +33,7 @@
                             <ValidationProvider rules="required" name="Password" v-slot="{ errors, valid }">
                                 <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                     <b-input size="is-medium" icon-pack="fa" icon="lock" v-model="password" 
-                                        type="password" name="password" placeholder="Password" password-reveal required>
+                                        type="password" name="password" :placeholder="$t('password')" password-reveal required>
                                     </b-input>
                                 </b-field>
                             </ValidationProvider>
@@ -64,6 +75,7 @@
                 email: "",
                 password: "",
                 staySignedIn: false,
+                languageArray: ['en', 'fr']
             }
         },
         components: {

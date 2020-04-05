@@ -13,9 +13,13 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "node"
+      "node",
+      "webpack",
+      "webpack-env"
     ],
-    "typeRoots": [ "./node_modules/@types" ],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "paths": {
       "@/*": [
         "src/*"
