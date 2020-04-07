@@ -11,11 +11,7 @@
                     </div>
                     <div class="details-info">
                         <h1>What is {{activeApplication.name}}</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id efficitur lacus. Fusce
-                            gravida tincidunt felis, eget congue sapien facilisis rutrum. Donec pretium metus eu massa
-                            tempor ultrices. Integer sit amet nibh sapien. Vivamus quis lacinia lacus, quis fringilla
-                            purus. Suspendisse dignissim scelerisque nisi, sed dictum magna. Vivamus nec dolor mollis,
-                            facilisis enim at, tristique est.</p>
+                        <p>{{activeApplication.description}}</p>
                     </div>
                 </div>
                 <div class="column-is-fixed is-17 is-relative column details-not-installed-right">
@@ -25,7 +21,7 @@
                     </div>
                     <div>
                         <h1>Plateformes</h1>
-                        <p>{{compatiblePlatforme}}</p>
+                        <PlatformLabel v-for="platform in activeApplication.platforms" :key="platform.operatingSystem" :operating-system="platform.operatingSystem" />
                     </div>
                 </div>
             </div>
@@ -38,7 +34,7 @@
 
 <script>
     import NewsZone from './News/NewsZone.vue';
-    import { OSType } from '../models/OSType';
+    import PlatformLabel from './PlatformLabel.vue';
     import { applicationLibrary, installationManager } from '@/services/services';
     export default {
         props: {
@@ -48,9 +44,6 @@
             return {}
         },
         computed: {
-            compatiblePlatforme: function () {
-                return OSType[this.activeApplication.supportedOperatingSystems]
-            },
             installation: function () {
                 if (!this.applicationId) {
                     return null;
@@ -69,6 +62,7 @@
         },
         components: {
             NewsZone,
+            PlatformLabel
         }
     };
 </script>

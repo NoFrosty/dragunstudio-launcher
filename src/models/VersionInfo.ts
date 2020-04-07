@@ -1,4 +1,4 @@
-import { OSType } from './OSType';
+import Platforms from './Platforms';
 
 export interface VersionInfo {
     versionId: string 
@@ -7,5 +7,5 @@ export interface VersionInfo {
     versionOrder: number
     releaseDate?: Date
     isReleased: boolean
-    operatingSystem: OSType
+    operatingSystem: Platforms
 }

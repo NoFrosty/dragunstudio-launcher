@@ -40,6 +40,8 @@ function createWindow() {
         width: mainWindowState.width,
         webPreferences: {
             nodeIntegration: true,
+            //TODO
+            webSecurity: false
         },
         backgroundColor: '#141212',
         icon: path.join(__static, 'images/icon.png')
@@ -62,7 +64,8 @@ function createWindow() {
         win = null
     })
 }
-
+//TODO
+app.commandLine.appendSwitch('ignore-certificate-errors');
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
     // On macOS it is common for applications and their menu bar

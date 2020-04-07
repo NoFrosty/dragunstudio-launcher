@@ -1,7 +1,7 @@
 import RendererServiceBase from '@/services/RendererServiceBase';
 import axios from 'axios';
 import {ApplicationInfo} from "@/models/ApplicationInfo";
-import { OSType } from '@/models/OSType';
+import Platforms from '@/models/Platforms';
 
 class ApplicationLibrary extends RendererServiceBase {
     public async getAllGameList(): Promise<ApplicationInfo[]> {
@@ -19,12 +19,8 @@ class ApplicationLibrary extends RendererServiceBase {
             let parameters={
                 isPublished: false
             }
-            let result = await axios.get<ApplicationInfo[]>(process.env.VUE_APP_API_LINK + '/applications', {
-                params:{
-                    isPublished: false
-                }
-            });
-            let apps = result.data.filter(x => (x.supportedOperatingSystems & currentOS) === currentOS);
+            let result = await axios.get<ApplicationInfo[]>(process.env.VUE_APP_API_LINK + '/applications?extended=true');
+            let apps = result.data.filter(x => (x.platforms.some(p => p.operatingSystem==currentOS)));
             localStorage.setItem("Applications", JSON.stringify(apps));
             return result.data;
         }
@@ -39,11 +35,11 @@ class ApplicationLibrary extends RendererServiceBase {
         return app;
     }
 
-    public static getOperatingSystem() : OSType {
+    public static getOperatingSystem() : Platforms {
         switch(process.platform as String) {
-            case "win32": return OSType.Windows;
-            case "linux": return OSType.Linux;
-            case "darwin": return OSType.MacOS;
+            case "win32": return Platforms.Windows;
+            case "linux": return Platforms.Linux;
+            case "darwin": return Platforms.MacOS;
             default: throw `Unsupported operating system type '{process.platform}'`;
         }
     }
