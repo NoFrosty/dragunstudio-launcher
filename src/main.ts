@@ -4,7 +4,6 @@ import Buefy from 'buefy'
 import App from './App.vue'
 import router from './router'
 import store from './store/store'
-import { asValue, asClass } from 'awilix'
 import services from '@/services/services'
 
 const AsyncComputed = require('vue-async-computed').default

@@ -10,7 +10,7 @@ import RendererServiceBase from './RendererServiceBase';
 import DiffInfo from '@/models/DiffInfo';
 import FileInfo from '@/models/FileInfo';
 import path from 'path';
-import { ApplicationInfo } from '@/models/ApplicationInfo';
+
 const bsdiff = require('bsdiff-nodejs');
 const format = require('string-format');
 const CryptoJS = require('crypto-js');
