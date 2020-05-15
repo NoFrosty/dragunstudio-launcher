@@ -34,4 +34,4 @@ jobs:
       - name: Build/release Electron app
         run: npm run electron:build -- -p always
         env:
-          GH_TOKEN: ${{ ssecrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
