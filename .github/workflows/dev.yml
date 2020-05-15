@@ -19,8 +19,7 @@ jobs:
         os: [windows-latest]
 
     steps:
-      - env:
-          GH_TOKEN: ${{ ssecrets.GH_TOKEN }}
+      
       - name: Check out Git repository
         uses: actions/checkout@v1
 
@@ -34,3 +33,5 @@ jobs:
         
       - name: Build/release Electron app
         run: npm run electron:build -- -p always
+        env:
+          GH_TOKEN: ${{ ssecrets.GH_TOKEN }}
