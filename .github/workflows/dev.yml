@@ -27,8 +27,11 @@ jobs:
         with:
           node-version: 10
 
-      - name: NPM Install
+      - name: Installing dependecies
         run: npm install
+        
+      - name: Installing Snapcraft
+        run: snap install snapcraft --classic
         
       - name: Build/release Electron app
         run: npm run electron:build -- -p always
