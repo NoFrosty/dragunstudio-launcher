@@ -11,7 +11,7 @@ import DiffInfo from '@/models/DiffInfo';
 import FileInfo from '@/models/FileInfo';
 import path from 'path';
 import { ApplicationInfo } from '@/models/ApplicationInfo';
-const bspatch = require('bspatch');
+const bsdiff = require('bsdiff-nodejs');
 const format = require('string-format');
 const CryptoJS = require('crypto-js');
 
@@ -83,7 +83,7 @@ class InstallationManager extends RendererServiceBase {
                         var updateDirectoryPath = path.join(downloadManagerEvent.executionSettings.rootPath, updateAction.newFile.directoryPath);
                         var updateFilePath = path.join(updateDirectoryPath, updateAction.newFile.fileName);
                         var diffPath = path.join(downloadManagerEvent.executionSettings.diffPath, downloadedDiffInfo.diffId);
-                        bspatch.patchSync(updateFilePath, updateFilePath, diffPath); // Sync
+                        bsdiff.patchSync(updateFilePath, updateFilePath, diffPath); // Sync
                         this.logger.info('File : ' + updateFilePath + ' patched!');
                     }
                     break;
