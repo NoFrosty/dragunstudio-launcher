@@ -11,12 +11,17 @@ module.exports = {
               repo: 'fantastic-octo-memory'
             }
           ],
+          win: {
+            target: [
+            {
+              target: "nsis",
+              arch: ["x64"]
+            }
+          ]
+        },
           nsis: {
-            displayLanguageSelector: true,
-            oneClick: false,
-            perMachine: false,
-            allowElevation: true,
-            allowToChangeInstallationDirectory: true
+            oneClick: true,
+            perMachine: false
           },
           compression: 'maximum',
           copyright: '© 2019-2020 Evorine All Rights Reserved'

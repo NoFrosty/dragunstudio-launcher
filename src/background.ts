@@ -2,7 +2,7 @@
 declare const __static: string;
 import logger from './services/logger'
 import mainNotificationManager from './services/MainNotificationManager'
-import { app, protocol, BrowserWindow, ipcMain } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron'
 import {
     createProtocol,
     installVueDevtools
@@ -54,7 +54,7 @@ function createWindow() {
         createProtocol('app')
         // Load the index.html when not in development
         win.loadURL('app://./index.html')
-        autoUpdater.checkForUpdatesAndNotify()
+        autoUpdater.checkForUpdatesAndNotify();
     }
 
     
@@ -82,6 +82,23 @@ app.on('activate', () => {
         createWindow()
     }
 })
+
+autoUpdater.on("update-downloaded", () => {
+    let response = dialog.showMessageBox(
+    {
+        type: 'question',
+        buttons: ['Yes, please', 'No, thanks'],
+        defaultId: 0,
+        cancelId: 1,
+        title: 'Update',
+        message: 'Do you want update?',
+        detail: 'It does not really matter'
+    }).then(result => {
+        if (result.response === 0) {
+            autoUpdater.quitAndInstall(true,true);
+        }
+    });
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -119,7 +136,6 @@ if (isDevelopment) {
         })
     }
 }
-
 
 
 process.on('uncaughtException', function(err) {
