@@ -6,7 +6,7 @@ import router from './router'
 import store from './store/store'
 import { asValue, asClass } from 'awilix'
 import services from '@/services/services'
-const bspatch = require('bspatch');
+
 const AsyncComputed = require('vue-async-computed').default
 var CryptoJS = require("crypto-js");
 import './validate-configuration'
