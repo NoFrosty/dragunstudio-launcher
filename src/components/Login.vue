@@ -21,8 +21,8 @@
                         <p class="control has-icons-left has-icons-right">
                             <ValidationProvider rules="required|email" name="Email" v-slot="{ errors, valid }">
                                 <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
-                                    <b-input size="is-medium" icon-pack="fa" icon="envelope" v-model="email"
-                                        type="email" name="email" placeholder="Email">
+                                    <b-input size="is-medium" icon-pack="fa" icon="envelope" v-model="email" :autofocus="true"
+                                        type="email" name="email" placeholder="Email" @keyup.native.enter="passes(attemptSignIn)">
                                     </b-input>
                                 </b-field>
                             </ValidationProvider>
@@ -33,7 +33,8 @@
                             <ValidationProvider rules="required" name="Password" v-slot="{ errors, valid }">
                                 <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                     <b-input size="is-medium" icon-pack="fa" icon="lock" v-model="password" 
-                                        type="password" name="password" :placeholder="$t('password')" password-reveal required>
+                                        type="password" name="password" :placeholder="$t('password')" 
+                                        @keyup.native.enter="passes(attemptSignIn)" password-reveal required>
                                     </b-input>
                                 </b-field>
                             </ValidationProvider>
