@@ -13,7 +13,7 @@ const GAME_TABS = {
 };
 import WindowsController from "./components/WindowsController.vue";
 import services, { eventBus } from "@/services/services";
-import backgroundImageDefault from './assets/images/background/Background.jpg'
+import backgroundImageDefault from './assets/images/background/Background5.jpg'
 export default {
     name: "evopeons-launcher",
     data() {
