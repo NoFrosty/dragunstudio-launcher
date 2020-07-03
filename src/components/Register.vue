@@ -223,13 +223,13 @@
     export default {
         data() {
             return {
-                username: "Frosty",
-                firstName: "Calvin",
-                lastName: "Dogus",
+                username: null,
+                firstName: null,
+                lastName: null,
                 birthDate: null,
-                email: "aze@feds.fesf",
-                password: "PhoeniX96&",
-                passwordConfirmation: "PhoeniX96&",
+                email: null,
+                password: null,
+                passwordConfirmation: null,
                 selectedCountry: null,
                 allCountryList: [],
 				selectedDay: null,
