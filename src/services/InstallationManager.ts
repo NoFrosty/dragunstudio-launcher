@@ -64,11 +64,20 @@ class InstallationManager extends RendererServiceBase {
         if(!installation) {
             throw "Application is not installed";
         }
-        let url = format("{root}/update?fromVersionId={fromVersionId}&toVersionId={toVersionId}", {
-            root: process.env.VUE_APP_API_LINK,
-            fromVersionId: installation.versionId,
-            toVersionId: lastVersion.versionId
-        });
+        let url;
+        if(lastVersion.versionId == installation.versionId){
+            url = format("{root}/update?toVersionId={toVersionId}", {
+                root: process.env.VUE_APP_API_LINK,
+                toVersionId: lastVersion.versionId
+            });
+        }
+        else{
+            url = format("{root}/update?fromVersionId={fromVersionId}&toVersionId={toVersionId}", {
+                root: process.env.VUE_APP_API_LINK,
+                fromVersionId: installation.versionId,
+                toVersionId: lastVersion.versionId
+            });
+        }
         let updateResponse = await axios.get(url);
         let updateActions = updateResponse.data as UpdateAction[];
         for(let action of updateActions) {
