@@ -128,7 +128,8 @@
         asyncComputed: {
             activeApplication: async function () {
                 if (!this.activeApplicationId) {
-                    return null;
+                    let result = await applicationLibrary.getAllGameList();
+                    this.$store.commit('setSelectedApplicationId', result[0].applicationId);
                 }
                 return await applicationLibrary.getGameFromId(this.activeApplicationId);
             }
