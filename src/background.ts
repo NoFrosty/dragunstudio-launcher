@@ -64,6 +64,9 @@ function createWindow() {
         win = null
     })
 }
+
+app.allowRendererProcessReuse = false
+
 //TODO
 app.commandLine.appendSwitch('ignore-certificate-errors');
 // Quit when all windows are closed.
