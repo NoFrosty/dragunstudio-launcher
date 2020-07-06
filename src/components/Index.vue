@@ -3,7 +3,7 @@
         <Navbar />
         <div class="columns">
             <div class="column left-column">
-                <div class="left-column-alerts"><PatchFull v-if="article" :article="article"/></div>
+                <div class="left-column-alerts"><PatchFull class="patchzone" v-if="article" :article="article"/></div>
                 <ApplicationOverview :applicationId="activeApplicationId" v-if="!article" />
             </div>
             <div class="column column-is-fixed is-17 right-column" v-if="activeApplication">

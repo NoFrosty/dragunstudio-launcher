@@ -82,7 +82,7 @@
                 password: "",
                 staySignedIn: false,
                 languageArray: ['en', 'fr'],
-                loading: true
+                loading: false
             }
         },
         components: {
@@ -107,9 +107,6 @@
             if (authenticationService.IsSignedIn()) {
                 this.$router.push({ name: "launcher" });
             }
-            setInterval(() => {
-            this.loading = !this.loading
-        }, 3 * 1000)
         }
     }
 </script>
