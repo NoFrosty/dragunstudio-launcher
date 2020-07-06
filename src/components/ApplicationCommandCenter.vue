@@ -151,7 +151,7 @@
                 this.updateAvailable = await installationManager.checkUpdateAvailable(this.activeApplicationId);
             },
             openFileExplorer() {
-                shell.openItem(installationManager.getInstallationInfo(this.activeApplicationId).path);
+                shell.openPath(installationManager.getInstallationInfo(this.activeApplicationId).path);
             },
             openSettingsPanel() {
                 shell.beep();
