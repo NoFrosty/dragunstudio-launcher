@@ -1,4 +1,4 @@
-import { required, email, alpha, confirmed, digits } from "vee-validate/dist/rules";
+import { required, email, alpha, confirmed, digits, alpha_dash, alpha_spaces, min } from "vee-validate/dist/rules";
 import { extend } from "vee-validate";
 
 extend("required", {
@@ -6,14 +6,13 @@ extend("required", {
   message: "This field is required"
 });
 
-extend("email", {
-  ...email,
-  message: "This field must be a valid email"
+extend("email",  {
+    ...email,
+    message: "This field must be a valid email"
 });
 
 extend("alpha",{
-    ...alpha,
-    message: "This field may contain only alphabetic characters"
+    ...alpha
 });
 
 extend("confirmed",{
@@ -21,5 +20,13 @@ extend("confirmed",{
     message: "Password does not match"
 });
 
+extend("alpha_dash",alpha_dash)
+
+extend("alpha_spaces",alpha_spaces)
+
 extend("digits", digits);
+extend("min",{
+    ...min,
+    message: "Password must be minimum of 6 character"
+})
 
