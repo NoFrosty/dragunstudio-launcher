@@ -15,7 +15,7 @@ import WindowsController from "./components/WindowsController.vue";
 import services, { eventBus } from "@/services/services";
 import backgroundImageDefault from './assets/images/background/Background5.jpg'
 export default {
-    name: "evopeons-launcher",
+    name: "Warp Launcher",
     data() {
         return {
             GAME_TABS: GAME_TABS,

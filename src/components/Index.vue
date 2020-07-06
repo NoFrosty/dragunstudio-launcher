@@ -98,7 +98,7 @@
     import { applicationLibrary, eventBus } from '@/services/services'
     import PatchFull from './PatchFull.vue'
     export default {
-        name: "evopeons-launcher",
+        name: "Warp Launcher",
         data() {
             return {
                 article:null
