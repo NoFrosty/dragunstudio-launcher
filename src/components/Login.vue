@@ -48,7 +48,7 @@
                                     <b-skeleton :active="loading"></b-skeleton>
                                 </a>
                             <b-checkbox  v-if="!loading" :value="false" v-model="staySignedIn">
-                                Remember Me
+                                Stay Signed In
                             </b-checkbox>
                         </div>
                     </div>
