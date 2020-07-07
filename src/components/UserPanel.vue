@@ -9,7 +9,7 @@
             </div>
             <div class="nav-profile-text">
                 <span class="nav-profile-text-name">{{this.$store.state.username}}</span>
-                <span class="nav-profile-text-status">Playing Warcraft IV</span>
+                <!--<span class="nav-profile-text-status">Playing Warcraft IV</span>-->
             </div>
             <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
         </button>
