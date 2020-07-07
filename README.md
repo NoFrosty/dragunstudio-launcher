@@ -1,4 +1,4 @@
-# evopeons-launcher-client
+# Warp Launcher
 
 ## Project setup
 ```

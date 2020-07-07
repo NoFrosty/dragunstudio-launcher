@@ -54,7 +54,10 @@ function createWindow() {
         createProtocol('app')
         // Load the index.html when not in development
         win.loadURL('app://./index.html')
-        autoUpdater.checkForUpdatesAndNotify();
+        setInterval(() => {
+            autoUpdater.checkForUpdatesAndNotify();
+        }, 1000 * 60 * 15);
+        
     }
 
     
@@ -64,6 +67,9 @@ function createWindow() {
         win = null
     })
 }
+
+app.allowRendererProcessReuse = false
+
 //TODO
 app.commandLine.appendSwitch('ignore-certificate-errors');
 // Quit when all windows are closed.

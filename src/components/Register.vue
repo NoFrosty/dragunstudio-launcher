@@ -103,7 +103,7 @@
                         <div class="field">
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    <ValidationProvider rules="required|alpha" name="FirstName" v-slot="{ errors, valid }">
+                                    <ValidationProvider rules="required|alpha_dash" name="FirstName" v-slot="{ errors, valid }">
                                         <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                             <b-input size="is-medium" icon-pack="fa" icon="user" v-model="firstName"
                                                 type="text" name="firstName" placeholder="First Name">
@@ -114,7 +114,7 @@
                             </div>
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    <ValidationProvider rules="required|alpha" name="LastName" v-slot="{ errors, valid }">
+                                    <ValidationProvider rules="required|alpha_dash" name="LastName" v-slot="{ errors, valid }">
                                         <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                             <b-input size="is-medium" icon-pack="fa" icon="user" v-model="lastName"
                                                 type="text" name="lastName" placeholder="Last Name">
@@ -127,7 +127,7 @@
                         <div class="field">
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    <ValidationProvider vid="password" rules="required|confirmed:confirmation" name="Password" v-slot="{ errors, valid }">
+                                    <ValidationProvider vid="password" rules="required|confirmed:confirmation|min:6" name="Password" v-slot="{ errors, valid }">
                                         <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                             <b-input size="is-medium" icon-pack="fa" icon="lock" v-model="password" 
                                                 type="password" name="password" placeholder="Password" password-reveal required>

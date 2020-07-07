@@ -20,7 +20,8 @@
                     <div class="field">
                         <p class="control has-icons-left has-icons-right">
                             <ValidationProvider rules="required|email" name="Email" v-slot="{ errors, valid }">
-                                <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+                                <b-skeleton height="2.8em" :active="loading"></b-skeleton>
+                                <b-field v-if="!loading" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                     <b-input size="is-medium" icon-pack="fa" icon="envelope" v-model="email" :autofocus="true"
                                         type="email" name="email" placeholder="Email" @keyup.native.enter="passes(attemptSignIn)">
                                     </b-input>
@@ -31,7 +32,8 @@
                     <div class="field">
                         <p class="control has-icons-left has-icons-right">
                             <ValidationProvider rules="required" name="Password" v-slot="{ errors, valid }">
-                                <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+                                <b-skeleton height="2.8em" :active="loading"></b-skeleton>
+                                <b-field v-if="!loading" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                     <b-input size="is-medium" icon-pack="fa" icon="lock" v-model="password" 
                                         type="password" name="password" :placeholder="$t('password')" 
                                         @keyup.native.enter="passes(attemptSignIn)" password-reveal required>
@@ -42,7 +44,10 @@
                     </div>
                     <div class="field">
                         <div class="level">
-                            <b-checkbox :value="false" v-model="staySignedIn">
+                                <a class="level-item">
+                                    <b-skeleton :active="loading"></b-skeleton>
+                                </a>
+                            <b-checkbox  v-if="!loading" :value="false" v-model="staySignedIn">
                                 Remember Me
                             </b-checkbox>
                         </div>
@@ -76,7 +81,8 @@
                 email: "",
                 password: "",
                 staySignedIn: false,
-                languageArray: ['en', 'fr']
+                languageArray: ['en', 'fr'],
+                loading: false
             }
         },
         components: {

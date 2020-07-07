@@ -3,7 +3,7 @@
         <Navbar />
         <div class="columns">
             <div class="column left-column">
-                <div class="left-column-alerts"><PatchFull v-if="article" :article="article"/></div>
+                <div class="left-column-alerts"><PatchFull class="patchzone" v-if="article" :article="article"/></div>
                 <ApplicationOverview :applicationId="activeApplicationId" v-if="!article" />
             </div>
             <div class="column column-is-fixed is-17 right-column" v-if="activeApplication">
@@ -98,7 +98,7 @@
     import { applicationLibrary, eventBus } from '@/services/services'
     import PatchFull from './PatchFull.vue'
     export default {
-        name: "evopeons-launcher",
+        name: "WarpLauncher",
         data() {
             return {
                 article:null
@@ -128,7 +128,8 @@
         asyncComputed: {
             activeApplication: async function () {
                 if (!this.activeApplicationId) {
-                    return null;
+                    let result = await applicationLibrary.getAllGameList();
+                    this.$store.commit('setSelectedApplicationId', result[0].applicationId);
                 }
                 return await applicationLibrary.getGameFromId(this.activeApplicationId);
             }

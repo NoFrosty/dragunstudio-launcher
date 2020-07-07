@@ -1,23 +1,23 @@
-.patchfull{
-    display: flex;
-    flex-direction: column;
-    max-height: -webkit-fill-available;
-    .patch-info{
-        position: fixed;
-        .patch-subtitle-author{
-            font-size: large;
-            margin-bottom: 1em;
+    .patchfull {
+        display: flex;
+        flex-direction: column;
+        max-height: 100%;
+        .patch-info{
+            position: fixed;
+            .patch-subtitle-author{
+                font-size: large;
+                margin-bottom: 1em;
+            }
+        }
+        .patch-text{
+            margin-top: 8em;
+            position: relative;
+            direction: rtl;
+            overflow-y: scroll;
+            height: 100%;
+            .content{
+                direction: ltr;
+                margin-left: 1em;
+            }
         }
     }
-    .patch-text{
-        margin-top: 8em;
-        overflow: auto;
-        max-height: -webkit-fill-available;
-        position: relative;
-        direction: rtl;
-        .content{
-            direction: ltr;
-            margin-left: 1em;
-        }
-    }
-}
