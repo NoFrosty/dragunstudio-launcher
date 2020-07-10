@@ -51,7 +51,7 @@ export default {
 
         // Forward to login page on sign out event
         eventBus.subscribe('on-signout', () => {
-            if (this.$router.currentRoute.name != "login") {
+            if (this.$router.currentRoute.name != "login" && this.$router.currentRoute.name != "boot") {
                 this.$router.push({ name: "login" });
             }
         });
