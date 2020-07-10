@@ -226,7 +226,6 @@
                 username: null,
                 firstName: null,
                 lastName: null,
-                birthDate: null,
                 email: null,
                 password: null,
                 passwordConfirmation: null,
@@ -263,7 +262,7 @@
                     country: this.selectedCountry,
                     email: this.email,
                     password: this.password,
-                    birthday: new Date(this.selectedYear, this.selectedMonth, this.selectedDay)
+                    birthday: new Date(this.selectedYear, this.selectedMonth-1, this.selectedDay, 10)
                 });
                 if(!isSignUp){
                     notificationManager.error("An error occured");
