@@ -173,6 +173,7 @@
                                 </ValidationProvider>
                             </p>
                         </div>
+                        <!--
                         <div class="field">
                             <ValidationProvider :rules="{ required: { allowFalse: true } }" name="News" v-slot="{ errors, valid }">
                                 <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
@@ -193,6 +194,7 @@
                         </div>
                         <div class="field">By Clicking on «Create», I agree to the <router-link to="" class="has-text-primary">Evorine End User License Agreement</router-link> and <router-link to="" class="has-text-primary">Anti-cheating Agreement</router-link>.
                         </div>
+                        -->
                         <div class="field">
                             <div class="level">
                                 <div class="level-left">
@@ -235,7 +237,7 @@
 				selectedMonth: null,
                 selectedYear: null,
                 yearRange: [],
-                politics: false,
+                politics: true,
                 news: false,
                 state: 0
             }
