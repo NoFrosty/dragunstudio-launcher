@@ -122,7 +122,9 @@ body {
     margin-top: $window-border-radius;
     margin-bottom: $window-border-radius;
 }
-
+.navbar{
+    position: fixed;
+}
 .top-menu{
     display: flex;
     flex-direction: row;
