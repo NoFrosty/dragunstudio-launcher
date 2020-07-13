@@ -3,17 +3,19 @@
         <div class="login-register-body">
             <div class="field-box">
                 <img class="logo" src="../assets/images/Evorine-Logo.png"/>
+                <!--
                 <div class="lang-dropdown">
-      <select v-model="$i18n.locale">
-        <option
-          v-for="(lang, i) in languageArray"
-          :key="`lang${i}`"
-          :value="lang"
-        >
-          {{ lang }}
-        </option>
-      </select>
-    </div>
+                    <select v-model="$i18n.locale">
+                        <option
+                        v-for="(lang, i) in languageArray"
+                        :key="`lang${i}`"
+                        :value="lang"
+                        >
+                        {{ lang }}
+                        </option>
+                    </select>
+                </div>
+                -->
                 <h1 class="login-register-heading">Sign In</h1>
                 <!--<p class="login-subheading">We don't need a healer for this, right?</p>-->
                 <ValidationObserver ref="observer" v-slot="{ passes }">
