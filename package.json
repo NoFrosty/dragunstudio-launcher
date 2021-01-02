@@ -19,7 +19,7 @@
   "dependencies": {
     "awilix": "^4.2.6",
     "axios": "^0.19.2",
-    "bsdiff-nodejs": "^2.2.0",
+    "bsdiff-node": "^2.2.4",
     "buefy": "^0.8.20",
     "core-js": "^2.6.11",
     "countries-list": "^2.5.4",
@@ -63,7 +63,7 @@
     "electron-icon-builder": "^1.0.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^5.0.0",
     "sass": "^1.26.9",
     "sass-loader": "^8.0.2",
     "typescript": "^3.9.6",

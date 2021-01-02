@@ -11,7 +11,7 @@ import DiffInfo from '@/models/DiffInfo';
 import FileInfo from '@/models/FileInfo';
 import path from 'path';
 
-const bsdiff = require('bsdiff-nodejs');
+const bsdiff = require('bsdiff-node');
 const format = require('string-format');
 const CryptoJS = require('crypto-js');
 
