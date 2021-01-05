@@ -18,7 +18,7 @@
   "main": "background.js",
   "dependencies": {
     "awilix": "^4.2.6",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bsdiff-nodejs": "^2.2.0",
     "buefy": "^0.8.20",
     "core-js": "^2.6.11",
