@@ -173,7 +173,7 @@
                                 </ValidationProvider>
                             </p>
                         </div>
-                        <!--
+                        
                         <div class="field">
                             <ValidationProvider :rules="{ required: { allowFalse: true } }" name="News" v-slot="{ errors, valid }">
                                 <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
@@ -192,9 +192,9 @@
                                 </b-field>
                             </ValidationProvider>
                         </div>
-                        <div class="field">By Clicking on «Create», I agree to the <router-link to="" class="has-text-primary">Evorine End User License Agreement</router-link> and <router-link to="" class="has-text-primary">Anti-cheating Agreement</router-link>.
+                        <div class="field">By Clicking on «Create», I agree to the <a @click="showPrivacyPolicy" class="has-text-primary">Evorine End User License Agreement</a> and <router-link to="" class="has-text-primary">Anti-cheating Agreement</router-link>.
                         </div>
-                        -->
+                        
                         <div class="field">
                             <div class="level">
                                 <div class="level-left">
@@ -213,6 +213,9 @@
             </div>
             
         </div>
+        <b-modal :width="1200" :active.sync="isPrivacyPolicyModalActive" class="popup-install">
+            <PrivacyPolicy/>
+        </b-modal>
     </section>
 </template>
 <script>
@@ -221,6 +224,7 @@
     import { ErrorBag } from 'vee-validate';
     import { countries } from 'countries-list';
     import * as VeeValidate from 'vee-validate';
+    import PrivacyPolicy from './PrivacyPolicy.vue'
 
     export default {
         data() {
@@ -239,12 +243,14 @@
                 yearRange: [],
                 politics: true,
                 news: false,
+                isPrivacyPolicyModalActive: false,
                 state: 0
             }
         },
         components: {
             ValidationObserver,
             ValidationProvider,
+            PrivacyPolicy
         },
         methods: {
             goToLogin: function(){
@@ -285,6 +291,9 @@
                     }
                 }
             },
+            showPrivacyPolicy: function(){
+                this.isPrivacyPolicyModalActive = true;
+            }
         },
         mounted: async function() {
             this.allCountryList = Object.keys(countries).map(x => {return{"id": x, "name": countries[x].name}})
