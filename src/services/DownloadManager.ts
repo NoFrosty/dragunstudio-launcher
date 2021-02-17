@@ -201,7 +201,7 @@ class DownloadManager extends MainServiceBase {
             }
 
             this.logger.info(util.format("Downloading file: '%s'", filePath));
-            return new Promise( (resolve, reject) => {
+            return new Promise<void>( (resolve, reject) => {
                 let strm = progress(
                     request(url, { autoClose: true })
                     .on("error", function(err : any) { reject(err); }),

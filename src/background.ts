@@ -40,6 +40,7 @@ function createWindow() {
         width: mainWindowState.width,
         webPreferences: {
             nodeIntegration: true,
+            enableRemoteModule: true,
             //TODO
             webSecurity: false
         },
