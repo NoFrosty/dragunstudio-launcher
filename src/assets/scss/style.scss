@@ -189,6 +189,7 @@ body {
     display: flex;
     flex-direction: column;
     max-height: -webkit-fill-available;
+    margin-top: 2em;
     .left-column-alerts{
         flex-grow: 1;
         max-height: -webkit-fill-available;
