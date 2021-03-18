@@ -97,7 +97,7 @@
                     <div class="field">
                         <div class="level">
                             <div>
-                                <b-button type="submit is-secondary" @click="back">Back</b-button>
+                                <b-button type="submit is-dark" @click="back">Back</b-button>
                             </div>
                             <div class="level-right">
                                 <b-button type="submit is-primary" @click="passes(verifCode)">Verify</b-button>
@@ -134,7 +134,7 @@
                         <div class="field">
                             <div class="level">
                                 <div class="level-left">
-                                    <b-button type="submit is-secondary" @click="back">Back</b-button>
+                                    <b-button type="submit is-dark" @click="back">Back</b-button>
                                 </div>
                                 <div class="level-right">
                                     <b-button type="submit is-primary" @click="passes(changePass)">Change</b-button>
