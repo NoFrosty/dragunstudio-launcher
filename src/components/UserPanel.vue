@@ -17,13 +17,13 @@
         <b-icon pack="fas" icon="plug"></b-icon>
         {{$t('go-online')}}
         </b-dropdown-item>
+                                    <b-dropdown-item value="settings">
         <b-tooltip :label="$t('not-implemented-feature')"
                                     position="is-left">
-                                    <b-dropdown-item value="settings">
             <b-icon pack="fas" icon="cog"></b-icon>
             {{$t('settings')}}
-            </b-dropdown-item>
         </b-tooltip>
+            </b-dropdown-item>
         
         <b-dropdown-item v-on:click="logout" value="logout" aria-role="menuitem">
             <b-icon pack="fas" icon="sign-out-alt"></b-icon>
