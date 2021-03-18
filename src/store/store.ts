@@ -13,7 +13,11 @@ const state : ApplicationState = {
     isOffline: undefined,
     selectedApplicationId: undefined,
     installedApplications: [],
-    applicationStatuses: []
+    applicationStatuses: [],
+    isMinimizeInsteadClose: false,
+    isMinimizeAsked: false,
+    isLaunchWithWindows: false,
+    isLaunchWithWindowsAsked: false
 }
 
 
@@ -83,6 +87,14 @@ const store = new Vuex.Store({
                 state.applicationStatuses.push(status);
             }
             status.hasUpdate = payload.hasUpdate;
+        },
+        setMinimize(state, value : boolean){
+            state.isMinimizeInsteadClose = value;
+            state.isMinimizeAsked = true;
+        },
+        setWindowsStart(state, value : boolean){
+            state.isLaunchWithWindows = value;
+            state.isLaunchWithWindowsAsked = true;
         }
     },
     actions: {
@@ -119,6 +131,12 @@ const store = new Vuex.Store({
         },
         markApplicationAsHasUpdate ({ commit }, payload: { applicationId: string, hasUpdate: boolean }) {
             commit('markApplicationAsHasUpdate', payload);
+        },
+        setMinimize ({ commit }, value : boolean) {
+            commit('setMinimize', value);
+        },
+        setWindowsStart ({ commit }, value : boolean) {
+            commit('setWindowsStart', value);
         }
     }
 })

@@ -1,7 +1,7 @@
 <template>
     <div class="popup">
         <a class="modal-close-btn" @click="$parent.close()"><b-icon pack="fas" icon="times" size="is-small" type="is-white"></b-icon></a>
-        <div class="popup-inner">
+        <div class="popup-inner install">
         <div class="popup-inner-text">
             <h1>Installation {{this.application.name}}</h1>
             <div class="installation-form">

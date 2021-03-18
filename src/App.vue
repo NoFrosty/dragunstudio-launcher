@@ -14,6 +14,8 @@ const GAME_TABS = {
 import WindowsController from "./components/WindowsController.vue";
 import services, { eventBus } from "@/services/services";
 import backgroundImageDefault from './assets/images/background/Background5.jpg'
+import { ipcRenderer } from 'electron'
+
 export default {
     name: "WarpLauncher",
     data() {
@@ -55,6 +57,8 @@ export default {
                 this.$router.push({ name: "login" });
             }
         });
+
+        ipcRenderer.send("application-setup", { isMinimizeInsteadClose: this.$store.state.isMinimizeInsteadClose, isLaunchWithWindows: this.$store.state.isLaunchWithWindows });
     }
 };
 </script>

@@ -55,5 +55,7 @@
   "verification-code-correct": "Votre code est correct. Vous pouvez maintenant entrer votre nouveau mot de passe.",
   "password-updated": "Votre mot de passe a été modifié.",
   "verification-code-sent": "Nous avons envoyé un code de vérification à votre email. Veuillez vérifier vos emails et vos spams.",
-  "generate": ""
+  "generate": "",
+  "minimize": "Réduire",
+  "close": ""
 }

@@ -2,7 +2,7 @@
 declare const __static: string;
 import logger from './services/logger'
 import mainNotificationManager from './services/MainNotificationManager'
-import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, dialog, Tray, Menu } from 'electron'
 import {
     createProtocol,
     installVueDevtools
@@ -15,14 +15,20 @@ import path from 'path'
 import { autoUpdater } from "electron-updater"
 const windowStateKeeper = require('electron-window-state');
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const AutoLaunch = require('auto-launch');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: BrowserWindow | null
 let downloadManager: DownloadManager;
 
+let reduceInsteadOfClose:boolean = false;
+let launchWithWindows:boolean = false;
+
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }])
+
+let tray : Tray | null = null;
 
 function createWindow() {
     let mainWindowState = windowStateKeeper({
@@ -61,13 +67,39 @@ function createWindow() {
         }, 1000 * 60 * 15);
         
     }
-
     
     mainWindowState.manage(win);
 
     win.on('closed', () => {
         win = null
     })
+    
+
+    win.on('close', (event : Event) => {
+        if(win && reduceInsteadOfClose){
+            if(!tray){
+                event.preventDefault();
+                win.hide();
+                tray = createTray();
+            }
+            else{
+                if(tray.isDestroyed()){
+                    event.preventDefault();
+                    win.hide();
+                    tray = createTray();
+                }
+            }
+        }
+    });
+
+    win.on('restore', (event: Event) => {
+        if(win){
+            win.show();
+            if(tray){
+                tray.destroy();
+            }
+        }
+    });
 }
 
 app.allowRendererProcessReuse = false
@@ -126,8 +158,21 @@ app.on('ready', async () => {
         // }
 
     }
+    let autoLaunch = new AutoLaunch({
+        name: 'Warp Launcher',
+        path: app.getPath('exe'),
+    });
+    if(launchWithWindows)
+        autoLaunch.enable();
+    else
+        autoLaunch.disable();
+    autoLaunch.isEnabled().then((isEnabled : boolean) => {
+        if (isEnabled) 
+            return;
+    });
     createWindow()
     initializeDownloadManager();
+    initializeAppSettings();
 })
 
 // Exit cleanly on request from parent process in development mode.
@@ -175,4 +220,46 @@ function initializeDownloadManager() {
             event.sender.send("delete-directory-finished", err)
         }
     });
+}
+
+function initializeAppSettings() {
+    //reduceInsteadOfClose
+
+    ipcMain.on('application-setup', (event, payload: {isMinimizeInsteadClose : boolean, isLaunchWithWindows:boolean}) => {
+        reduceInsteadOfClose = payload.isMinimizeInsteadClose;
+        launchWithWindows = payload.isLaunchWithWindows;
+    });
+}
+
+function createTray() : Tray {
+    let appIcon = new Tray(path.join(__static, "images/icon.png"));
+    const contextMenu = Menu.buildFromTemplate([
+        {
+            label: 'Show', click: function () {
+                if(win){
+                    win.show();
+                    if(tray){
+                        tray.destroy();
+                    }
+                }
+            }
+        },
+        {
+            label: 'Exit', click: function () {
+                app.quit();
+            }
+        }
+    ]);
+
+    appIcon.on('double-click', function (event) {
+        if(win){
+            win.show();
+            if(tray){
+                tray.destroy();
+            }
+        }
+    });
+    appIcon.setToolTip('Tray Tutorial');
+    appIcon.setContextMenu(contextMenu);
+    return appIcon;
 }

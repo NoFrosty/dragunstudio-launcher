@@ -152,14 +152,22 @@ body {
         top: 0.5em;
     }
     .popup-inner{
-        background-image: url("./assets/images/background/InstallImage.png");
-        background-size: contain;
-        background-repeat: no-repeat;
+        &.install{
+            background-image: url("./assets/images/background/InstallImage.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            .popup-inner-text{
+                width: 55%;
+                h1{
+                    align-self: start;
+                }
+            }
+        }
         flex-grow: 1;
         justify-content: flex-end;
         .popup-inner-text{
             padding: 1em;
-            width: 55%;
+            width: 100%;
             display: flex;
             justify-content: start !important;
             .installation-form{
@@ -169,6 +177,7 @@ body {
             }
             h1{
                 text-transform: none !important;
+                align-self: center;
             }
         }
     }

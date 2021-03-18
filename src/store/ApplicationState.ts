@@ -8,7 +8,11 @@ interface ApplicationState {
     isOffline?: boolean,
     selectedApplicationId?: string,
     installedApplications: InstallationInfo[],
-    applicationStatuses: ApplicationStatus[]
+    applicationStatuses: ApplicationStatus[],
+    isMinimizeAsked: boolean,
+    isMinimizeInsteadClose: boolean,
+    isLaunchWithWindows: boolean,
+    isLaunchWithWindowsAsked: boolean
 }
 
 export default ApplicationState
