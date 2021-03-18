@@ -54,5 +54,6 @@
   "update": "Update",
   "verification-code-correct": "Your code is correct. You can now enter your new password.",
   "password-updated": "Your password has been changed.",
-  "verification-code-sent": "We have sent a verification code to your email. Please check your email and spam."
+  "verification-code-sent": "We have sent a verification code to your email. Please check your email and spam.",
+  "generate": "Generate"
 }
