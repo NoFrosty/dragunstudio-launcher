@@ -3,7 +3,6 @@
         <div class="login-register-body">
             <div class="field-box">
                 <img class="logo" src="../assets/images/Evorine-Logo.png"/>
-                <!--
                 <div class="lang-dropdown">
                     <select v-model="$i18n.locale">
                         <option
@@ -15,8 +14,7 @@
                         </option>
                     </select>
                 </div>
-                -->
-                <h1 class="login-register-heading">Sign In</h1>
+                <h1 class="login-register-heading">{{$t('sign-in')}}</h1>
                 <!--<p class="login-subheading">We don't need a healer for this, right?</p>-->
                 <ValidationObserver ref="observer" v-slot="{ passes }">
                     <div class="field">
@@ -25,7 +23,7 @@
                                 <b-skeleton height="2.8em" :active="loading"></b-skeleton>
                                 <b-field v-if="!loading" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                     <b-input size="is-medium" icon-pack="fa" icon="envelope" v-model="email" :autofocus="true"
-                                        type="email" name="email" placeholder="Email" @keyup.native.enter="passes(attemptSignIn)">
+                                        type="email" name="email" :placeholder="$t('email')" @keyup.native.enter="passes(attemptSignIn)">
                                     </b-input>
                                 </b-field>
                             </ValidationProvider>
@@ -50,7 +48,7 @@
                                     <b-skeleton :active="loading"></b-skeleton>
                                 </a>
                             <b-checkbox  v-if="!loading" :value="false" v-model="staySignedIn">
-                                Stay Signed In
+                                {{$t('stay-signed-in')}}
                             </b-checkbox>
                         </div>
                     </div>
@@ -59,15 +57,15 @@
                             <div>
                             </div>
                             <div class="level-right">
-                                <b-button type="submit is-primary" @click="passes(attemptSignIn)">Sign In</b-button>
+                                <b-button type="submit is-primary" @click="passes(attemptSignIn)">{{$t('sign-in')}}</b-button>
                             </div>
                         </div>
                     </div>
                 </ValidationObserver>
             </div>
             <div class="links">
-                <router-link to="register" class="has-text-white">I'm a new user, <router-link to="register" class="has-text-primary">create an account</router-link>.</router-link>
-                <router-link to="forgotpassword" class="has-text-white">Forgot your password? <router-link to="forgotpassword" class="has-text-primary">Reset password</router-link>.</router-link>
+                <router-link to="register" class="has-text-white">{{$t('new-user-create-label')}} <router-link to="register" class="has-text-primary">{{$t('register')}}</router-link>.</router-link>
+                <router-link to="forgotpassword" class="has-text-white">{{$t('forgot-password-reset-label')}} <router-link to="forgotpassword" class="has-text-primary">{{$t('reset-password')}}</router-link>.</router-link>
             </div>
 
         </div>

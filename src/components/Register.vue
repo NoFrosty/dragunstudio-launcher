@@ -3,7 +3,7 @@
         <div class="login-register-body">
             <div class="field-box">
                 <img class="logo" src="../assets/images/Evorine-Logo.png"/>
-                <h1 class="login-register-heading">Register</h1>
+                <h1 class="login-register-heading">{{$t('register')}}</h1>
                 <!--<p class="login-subheading">We don't need a healer for this, right?</p>-->
                 <ValidationObserver ref="observer0" v-slot="{ passes }" v-if="state==0">
                     <div class="field">
@@ -12,7 +12,7 @@
                                 <ValidationProvider rules="required|email" name="Email" v-slot="{ errors, valid }">
                                     <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                         <b-input size="is-medium" icon-pack="fa" icon="envelope" v-model="email"
-                                            type="email" name="email" placeholder="Email">
+                                            type="email" name="email" :placeholder="$t('email')">
                                         </b-input>
                                     </b-field>
                                 </ValidationProvider>
@@ -25,7 +25,7 @@
                                     :message="errors"
                                     :type="{ 'is-danger': errors[0], 'is-success': valid }" >
                                         <b-select
-                                            placeholder="Day"
+                                            :placeholder="$t('day')"
                                             name="selectedDay"
                                             v-model="selectedDay"
                                             size="is-medium"
@@ -41,7 +41,7 @@
                                     :message="errors"
                                     :type="{ 'is-danger': errors[0], 'is-success': valid }">
                                         <b-select
-                                            placeholder="Month"
+                                            :placeholder="$t('month')"
                                             name="selectedMonth"
                                             v-model="selectedMonth"
                                             size="is-medium"
@@ -57,7 +57,7 @@
                                     :message="errors"
                                     :type="{ 'is-danger': errors[0], 'is-success': valid }" expanded>
                                         <b-select
-                                            placeholder="Year"
+                                            :placeholder="$t('year')"
                                             name="selectedYear"
                                             v-model="selectedYear"
                                             size="is-medium"
@@ -75,7 +75,7 @@
                                     :message="errors"
                                     :type="{ 'is-danger': errors[0], 'is-success': valid }">
                                         <b-select
-                                            placeholder="Country"
+                                            :placeholder="$t('country')"
                                             icon="globe"
                                             icon-pack="fas"
                                             name="selectedCountry"
@@ -92,7 +92,7 @@
                                 <div class="level-left">
                                 </div>
                                 <div class="level-right">
-                                    <b-button type="submit is-primary" @click="passes(next)">Next</b-button>
+                                    <b-button type="submit is-primary" @click="passes(next)">{{$t('next')}}</b-button>
                                 </div>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                                     <ValidationProvider rules="required|alpha_dash" name="FirstName" v-slot="{ errors, valid }">
                                         <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                             <b-input size="is-medium" icon-pack="fa" icon="user" v-model="firstName"
-                                                type="text" name="firstName" placeholder="First Name">
+                                                type="text" name="firstName" :placeholder="$t('first-name')">
                                             </b-input>
                                         </b-field>
                                     </ValidationProvider>
@@ -117,7 +117,7 @@
                                     <ValidationProvider rules="required|alpha_dash" name="LastName" v-slot="{ errors, valid }">
                                         <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                             <b-input size="is-medium" icon-pack="fa" icon="user" v-model="lastName"
-                                                type="text" name="lastName" placeholder="Last Name">
+                                                type="text" name="lastName" :placeholder="$t('last-name')">
                                             </b-input>
                                         </b-field>
                                     </ValidationProvider>
@@ -130,7 +130,7 @@
                                     <ValidationProvider vid="password" rules="required|confirmed:confirmation" name="Password" v-slot="{ errors, valid }">
                                         <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                             <b-input size="is-medium" icon-pack="fa" icon="lock" v-model="password" 
-                                                type="password" name="password" placeholder="Password" password-reveal required>
+                                                type="password" name="password" :placeholder="$t('password')" password-reveal required>
                                             </b-input>
                                         </b-field>
                                     </ValidationProvider>
@@ -141,7 +141,7 @@
                                     <ValidationProvider vid="confirmation" rules="required|confirmed:password" name="PasswordConfirmation" v-slot="{ errors, valid }">
                                         <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                             <b-input size="is-medium" icon-pack="fa" icon="lock" v-model="passwordConfirmation" 
-                                                type="password" name="passwordConfirmation" placeholder="Password Confirmation" password-reveal required>
+                                                type="password" name="passwordConfirmation" :placeholder="$t('password-confirmation')" password-reveal required>
                                             </b-input>
                                         </b-field>
                                     </ValidationProvider>
@@ -151,10 +151,10 @@
                         <div class="field">
                             <div class="level">
                                 <div class="level-left">
-                                    <b-button type="submit is-secondary" @click="back">Back</b-button>
+                                    <b-button type="submit is-dark" @click="back">{{$t('back')}}</b-button>
                                 </div>
                                 <div class="level-right">
-                                    <b-button type="submit is-primary" @click="passes(next)">Next</b-button>
+                                    <b-button type="submit is-primary" @click="passes(next)">{{$t('next')}}</b-button>
                                 </div>
                             </div>
                         </div>
@@ -167,7 +167,7 @@
                                 <ValidationProvider :rules="{required: {}}" name="Username" v-slot="{ errors, valid }">
                                     <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" >
                                         <b-input size="is-medium" icon-pack="fa" icon="user" v-model="username"
-                                            type="text" name="username" placeholder="User Name">
+                                            type="text" name="username" :placeholder="$t('user-name')">
                                         </b-input>
                                     </b-field>
                                 </ValidationProvider>
@@ -178,7 +178,7 @@
                             <ValidationProvider :rules="{ required: { allowFalse: true } }" name="News" v-slot="{ errors, valid }">
                                 <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                     <b-checkbox :value="false" v-model="news">
-                                        Receive news and special offers by email.
+                                        {{$t('email-offer-label')}}
                                     </b-checkbox>
                                 </b-field>
                             </ValidationProvider>
@@ -187,7 +187,7 @@
                             <ValidationProvider :rules="{ required: { allowFalse: false } }" name="Politics" v-slot="{ errors, valid }">
                                 <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                     <b-checkbox :value="false" v-model="politics">
-                                        J’ai lu et j'accepte la <router-link to="" class="has-text-primary">Politique de confidentialité.</router-link>
+                                        {{$t('read-accept-label')}} <router-link to="" class="has-text-primary">{{$t('privacy')}}</router-link>
                                     </b-checkbox>
                                 </b-field>
                             </ValidationProvider>
@@ -198,10 +198,10 @@
                         <div class="field">
                             <div class="level">
                                 <div class="level-left">
-                                    <b-button type="submit is-secondary" @click="back">Back</b-button>
+                                    <b-button type="submit is-dark" @click="back">{{$t('back')}}</b-button>
                                 </div>
                                 <div class="level-right">
-                                    <b-button type="submit is-primary" @click="passes(test)">Create</b-button>
+                                    <b-button type="submit is-primary" @click="passes(test)">{{$t('create')}}</b-button>
                                 </div>
                             </div>
                         </div>
@@ -209,7 +209,7 @@
                 </ValidationObserver>
             </div>
             <div class="links">
-                <router-link to="login" class="has-text-white">Already registered? <router-link to="login" class="has-text-primary">Sign In</router-link>.</router-link>
+                <router-link to="login" class="has-text-white">{{$t('already-registered')}} <router-link to="login" class="has-text-primary">{{$t('sign-in')}}</router-link>.</router-link>
             </div>
             
         </div>
