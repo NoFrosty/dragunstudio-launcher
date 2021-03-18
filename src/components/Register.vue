@@ -169,6 +169,9 @@
                                         <b-input size="is-medium" icon-pack="fa" icon="user" v-model="username"
                                             type="text" name="username" :placeholder="$t('user-name')">
                                         </b-input>
+                                        <p class="control">
+                                            <b-button size="is-medium" class="button is-primary" @click="generateUsername()">{{$t('generate')}}</b-button>
+                                        </p>
                                     </b-field>
                                 </ValidationProvider>
                             </p>
@@ -229,7 +232,7 @@
     import { countries } from 'countries-list';
     import * as VeeValidate from 'vee-validate';
     import PrivacyPolicy from './PrivacyPolicy.vue'
-
+    import UserNameGenerator from '@/services/UserNameGenerator';  
     export default {
         data() {
             return {
@@ -297,7 +300,10 @@
             },
             showPrivacyPolicy: function(){
                 this.isPrivacyPolicyModalActive = true;
-            }
+            },
+            generateUsername: function(){
+                this.username = UserNameGenerator.generateUsername();
+            },
         },
         mounted: async function() {
             this.allCountryList = Object.keys(countries).map(x => {return{"id": x, "name": countries[x].name}})
