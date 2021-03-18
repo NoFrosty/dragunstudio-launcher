@@ -127,7 +127,7 @@
                         <div class="field">
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    <ValidationProvider vid="password" rules="required|confirmed:confirmation" name="Password" v-slot="{ errors, valid }">
+                                    <ValidationProvider vid="password" rules="required|confirmed:confirmation|min:6" name="Password" v-slot="{ errors, valid }">
                                         <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                             <b-input size="is-medium" icon-pack="fa" icon="lock" v-model="password" 
                                                 type="password" name="password" :placeholder="$t('password')" password-reveal required>
@@ -138,7 +138,7 @@
                             </div>
                                 <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    <ValidationProvider vid="confirmation" rules="required|confirmed:password" name="PasswordConfirmation" v-slot="{ errors, valid }">
+                                    <ValidationProvider vid="confirmation" rules="required|confirmed:password|min:6" name="PasswordConfirmation" v-slot="{ errors, valid }">
                                         <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                             <b-input size="is-medium" icon-pack="fa" icon="lock" v-model="passwordConfirmation" 
                                                 type="password" name="passwordConfirmation" :placeholder="$t('password-confirmation')" password-reveal required>
@@ -176,25 +176,29 @@
                         
                         <div class="field">
                             <ValidationProvider :rules="{ required: { allowFalse: true } }" name="News" v-slot="{ errors, valid }">
-                                <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
-                                    <b-checkbox :value="false" v-model="news">
-                                        {{$t('email-offer-label')}}
-                                    </b-checkbox>
-                                </b-field>
+                                <b-tooltip :label="$t('not-implemented-feature')"
+                                    position="is-right">
+                                    <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+                                        <b-checkbox :value="false" v-model="news">
+                                            {{$t('email-offer-label')}}
+                                        </b-checkbox>
+                                    </b-field>
+                                </b-tooltip>
                             </ValidationProvider>
                         </div>
                         <div class="field">
                             <ValidationProvider :rules="{ required: { allowFalse: false } }" name="Politics" v-slot="{ errors, valid }">
                                 <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
                                     <b-checkbox :value="false" v-model="politics">
-                                        {{$t('read-accept-label')}} <router-link to="" class="has-text-primary">{{$t('privacy')}}</router-link>
+                                        {{$t('read-accept-label')}} <a @click="showPrivacyPolicy" class="has-text-primary">{{$t('privacy')}}</a>
                                     </b-checkbox>
                                 </b-field>
                             </ValidationProvider>
                         </div>
+                        <!--
                         <div class="field">By Clicking on «Create», I agree to the <a @click="showPrivacyPolicy" class="has-text-primary">Evorine End User License Agreement</a> and <router-link to="" class="has-text-primary">Anti-cheating Agreement</router-link>.
                         </div>
-                        
+                        -->
                         <div class="field">
                             <div class="level">
                                 <div class="level-left">
@@ -273,20 +277,20 @@
                     birthday: new Date(this.selectedYear, this.selectedMonth-1, this.selectedDay, 10)
                 });
                 if(!isSignUp){
-                    notificationManager.error("An error occured");
+                    notificationManager.error($t('error-occured'));
                 }
                 if(isSignUp.isSuccessfull) {
                     this.$router.push({ name: "login" });
-                    notificationManager.notify("Account created succesfully !");
+                    notificationManager.success($t('account-created-succesfully'));
                 }
                 else{
                     if(isSignUp.isEmailTaken){
-                        notificationManager.error("Email already taken");
+                        notificationManager.error($t('email-already-taken'));
                         this.email = null;
                         
                     }
                     if(isSignUp.isUsernameTaken){
-                        notificationManager.error("Username already taken");
+                        notificationManager.error($t('username-already-taken'));
                         this.username = null;
                     }
                 }
