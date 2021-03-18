@@ -1,7 +1,7 @@
 import Platforms from './Platforms';
 import { VersionInfo } from './VersionInfo';
 
-export interface ApplicationInfo {
+interface ApplicationInfo {
     applicationId: string;
     name: string;
     isPublished: boolean;
@@ -16,3 +16,5 @@ interface ApplicationPlatform{
     operatingSystem: number;
     executablePath: string;
 }
+
+export { ApplicationInfo }

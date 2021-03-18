@@ -65,7 +65,10 @@
             </div>
             <div class="links">
                 <router-link to="register" class="has-text-white">{{$t('new-user-create-label')}} <router-link to="register" class="has-text-primary">{{$t('register')}}</router-link>.</router-link>
-                <router-link to="forgotpassword" class="has-text-white">{{$t('forgot-password-reset-label')}} <router-link to="forgotpassword" class="has-text-primary">{{$t('reset-password')}}</router-link>.</router-link>
+                <b-tooltip :label="$t('not-implemented-feature')"
+                    position="is-right">
+                    <router-link to="forgotpassword" class="has-text-white">{{$t('forgot-password-reset-label')}} <router-link to="forgotpassword" class="has-text-primary">{{$t('reset-password')}}</router-link>.</router-link>
+                </b-tooltip>
             </div>
 
         </div>

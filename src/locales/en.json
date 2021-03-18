@@ -7,7 +7,7 @@
   "reset-password": "Reset password",
   "stay-signed-in": "Stay signed in",
   "email": "Email",
-  "send": "Sen",
+  "send": "Send",
   "already-registered": "Already registered?",
   "welcome": "Welcome back !",
   "unreachable-server": "Our servers may be temporarily unavailable or you are not connected to internet . Please check your connection and try again.",
@@ -44,5 +44,15 @@
   "error-occured": "An error occured",
   "account-created-succesfully": "Account created succesfully !",
   "email-already-taken": "Email already taken.",
-  "username-already-taken": "Username already taken."
+  "username-already-taken": "Username already taken.",
+  "go-online": "Go Online",
+  "release-date": "Release Date",
+  "platforms": "Platforms",
+  "didnt-received-code": "You didn't received a code?",
+  "resend": "Resend",
+  "verify": "Verify",
+  "update": "Update",
+  "verification-code-correct": "Your code is correct. You can now enter your new password.",
+  "password-updated": "Your password has been changed.",
+  "verification-code-sent": "We have sent a verification code to your email. Please check your email and spam."
 }

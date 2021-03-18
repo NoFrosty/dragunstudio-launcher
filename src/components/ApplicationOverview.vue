@@ -10,17 +10,16 @@
                         <h1>{{activeApplication.name}}</h1>
                     </div>
                     <div class="details-info">
-                        <h1>What is {{activeApplication.name}}</h1>
                         <p>{{activeApplication.description}}</p>
                     </div>
                 </div>
                 <div class="column-is-fixed is-17 is-relative column details-not-installed-right">
                     <div>
-                        <h1>Release Date</h1>
-                        <p>01/01/2020</p>
+                        <h1>{{$t('release-date')}}</h1>
+                        <p>XX/XX/XXXX</p>
                     </div>
                     <div>
-                        <h1>Plateformes</h1>
+                        <h1>{{$t('platforms')}}</h1>
                         <PlatformLabel v-for="platform in activeApplication.platforms" :key="platform.operatingSystem" :operating-system="platform.operatingSystem" />
                     </div>
                 </div>
