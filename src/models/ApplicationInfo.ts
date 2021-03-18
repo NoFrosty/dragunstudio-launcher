@@ -17,4 +17,4 @@ interface ApplicationPlatform{
     executablePath: string;
 }
 
-export { ApplicationInfo }
+export default ApplicationInfo

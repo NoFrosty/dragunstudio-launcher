@@ -34,7 +34,7 @@
 </template>
 
 <script>
-    import { ApplicationInfo } from '@/models/ApplicationInfo';
+    import ApplicationInfo from '@/models/ApplicationInfo';
     import { DownloadManager, DownloadManagerOnProgressEvent } from '../services/DownloadManager';
     const os = require('os');
     const currentPlatform = os.platform();

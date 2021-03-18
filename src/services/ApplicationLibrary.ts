@@ -1,6 +1,6 @@
 import RendererServiceBase from '@/services/RendererServiceBase';
 import axios from 'axios';
-import {ApplicationInfo} from "@/models/ApplicationInfo";
+import ApplicationInfo from "@/models/ApplicationInfo";
 import Platforms from '@/models/Platforms';
 
 class ApplicationLibrary extends RendererServiceBase {
