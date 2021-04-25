@@ -48,8 +48,6 @@ function createWindow() {
             nodeIntegration: true,
             enableRemoteModule: true,
             contextIsolation: false,
-            //TODO
-            webSecurity: false
         },
         backgroundColor: '#141212',
         icon: path.join(__static, 'images/icon.png')
@@ -58,12 +56,15 @@ function createWindow() {
         // Load the url of the dev server if in development mode
         win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string)
         if (!process.env.IS_TEST) win.webContents.openDevTools()
+        autoUpdater.checkForUpdatesAndNotify();
+            console.log("Check Update")
     } else {
         createProtocol('app')
         // Load the index.html when not in development
         win.loadURL('app://./index.html')
         setInterval(() => {
             autoUpdater.checkForUpdatesAndNotify();
+            console.log("Check Update")
         }, 1000 * 60 * 15);
         
     }
@@ -124,20 +125,23 @@ app.on('activate', () => {
 })
 
 autoUpdater.on("update-downloaded", () => {
-    let response = dialog.showMessageBox(
-    {
-        type: 'question',
-        buttons: ['Yes, please', 'No, thanks'],
-        defaultId: 0,
-        cancelId: 1,
-        title: 'Update',
-        message: 'Do you want update?',
-        detail: 'It does not really matter'
-    }).then(result => {
-        if (result.response === 0) {
-            autoUpdater.quitAndInstall(true,true);
-        }
-    });
+    if(win){
+        win.webContents.send("launcher-update-available", true);
+        let response = dialog.showMessageBox(
+        {
+            type: 'question',
+            buttons: ['Yes, please', 'No, thanks'],
+            defaultId: 0,
+            cancelId: 1,
+            title: 'Update',
+            message: 'Do you want update?',
+            detail: 'It does not really matter'
+        }).then(result => {
+            if (result.response === 0) {
+                autoUpdater.quitAndInstall();
+            }
+        });
+    }
 });
 
 // This method will be called when Electron has finished
@@ -235,7 +239,7 @@ function createTray() : Tray {
     let appIcon = new Tray(path.join(__static, "images/icon.png"));
     const contextMenu = Menu.buildFromTemplate([
         {
-            label: 'Show', click: function () {
+            label: 'Warp Launcher', click: function () {
                 if(win){
                     win.show();
                     if(tray){
@@ -245,7 +249,17 @@ function createTray() : Tray {
             }
         },
         {
-            label: 'Exit', click: function () {
+            label: 'Settings', click: function () {
+                
+            }
+        },
+        {
+            label: 'Check For Updates', click: function () {
+                autoUpdater.checkForUpdatesAndNotify();
+            }
+        },
+        {
+            label: 'Quit Warp', click: function () {
                 app.quit();
             }
         }
@@ -259,7 +273,7 @@ function createTray() : Tray {
             }
         }
     });
-    appIcon.setToolTip('Tray Tutorial');
+    appIcon.setToolTip('Warp Launcher');
     appIcon.setContextMenu(contextMenu);
     return appIcon;
 }
