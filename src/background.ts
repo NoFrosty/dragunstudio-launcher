@@ -16,7 +16,7 @@ import { autoUpdater } from "electron-updater"
 const windowStateKeeper = require('electron-window-state');
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const AutoLaunch = require('auto-launch');
-
+const childProcesses = require("child_process");
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: BrowserWindow | null
@@ -177,6 +177,7 @@ app.on('ready', async () => {
     createWindow()
     initializeDownloadManager();
     initializeAppSettings();
+    launcherSettings();
 })
 
 // Exit cleanly on request from parent process in development mode.
@@ -233,6 +234,16 @@ function initializeAppSettings() {
         reduceInsteadOfClose = payload.isMinimizeInsteadClose;
         launchWithWindows = payload.isLaunchWithWindows;
     });
+}
+
+function launcherSettings(){
+    ipcMain.on('launch-application', (event, executePath: string) => {
+        console.log(executePath)
+        childProcesses.execFile(executePath, function(err : string, data : any) {  
+            console.log(err)
+            console.log(data.toString());                       
+        });  
+    })
 }
 
 function createTray() : Tray {

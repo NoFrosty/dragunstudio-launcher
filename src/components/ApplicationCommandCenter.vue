@@ -20,7 +20,7 @@
             </b-field>
             
             <b-tooltip position="is-left" :label="installation.version" :active="true" :delay="2500" animated>
-            <b-button type="is-primary is-large" v-if="!isUpdating && !updateAvailable" expanded>Play Now</b-button>
+            <b-button type="is-primary is-large" v-if="!isUpdating && !updateAvailable" @click="launchGame" expanded>Play Now</b-button>
             <b-button type="is-primary is-large" v-if="isUpdating && !updateAvailable" disabled expanded>Play Now</b-button>
             <b-button type="is-primary is-large" v-if="updateAvailable" @click="updateApplication" expanded>Update</b-button>
             </b-tooltip>
@@ -44,11 +44,12 @@
         ACHIEVEMENTS: 2
     };
     import humanize from 'humanize'
-
+    import { ipcRenderer, } from 'electron'
     import DropDownGameMode from './DropDownGameMode.vue';
     import ApplicationUpdateProgress from '@/components/ApplicationUpdateProgress.vue';
     import Install from './Install.vue'
- 
+    const child = require('child_process').execFile;
+    const path = require('path');
     import {
         shell
     } from 'electron'
@@ -107,6 +108,11 @@
         methods: {
             updateApplication(){
                 installationManager.updateApplication(this.activeApplicationId, this.onProgress);
+            },
+            launchGame(){
+                let pathExe = path.join(installationManager.getInstallationInfo(this.activeApplicationId).path, applicationLibrary.getGameExecutionPath(this.activeApplicationId));
+                
+                ipcRenderer.send("launch-application", pathExe);
             },
             startInstallation() {
                 this.isInstallModalActive = true;

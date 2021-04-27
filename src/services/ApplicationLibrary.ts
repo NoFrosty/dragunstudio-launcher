@@ -43,6 +43,22 @@ class ApplicationLibrary extends RendererServiceBase {
             default: throw `Unsupported operating system type '{process.platform}'`;
         }
     }
+
+    public getGameExecutionPath(applicationId:string) : String|null {
+        let appData = localStorage.getItem("Applications");
+        let currentOS = ApplicationLibrary.getOperatingSystem();
+        if(appData == null)
+            return null;
+        let apps : ApplicationInfo[] = JSON.parse(appData);
+
+        var app = apps.find(x => x.applicationId == applicationId);
+        if(app == undefined)
+            return null
+        let appPlatform = app.platforms.find(x => (x.operatingSystem==currentOS));
+        if( appPlatform == null)
+            return null;
+        return appPlatform.executablePath;
+    }
 }
 
 export default ApplicationLibrary
