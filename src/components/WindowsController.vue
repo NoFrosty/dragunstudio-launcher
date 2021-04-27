@@ -3,6 +3,7 @@
         <div class="draggable">
         </div>
         <div class="window-controller-btn">
+            <a v-if="updateAvailable" @click="update()"><b-icon class="update-available" pack="fas" icon="download" size="is-small"></b-icon></a>
             <a @click="openDevTool()"><b-icon pack="fas" icon="code" size="is-small" type="is-white"></b-icon></a>
             <a ><b-icon pack="fas" icon="cogs" size="is-small" type="is-white"></b-icon></a>
             <a @click="minimizeApp()"><b-icon pack="fas" icon="window-minimize" size="is-small" type="is-white"></b-icon></a>
@@ -17,11 +18,13 @@
 
 <script>
 const {BrowserWindow} = require('electron').remote
+import { ipcRenderer } from 'electron'
 import PopUpInfo from './PopUpInfo.vue'
 export default {
     data() {
         return {
             isInstallModalActive: false,
+            updateAvailable: false
         }
     },
     components: {
@@ -40,6 +43,9 @@ export default {
                 BrowserWindow.getFocusedWindow().close();
             }
         },
+        update(){
+
+        },
         minimizeApp(){
             BrowserWindow.getFocusedWindow().minimize();
         },
@@ -54,8 +60,14 @@ export default {
                 window.maximize();
         }
     },
-    mounted:function(){
-
+    mounted: function() {
+        ipcRenderer.on("launcher-update-available", (event, value) => {
+          this.updateAvailable = value;
+        });
     },
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

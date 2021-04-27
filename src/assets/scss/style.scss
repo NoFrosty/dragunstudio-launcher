@@ -213,3 +213,16 @@ body {
         flex-direction: column;
     }
 }
+
+@-webkit-keyframes colorChanger{
+    0%{
+      color: $success;
+    }
+    100%{
+      color: #87FEAB;
+    }
+  }
+
+.update-available{
+    -webkit-animation: colorChanger 0.5s infinite alternate;  
+}
