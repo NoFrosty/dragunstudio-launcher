@@ -38,17 +38,11 @@
 </template>
 
 <script>
-    const GAME_TABS = {
-        OVERVIEW: 0,
-        ACTIVITIES: 1,
-        ACHIEVEMENTS: 2
-    };
     import humanize from 'humanize'
     import { ipcRenderer, } from 'electron'
     import DropDownGameMode from './DropDownGameMode.vue';
     import ApplicationUpdateProgress from '@/components/ApplicationUpdateProgress.vue';
     import Install from './Install.vue'
-    const child = require('child_process').execFile;
     const path = require('path');
     import {
         shell

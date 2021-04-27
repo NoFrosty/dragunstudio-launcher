@@ -30,10 +30,6 @@
 
 <script>
     import axios from 'axios';
-    import {
-        applicationLibrary
-    } from '@/services/services';
-
     export default {
         computed: {
 
@@ -56,7 +52,7 @@
                     // Server is down!
                     this.currentAction = 'Server is Down';
                     this.isServerDown = true;
-                    loadingComponent.close();
+                    //loadingComponent.close();
                 }
                 this.currentAction = 'Server is Up';
                 return !this.isServerDown;

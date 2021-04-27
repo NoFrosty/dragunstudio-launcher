@@ -22,7 +22,6 @@
 </template>
 
 <script>
-    import axios from 'axios';
     import { applicationLibrary } from '@/services/services';
 
     export default {

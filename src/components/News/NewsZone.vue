@@ -21,11 +21,6 @@ export default {
     },
     asyncComputed: {
         getArticles: async function(){
-            let parameters = {
-                
-                
-                firstN: null
-            };
             let articleResponse = await axios.get(process.env.VUE_APP_API_LINK + '/applications/' + this.applicationId + '/articles');
             return articleResponse.data;
         }

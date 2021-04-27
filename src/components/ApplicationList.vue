@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { applicationLibrary, installationManager } from '@/services/services'
 
 export default {
@@ -30,7 +29,7 @@ export default {
         };
     },
     computed: {
-        isInstalleds: function(params) {
+        isInstalleds: function() {
             let ins = {};
             if (this.applications) {
                 this.applications.forEach(app => {

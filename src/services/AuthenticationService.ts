@@ -13,12 +13,12 @@ class AuthenticationService extends RendererServiceBase {
     }
 
     async AttemptSignIn(credentials: {email : string, password : string}, staySignedIn: boolean) : Promise<boolean> {
-        let parameters = {
+        const parameters = {
             Email: credentials.email,
             Password: credentials.password
         };
         try {
-            let loginResult = await axios.post(process.env.VUE_APP_API_LINK + "/authenticate", parameters);
+            const loginResult = await axios.post(process.env.VUE_APP_API_LINK + "/authenticate", parameters);
             if (loginResult.data.isSuccessfull) {
                 this.store.dispatch('signIn', { 
                     jwt: staySignedIn ? loginResult.data.token : null,
@@ -38,7 +38,7 @@ class AuthenticationService extends RendererServiceBase {
 
     async AttemptSignUp(credentials: { username: string, firstName: string, lastName: string, country: string, email: string, password: string, birthday: Date}) {
         let signUpResult;
-        let parameters = {
+        const parameters = {
             Username: credentials.username,
             Email: credentials.email,
             FirstName: credentials.firstName,

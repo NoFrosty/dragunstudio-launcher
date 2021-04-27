@@ -20,8 +20,8 @@
     "auto-launch": "^5.0.5",
     "awilix": "^4.3.1",
     "axios": "^0.21.1",
-    "bsdiff-node": "^2.2.4",
-    "buefy": "^0.9.4",
+    "bsdiff-node": "^2.3.0",
+    "buefy": "^0.9.7",
     "core-js": "^2.6.11",
     "countries-list": "^2.6.1",
     "crypto-js": "^4.0.0",
@@ -53,13 +53,14 @@
   "devDependencies": {
     "@types/node": "^14.14.28",
     "@types/webpack": "^4.41.18",
+    "@vue/babel-preset-app": "^3.12.1",
     "@vue/cli-plugin-babel": "^3.12.1",
     "@vue/cli-plugin-eslint": "^3.12.1",
     "@vue/cli-plugin-typescript": "^3.12.1",
     "@vue/cli-service": "^3.12.1",
     "@vue/eslint-config-typescript": "^4.0.0",
     "babel-eslint": "^10.1.0",
-    "electron": "^12.0.1",
+    "electron": "^12.0.5",
     "electron-builder": "^22.10.5",
     "electron-icon-builder": "^2.0.1",
     "eslint": "^5.16.0",
@@ -75,7 +76,8 @@
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "es6": true
     },
     "extends": [
       "plugin:vue/essential",

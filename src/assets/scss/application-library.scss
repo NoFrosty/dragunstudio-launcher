@@ -1,6 +1,6 @@
-.application-list {
-    .application {
-        a {
+.application-list{
+    .application{
+        a{
             display: flex;
             align-items: center;
             white-space: nowrap;
@@ -14,18 +14,18 @@
             }
         }
 
-        &.not-installed {
-            .app-icon-container {
+        &.not-installed{
+            .app-icon-container{
                 filter: grayscale(100%);
             }
-            .app-title {
+            .app-title{
                 opacity: 0.75;
             }
         }
-        &.selected {
+        &.selected{
             border-left: solid $primary 0.1em;
             background: linear-gradient(90deg, rgba($primary, 0.1) 0%, rgba(255,255,255,0) 25%);
-            .app-title {
+            .app-title{
                 color: $primary;
             }
         }

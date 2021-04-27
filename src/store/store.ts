@@ -28,7 +28,7 @@ const store = new Vuex.Store({
 			// Check if the ID exists
 			if(localStorage.getItem('store')) {
 				// Replace the state object with the stored item
-                let soteObject = localStorage.getItem('store');
+                const soteObject = localStorage.getItem('store');
                 if (soteObject) {
                     this.replaceState(
                         Object.assign(state, JSON.parse(soteObject))
@@ -54,13 +54,13 @@ const store = new Vuex.Store({
             state.installedApplications.push(installation);
         },
         changeApplicationVersion(state, payload:{applicationId: string, versionId: string, version: string}) {
-            let installedApp = state.installedApplications.find(x => x.applicationId == payload.applicationId);
+            const installedApp = state.installedApplications.find(x => x.applicationId == payload.applicationId);
             if(!installedApp) throw "Application is not installed !"
             installedApp.versionId = payload.versionId;
             installedApp.version = payload.version;
         },
         removeApplication(state, installation: InstallationInfo) {
-            let appIndex = state.installedApplications.findIndex(x => x.applicationId == installation.applicationId);
+            const appIndex = state.installedApplications.findIndex(x => x.applicationId == installation.applicationId);
             state.installedApplications.splice(appIndex, 1);
         },
         setOfflineStatus(state, isOffline: boolean) {

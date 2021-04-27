@@ -34,8 +34,7 @@
 </template>
 
 <script>
-    import ApplicationInfo from '@/models/ApplicationInfo';
-    import { DownloadManager, DownloadManagerOnProgressEvent } from '../services/DownloadManager';
+    import ApplicationInfo from "@/models/ApplicationInfo";
     const os = require('os');
     const currentPlatform = os.platform();
     const {dialog} = require('electron').remote;

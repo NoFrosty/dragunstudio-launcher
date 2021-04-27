@@ -23,9 +23,7 @@
 
 <script>
 import humanize from 'humanize'
-import { applicationLibrary, installationManager, eventBus } from '@/services/services'
-import { InstallationActionType } from '@/models/ApplicationStatus'
-
+import { eventBus } from '@/services/services'
 export default {
     data() {
         return {

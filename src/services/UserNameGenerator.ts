@@ -4,13 +4,13 @@ const adjectives = require('@/assets/data/adjectives.json');
 class UserNameGenerator{
 
     public static generateUsername(separator: string): string {
-        let length = this.randomIntFromInterval(6,9);
+        const length = this.randomIntFromInterval(6,9);
 
         if(separator==undefined)
             separator="";
 
-        let noun = nouns[Math.floor(Math.random()*nouns.length)];
-        let adjective = adjectives[Math.floor(Math.random()*adjectives.length)];
+        const noun = nouns[Math.floor(Math.random()*nouns.length)];
+        const adjective = adjectives[Math.floor(Math.random()*adjectives.length)];
 
         let result = noun + separator + adjective;
         

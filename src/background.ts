@@ -31,7 +31,7 @@ protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: tru
 let tray : Tray | null = null;
 
 function createWindow() {
-    let mainWindowState = windowStateKeeper({
+    const mainWindowState = windowStateKeeper({
         defaultWidth: 1600,
         defaultHeight: 900
     });
@@ -127,7 +127,7 @@ app.on('activate', () => {
 autoUpdater.on("update-downloaded", () => {
     if(win){
         win.webContents.send("launcher-update-available", true);
-        let response = dialog.showMessageBox(
+        const response = dialog.showMessageBox(
         {
             type: 'question',
             buttons: ['Yes, please', 'No, thanks'],
@@ -162,7 +162,7 @@ app.on('ready', async () => {
         // }
 
     }
-    let autoLaunch = new AutoLaunch({
+    const autoLaunch = new AutoLaunch({
         name: 'Warp Launcher',
         path: app.getPath('exe'),
     });
@@ -247,7 +247,7 @@ function launcherSettings(){
 }
 
 function createTray() : Tray {
-    let appIcon = new Tray(path.join(__static, "images/icon.png"));
+    const appIcon = new Tray(path.join(__static, "images/icon.png"));
     const contextMenu = Menu.buildFromTemplate([
         {
             label: 'Warp Launcher', click: function () {

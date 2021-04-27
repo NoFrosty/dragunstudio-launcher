@@ -1,6 +1,10 @@
 <template>
   <span>
-    <b-icon v-if="showIcon" pack="fab" :icon="toIcon(operatingSystem)" /> <template v-if="showText">{{toText(operatingSystem)}}</template>
+    <b-icon
+      v-if="showIcon"
+      pack="fab"
+      :icon="toIcon(operatingSystem)"
+    /> <template v-if="showText">{{ toText(operatingSystem) }}</template>
   </span>
 </template>
 

@@ -7,10 +7,10 @@ import { Logger } from 'winston';
 import path from 'path';
 import fs from 'fs';
 const unzipper = require('unzipper');
-const util = require('util');
+import util from 'util';
 const request = require('request')
-var progress = require('request-progress');
-const fsExtra = require('fs-extra');
+const progress = require('request-progress');
+import fsExtra from 'fs-extra';
 require('https').globalAgent.options.rejectUnauthorized = false;
 const progressSpeedUpdatePeriod = 2000;
 
@@ -70,7 +70,7 @@ class DownloadManager extends MainServiceBase {
         onProgress: (progress: DownloadManagerOnProgressEvent) => void,
         onStop: (progress: DownloadManagerOnStopEvent) => void) {
 
-        let context = DownloadManager.createEmptyContext(allFiles, settings);
+        const context = DownloadManager.createEmptyContext(allFiles, settings);
         context.onProgress = onProgress;
         context.onStop = onStop;
 
@@ -93,7 +93,7 @@ class DownloadManager extends MainServiceBase {
         this.logger.debug("Download progress interval!")
         if (context.isDownloading) {
             if (context.onProgress) {
-                let progress : DownloadManagerOnProgressEvent = {
+                const progress : DownloadManagerOnProgressEvent = {
                     err: null,
                     downloadedSize: context.downloadedTotalFileSize + context.downloadedSingleFileSize,
                     downloadedCount: context.downloadedFileCount,
@@ -103,10 +103,10 @@ class DownloadManager extends MainServiceBase {
                 };
 
                 // Calculate progress speed
-                let currentTime = new Date();
-                let deltaTime = (currentTime.getTime() - context.speedContext.lastCalculationTime.getTime());
+                const currentTime = new Date();
+                const deltaTime = (currentTime.getTime() - context.speedContext.lastCalculationTime.getTime());
                 if (deltaTime > progressSpeedUpdatePeriod) {
-                    let deltaDownloadedSize = progress.downloadedSize - context.speedContext.lastDownloadedSize;
+                    const deltaDownloadedSize = progress.downloadedSize - context.speedContext.lastDownloadedSize;
                     progress.speed = deltaDownloadedSize / (deltaTime / 1000);
                     // Store back values for next calculation
                     context.speedContext.lastDownloadedSize = progress.downloadedSize;
@@ -124,7 +124,7 @@ class DownloadManager extends MainServiceBase {
     private sendStopEvent(context: DownloadManagerContext) {
         this.logger.debug("Download progress (stop)!")
         if (context.onStop) {
-            let progress : DownloadManagerOnStopEvent = {
+            const progress : DownloadManagerOnStopEvent = {
                 err: null,
                 downloadedSize: context.downloadedTotalFileSize + context.downloadedSingleFileSize,
                 downloadedCount: context.downloadedFileCount,
@@ -141,7 +141,7 @@ class DownloadManager extends MainServiceBase {
 
     private sendErrorUpdate(context: DownloadManagerContext, err: any) {
         if (context.onStop) {
-            let progress : DownloadManagerOnStopEvent = {
+            const progress : DownloadManagerOnStopEvent = {
                 err: err,
                 downloadedSize: context.downloadedTotalFileSize + context.downloadedSingleFileSize,
                 downloadedCount: context.downloadedFileCount,
@@ -164,8 +164,8 @@ class DownloadManager extends MainServiceBase {
     private async download(context: DownloadManagerContext) {
         try {
             this.logger.info(util.format("Will download %s files", context.allFiles.length))
-            for(let i in context.allFiles) {
-                let file = context.allFiles[i] as FileInfo;
+            for(const i in context.allFiles) {
+                const file = context.allFiles[i] as FileInfo;
                 await this.downloadFile(context, file);
             }
         }
@@ -202,7 +202,7 @@ class DownloadManager extends MainServiceBase {
 
             this.logger.info(util.format("Downloading file: '%s'", filePath));
             return new Promise<void>( (resolve, reject) => {
-                let strm = progress(
+                const strm = progress(
                     request(url, { autoClose: true })
                     .on("error", function(err : any) { reject(err); }),
                     { throttle: 250 }
@@ -235,7 +235,7 @@ class DownloadManager extends MainServiceBase {
     }
 
     private static createEmptyContext(allFiles: (FileInfo | DiffInfo)[], settings: DownloadManagerSettings) : DownloadManagerContext {
-        let context : DownloadManagerContext = {
+        const context : DownloadManagerContext = {
             isDownloading: false,
             downloadedFileCount: 0,
             downloadedSingleFileSize: 0,

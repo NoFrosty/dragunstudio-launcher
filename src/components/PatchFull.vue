@@ -1,22 +1,42 @@
 <template>
-    <div class="patchfull" v-if="article">
-        <div class="patch-info">
-            <nav class="breadcrumb has-pipe-separator" aria-label="breadcrumbs">
-                <ul>
-                    <li><a @click="closeArticle">&#60; Project Crystal</a></li>
-                    <li class="is-active"><a href="#">News</a></li>
-                    <li class="is-active"><a href="#" aria-current="page">{{article.title}}</a></li>
-                </ul>
-            </nav>
-            <h2 class="patch-subtitle-author">By Frosty - {{timeCalc}}</h2>
-            <b-taglist class="patch-tags is-marginless">
-                <b-tag type="is-primary">Gameplay Update</b-tag>
-            </b-taglist>
-        </div>
-        <div class="patch-text">
-            <div class="content" v-html="articleContent"></div>
-        </div>
+  <div
+    v-if="article"
+    class="patchfull"
+  >
+    <div class="patch-info">
+      <nav
+        class="breadcrumb has-pipe-separator"
+        aria-label="breadcrumbs"
+      >
+        <ul>
+          <li><a @click="closeArticle">&#60; Project Crystal</a></li>
+          <li class="is-active">
+            <a href="#">News</a>
+          </li>
+          <li class="is-active">
+            <a
+              href="#"
+              aria-current="page"
+            >{{ article.title }}</a>
+          </li>
+        </ul>
+      </nav>
+      <h2 class="patch-subtitle-author">
+        By Frosty - {{ timeCalc }}
+      </h2>
+      <b-taglist class="patch-tags is-marginless">
+        <b-tag type="is-primary">
+          Gameplay Update
+        </b-tag>
+      </b-taglist>
     </div>
+    <div class="patch-text">
+      <div
+        class="content"
+        v-html="articleContent"
+      />
+    </div>
+  </div>
 </template>
 <script>
 import marked from 'marked'
@@ -32,7 +52,6 @@ export default {
             return marked(this.article.content)
         },
         timeCalc() {
-            let date = new Date(this.article.publishDate)
             return moment(this.article.publishDate).fromNow();
         },
     },

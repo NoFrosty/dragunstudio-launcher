@@ -7,7 +7,6 @@ import store from './store/store'
 import services from '@/services/services'
 
 const AsyncComputed = require('vue-async-computed').default
-var CryptoJS = require("crypto-js");
 import './validate-configuration'
 import i18n from './i18n'
 

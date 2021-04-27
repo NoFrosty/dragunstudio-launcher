@@ -59,8 +59,8 @@ class InstallationManager extends RendererServiceBase {
 
     private async applyActions(downloadManagerEvent:DownloadManagerOnStopEvent){
         const {fileInfos, diffInfos} = this.getDiffInfo(downloadManagerEvent.allFiles);
-        let lastVersion = await this.getLastVersion(downloadManagerEvent.executionSettings.applicationId);
-        let installation = this.store.state.installedApplications.find((x: InstallationInfo) => x.applicationId == downloadManagerEvent.executionSettings.applicationId);
+        const lastVersion = await this.getLastVersion(downloadManagerEvent.executionSettings.applicationId);
+        const installation = this.store.state.installedApplications.find((x: InstallationInfo) => x.applicationId == downloadManagerEvent.executionSettings.applicationId);
         if(!installation) {
             throw "Application is not installed";
         }
@@ -78,44 +78,47 @@ class InstallationManager extends RendererServiceBase {
                 toVersionId: lastVersion.versionId
             });
         }
-        let updateResponse = await axios.get(url);
-        let updateActions = updateResponse.data as UpdateAction[];
-        for(let action of updateActions) {
+        const updateResponse = await axios.get(url);
+        const updateActions = updateResponse.data as UpdateAction[];
+        for(const action of updateActions) {
             switch(action.actionType) {
                 case ActionType.CreateFile:
                     //Normally all work is already done !
                     break;
-                case ActionType.UpdateFile:
-                    var updateAction = action as UpdateActionUpdateFile;
-                    var downloadedDiffInfo = this.findByDiffId(diffInfos, updateAction.diffId);
+                case ActionType.UpdateFile: {
+                    const updateAction : UpdateActionUpdateFile = action as UpdateActionUpdateFile;
+                    const downloadedDiffInfo :DiffInfo|undefined = this.findByDiffId(diffInfos, updateAction.diffId);
                     if (downloadedDiffInfo){
-                        var updateDirectoryPath = path.join(downloadManagerEvent.executionSettings.rootPath, updateAction.newFile.directoryPath);
-                        var updateFilePath = path.join(updateDirectoryPath, updateAction.newFile.fileName);
-                        var diffPath = path.join(downloadManagerEvent.executionSettings.diffPath, downloadedDiffInfo.diffId);
+                        const updateDirectoryPath : string = path.join(downloadManagerEvent.executionSettings.rootPath, updateAction.newFile.directoryPath);
+                        const updateFilePath : string = path.join(updateDirectoryPath, updateAction.newFile.fileName);
+                        const diffPath : string = path.join(downloadManagerEvent.executionSettings.diffPath, downloadedDiffInfo.diffId);
                         bsdiff.patchSync(updateFilePath, updateFilePath, diffPath); // Sync
                         this.logger.info('File : ' + updateFilePath + ' patched!');
                     }
                     break;
-                case ActionType.DeleteFile:
-                    var deleteAction = action as UpdateActionDeleteFile;
-                    var deleteDirectoryPath = path.join(downloadManagerEvent.executionSettings.rootPath, deleteAction.file.directoryPath);
-                    var deleteFilePath = path.join(deleteDirectoryPath, deleteAction.file.fileName);
+                }
+                case ActionType.DeleteFile: {
+                    const deleteAction : UpdateActionDeleteFile = action as UpdateActionDeleteFile;
+                    const deleteDirectoryPath : string = path.join(downloadManagerEvent.executionSettings.rootPath, deleteAction.file.directoryPath);
+                    const deleteFilePath : string = path.join(deleteDirectoryPath, deleteAction.file.fileName);
                     // TODO: Fix here. Should await
                     fs.unlink(deleteFilePath,function (err) {
                         if (err) throw err;
                         //console.log('File : ' + deleteFilePath + ' deleted!');
                     });
                     break;
-                case ActionType.CopyFile:
-                    var copyAction = action as UpdateActionCopyFile;
-                    var sourceFilePath = path.join(path.join(downloadManagerEvent.executionSettings.rootPath, copyAction.sourceFile.directoryPath), copyAction.sourceFile.fileName);
-                    var destinationFilePath = path.join(path.join(downloadManagerEvent.executionSettings.rootPath, copyAction.destinationFile.directoryPath), copyAction.destinationFile.fileName);
+                }
+                case ActionType.CopyFile: {
+                    const copyAction : UpdateActionCopyFile = action as UpdateActionCopyFile;
+                    const sourceFilePath : string = path.join(path.join(downloadManagerEvent.executionSettings.rootPath, copyAction.sourceFile.directoryPath), copyAction.sourceFile.fileName);
+                    const destinationFilePath : string = path.join(path.join(downloadManagerEvent.executionSettings.rootPath, copyAction.destinationFile.directoryPath), copyAction.destinationFile.fileName);
                     // TODO: Fix here. Should await
                     fs.copyFile(sourceFilePath, destinationFilePath, function (err) {
                         if (err) throw err;
                         //console.log('File : ' + sourceFilePath + ' copyed to : ' + destinationFilePath + '!');
                     });
                     break;
+                }
             }
         }
         this.store.commit('changeApplicationVersion', {applicationId : installation.applicationId, versionId: lastVersion.versionId, version: lastVersion.version}); 
@@ -128,9 +131,9 @@ class InstallationManager extends RendererServiceBase {
     }
 
     private getDiffInfo(files:(FileInfo|DiffInfo)[]){
-        var fileInfos:FileInfo[] = [];
-        var diffInfos:DiffInfo[] = [];
-        for(var file of files){
+        const fileInfos:FileInfo[] = [];
+        const diffInfos:DiffInfo[] = [];
+        for(const file of files){
             switch(file.type){
                 case 'DiffInfo':
                         diffInfos.push(file);
@@ -159,12 +162,12 @@ class InstallationManager extends RendererServiceBase {
         if (this.store.state.installedApplications.find((x: InstallationInfo) => x.applicationId == applicationId)) {
             throw "Application is already installed";
         }
-        let lastVersion = await this.getLastVersion(applicationId);
+        const lastVersion = await this.getLastVersion(applicationId);
 
         this.logger.info("Last version fetched!", lastVersion);
 
 
-        let installation : InstallationInfo = {
+        const installation : InstallationInfo = {
             applicationId: applicationId,
             exeName: "",
             path: installationPath,
@@ -175,38 +178,40 @@ class InstallationManager extends RendererServiceBase {
 
         this.logger.info("Application is added to store as installation!", installation);
 
-        let url = format("{root}/update?toVersionId={toVersionId}", {
+        const url = format("{root}/update?toVersionId={toVersionId}", {
             root: process.env.VUE_APP_API_LINK,
             toVersionId: lastVersion.versionId
         });
-        let updateResponse = await axios.get(url);
-        let updateActions = updateResponse.data as UpdateAction[];
+        const updateResponse = await axios.get(url);
+        const updateActions = updateResponse.data as UpdateAction[];
 
         this.logger.info("Update actions are fetched: " + updateActions.length);
         
-        let downloadManagerSettings : DownloadManagerSettings = {
+        const downloadManagerSettings : DownloadManagerSettings = {
             applicationId: applicationId,
             concurrentDownloadCount: 2,
             rootPath: installationPath,
             diffPath: installationPath + "/diff_temp"
         }
 
-        let allFiles: (FileInfo | DiffInfo)[] = [];
-        for(let action of updateActions) {
+        const allFiles: (FileInfo | DiffInfo)[] = [];
+        for(const action of updateActions) {
             switch(action.actionType) {
-                case ActionType.CreateFile:
-                    var createAction = action as UpdateActionCreateFile;
+                case ActionType.CreateFile: {
+                    const createAction = action as UpdateActionCreateFile;
                     allFiles.push(createAction.newFile);
                     break;
-                case ActionType.UpdateFile:
-                    var updateAction = action as UpdateActionUpdateFile;
-                    var diff :DiffInfo = {
+                }
+                case ActionType.UpdateFile:{
+                    const updateAction = action as UpdateActionUpdateFile;
+                    const diff :DiffInfo = {
                         type: "DiffInfo",
                         diffId: updateAction.diffId,
                         diffSize: updateAction.diffSize
                     }
                     allFiles.push(diff);
                     break;
+                }
             }
         }
 
@@ -221,16 +226,16 @@ class InstallationManager extends RendererServiceBase {
     }
 
     public async checkUpdateAvailable(applicationId : string){
-        let installation = this.store.state.installedApplications.find((x: InstallationInfo) => x.applicationId == applicationId);
+        const installation = this.store.state.installedApplications.find((x: InstallationInfo) => x.applicationId == applicationId);
         if (!installation) {
             throw "Application is not installed";
         }
-        let responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/CheckUpdateAvailable/' + ApplicationLibrary.getOperatingSystem() + '/' + applicationId + '/' + installation.versionId);
+        const responsepromise = await axios.get(process.env.VUE_APP_API_LINK + '/update/CheckUpdateAvailable/' + ApplicationLibrary.getOperatingSystem() + '/' + applicationId + '/' + installation.versionId);
         return responsepromise.data;
     }
 
     public uninstallApplication(applicationId : string) {
-        let installation = this.store.state.installedApplications.find((x: InstallationInfo) => x.applicationId == applicationId);
+        const installation = this.store.state.installedApplications.find((x: InstallationInfo) => x.applicationId == applicationId);
         if (!installation) {
             throw "Application is not installed";
         }
@@ -247,49 +252,50 @@ class InstallationManager extends RendererServiceBase {
 
         this.logger.info("Application update started!")
 
-        var installation = this.store.state.installedApplications.find((x: InstallationInfo) => x.applicationId == applicationId);
+        const installation = this.store.state.installedApplications.find((x: InstallationInfo) => x.applicationId == applicationId);
         if(!installation) {
             throw "Application is not installed";
         }
-        let lastVersion = await this.getLastVersion(applicationId);
+        const lastVersion = await this.getLastVersion(applicationId);
 
         this.logger.info("Last version fetched!", lastVersion);
 
-        let url = format("{root}/update?fromVersionId={fromVersionId}&toVersionId={toVersionId}", {
+        const url = format("{root}/update?fromVersionId={fromVersionId}&toVersionId={toVersionId}", {
             root: process.env.VUE_APP_API_LINK,
             fromVersionId: installation.versionId,
             toVersionId: lastVersion.versionId
         });
-        let updateResponse = await axios.get(url);
-        let updateActions = updateResponse.data as UpdateAction[];
+        const updateResponse = await axios.get(url);
+        const updateActions = updateResponse.data as UpdateAction[];
         this.logger.info(updateActions);
 
         this.logger.info("Update actions are fetched: " + updateActions.length);
         
-        let downloadManagerSettings : DownloadManagerSettings = {
+        const downloadManagerSettings : DownloadManagerSettings = {
             applicationId: applicationId,
             concurrentDownloadCount: 2,
             rootPath: installation.path,
             diffPath: installation.path + "/diff_temp"
         }
 
-        let allFiles: (FileInfo | DiffInfo)[] = [];
-        for(let action of updateActions) {
+        const allFiles: (FileInfo | DiffInfo)[] = [];
+        for(const action of updateActions) {
             switch(action.actionType) {
-                case ActionType.CreateFile:
-                    var createAction = action as UpdateActionCreateFile;
+                case ActionType.CreateFile: {
+                    const createAction = action as UpdateActionCreateFile;
                     allFiles.push(createAction.newFile);
                     break;
-                case ActionType.UpdateFile:
-                    var updateAction = action as UpdateActionUpdateFile;
-                    var diff :DiffInfo = {
+                }
+                case ActionType.UpdateFile: {
+                    const updateAction = action as UpdateActionUpdateFile;
+                    const diff :DiffInfo = {
                         type: "DiffInfo",
                         diffId: updateAction.diffId,
                         diffSize: updateAction.diffSize
                     }
                     allFiles.push(diff);
                     break;
-                
+                }
             }
         }
 
@@ -298,14 +304,14 @@ class InstallationManager extends RendererServiceBase {
     }
 
     private async getLastVersion(applicationId : string) : Promise<VersionInfo> {
-        let os = ApplicationLibrary.getOperatingSystem();
-        let url = format("{root}/version/last?applicationId={appId}&operatingSystem={os}", {
+        const os = ApplicationLibrary.getOperatingSystem();
+        const url = format("{root}/version/last?applicationId={appId}&operatingSystem={os}", {
             root: process.env.VUE_APP_API_LINK,
             appId: applicationId,
             os: os
         });
         
-        let version = await axios.get(url);
+        const version = await axios.get(url);
         return version.data as VersionInfo;
     }
 }

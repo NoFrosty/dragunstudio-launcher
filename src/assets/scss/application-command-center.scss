@@ -1,17 +1,17 @@
-.application-command-center {
-    .version {
+.application-command-center{
+    .version{
         color: $grey-light;
     }
 
     // Bulma fix
-    .version + .button {
+    .version + .button{
         margin-left: 0.5em;
     }
-    .version + .dropdown {
+    .version + .dropdown{
         margin-left: 0.5em;
     }
 
-    .action-button {
+    .action-button{
         width: 7em;
     }
 }

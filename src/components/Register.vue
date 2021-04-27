@@ -228,9 +228,7 @@
 <script>
     import { authenticationService, notificationManager } from '@/services/services'
     import { ValidationObserver, ValidationProvider } from "vee-validate";
-    import { ErrorBag } from 'vee-validate';
     import { countries } from 'countries-list';
-    import * as VeeValidate from 'vee-validate';
     import PrivacyPolicy from './PrivacyPolicy.vue'
     import UserNameGenerator from '@/services/UserNameGenerator';  
     export default {
@@ -280,20 +278,20 @@
                     birthday: new Date(this.selectedYear, this.selectedMonth-1, this.selectedDay, 10)
                 });
                 if(!isSignUp){
-                    notificationManager.error($t('error-occured'));
+                    notificationManager.error(this.$t('error-occured'));
                 }
                 if(isSignUp.isSuccessfull) {
                     this.$router.push({ name: "login" });
-                    notificationManager.success($t('account-created-succesfully'));
+                    notificationManager.success(this.$t('account-created-succesfully'));
                 }
                 else{
                     if(isSignUp.isEmailTaken){
-                        notificationManager.error($t('email-already-taken'));
+                        notificationManager.error(this.$t('email-already-taken'));
                         this.email = null;
                         
                     }
                     if(isSignUp.isUsernameTaken){
-                        notificationManager.error($t('username-already-taken'));
+                        notificationManager.error(this.$t('username-already-taken'));
                         this.username = null;
                     }
                 }
