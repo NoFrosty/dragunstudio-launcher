@@ -23,7 +23,7 @@
                 </b-field>
                 <b-field custom-class="has-text-white">
                     <b-checkbox :value="true" type="is-primary">
-                        Add desktop shortcut for Project Crystal
+                        Add desktop shortcut for {{this.application.name}}
                     </b-checkbox>
                 </b-field>
             </div>
