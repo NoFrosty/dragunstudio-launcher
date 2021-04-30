@@ -5,8 +5,11 @@
         <div class="popup-inner-text">
             <h1>Installation {{this.application.name}}</h1>
             <div class="installation-form">
-                <b-field label="Size" custom-class="has-text-white">
-                    15.13 Go
+                <b-field label="Installation Size" custom-class="has-text-white">
+                    {{this.installationSize}}
+                </b-field>
+                <b-field label="Download Size" custom-class="has-text-white">
+                    {{this.downloadSize}}
                 </b-field>
                 <b-field label="Location" custom-class="has-text-white">
                     <b-field grouped>
@@ -39,11 +42,14 @@
     const currentPlatform = os.platform();
     const {dialog} = require('electron').remote;
     const {remote} = require('electron')
-
+    import axios from 'axios';
+    import humanize from 'humanize'
     export default {
         data() {
             return {
                 path : remote.app.getAppPath() + this.getSymbol() + this.application.name,
+                installationSize : 0,
+                downloadSize : 0
             }
         },
         props:{
@@ -67,6 +73,22 @@
                 this.$emit('start', {
                     path: this.path
                 })
+            },
+            
+        },
+        mounted: async function(){
+        },
+        asyncComputed:{
+            getAppSize: async function(){
+                let params = { operatingSystem: 0 };
+                if(currentPlatform == "win32")
+                    params = { operatingSystem: 1 }
+                else
+                    params = { operatingSystem: 2 }
+                let sizeResponse = await axios.get(process.env.VUE_APP_API_LINK + '/applications/' + this.application.applicationId + '/size',
+                {params});
+                this.downloadSize = humanize.filesize(sizeResponse.data.downloadSize);
+                this.installationSize = humanize.filesize(sizeResponse.data.installationSize);
             }
         }
     }
