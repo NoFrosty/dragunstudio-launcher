@@ -3,34 +3,34 @@
         <a class="modal-close-btn" @click="$parent.close()"><b-icon pack="fas" icon="times" size="is-small" type="is-white"></b-icon></a>
         <div class="popup-inner install">
         <div class="popup-inner-text">
-            <h1>Installation {{this.application.name}}</h1>
+            <h1>{{$t('installation')}} {{this.application.name}}</h1>
             <div class="installation-form">
-                <b-field label="Installation Size" custom-class="has-text-white">
+                <b-field :label="$t('installation-size')" custom-class="has-text-white">
                     {{this.installationSize}}
                 </b-field>
-                <b-field label="Download Size" custom-class="has-text-white">
+                <b-field :label="$t('download-size')" custom-class="has-text-white">
                     {{this.downloadSize}}
                 </b-field>
-                <b-field label="Location" custom-class="has-text-white">
+                <b-field :label="$t('location')" custom-class="has-text-white">
                     <b-field grouped>
                         <b-input :value="this.path" expanded readonly></b-input>
                         <p class="control">
-                            <b-button type="is-primary" @click="openDial()">Select another path</b-button>
+                            <b-button type="is-primary" @click="openDial()">{{$t('select-path')}}</b-button>
                         </p>
                     </b-field>
                 </b-field>
-                <b-field label="Options" custom-class="has-text-white">
+                <b-field :label="$t('options')" custom-class="has-text-white">
                     <b-checkbox :value="true" type="is-primary">
-                        Keep this game updated automatically
+                        {{$t('keep-game-updated')}}
                     </b-checkbox>
                 </b-field>
                 <b-field custom-class="has-text-white">
                     <b-checkbox :value="true" type="is-primary">
-                        Add desktop shortcut for {{this.application.name}}
+                        {{$t('add-desktop-shortcut')}} {{this.application.name}}
                     </b-checkbox>
                 </b-field>
             </div>
-            <b-button type="is-primary" @click="install(); $parent.close()" expanded>Install</b-button>
+            <b-button type="is-primary" @click="install(); $parent.close()" expanded>{{$t('install')}}</b-button>
         </div>
     </div>
   </div>

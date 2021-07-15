@@ -7,28 +7,28 @@
                     <button class="button is-dark is-auto is-medium" slot="trigger">
                         <b-icon pack="fas" icon="cog"></b-icon>
                     </button>
-                    <b-dropdown-item aria-role="listitem" @click="checkForUpdates">Check for updates
+                    <b-dropdown-item aria-role="listitem" @click="checkForUpdates">{{$t('check-for-updates')}}
                     </b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem" @click="openFileExplorer">Open in explorer
+                    <b-dropdown-item aria-role="listitem" @click="openFileExplorer">{{$t('show-in-explorer')}}
                     </b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem" @click="openSettingsPanel">Settings</b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem">Repair</b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem" @click="uninstallApplication">Uninstall
+                    <b-dropdown-item aria-role="listitem" @click="openSettingsPanel">{{$t('settings')}}</b-dropdown-item>
+                    <b-dropdown-item aria-role="listitem">{{$t('repair')}}</b-dropdown-item>
+                    <b-dropdown-item aria-role="listitem" @click="uninstallApplication">{{$t('uninstall')}}
                     </b-dropdown-item>
                 </b-dropdown>
                 <DropDownGameMode class="" v-model="gameMode" />
             </b-field>
             
             <b-tooltip position="is-left" :label="installation.version" :active="true" :delay="2500" animated>
-            <b-button type="is-primary is-large" v-if="!isUpdating && !updateAvailable" @click="launchGame" expanded>Play Now</b-button>
-            <b-button type="is-primary is-large" v-if="isUpdating && !updateAvailable" disabled expanded>Play Now</b-button>
-            <b-button type="is-primary is-large" v-if="updateAvailable" @click="updateApplication" expanded>Update</b-button>
+            <b-button type="is-primary is-large" v-if="!isUpdating && !updateAvailable" @click="launchGame" expanded>{{$t('play')}}</b-button>
+            <b-button type="is-primary is-large" v-if="isUpdating && !updateAvailable" disabled expanded>{{$t('play')}}</b-button>
+            <b-button type="is-primary is-large" v-if="updateAvailable" @click="updateApplication" expanded>{{$t('update')}}</b-button>
             </b-tooltip>
 
             <!--<b-button type="is-primary is-large" v-if="!isUpdating" expanded>Update</b-button>-->
         </div>
         <div class="right-column-install" v-else>
-            <b-button type="is-primary is-large" @click="startInstallation">Install/Buy</b-button>
+            <b-button type="is-primary is-large" @click="startInstallation">{{$t('install')}}/Buy</b-button>
         </div>
         <b-modal :width="900" :active.sync="isInstallModalActive" class="popup-install" :can-cancel="false"
             v-if="activeApplication">
