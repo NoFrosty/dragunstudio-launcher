@@ -37,7 +37,6 @@
   "email-offer-label": "Receive news and special offers.",
   "read-accept-label": "I have read and accept the ",
   "privacy": "Privacy Policy.",
-  "Install": "Install",
   "check-for-updates": "Check for updates",
   "logout": "Logout",
   "not-implemented-feature": "This feature is not implemented yet.",
@@ -57,5 +56,14 @@
   "verification-code-sent": "We have sent a verification code to your email. Please check your email and spam.",
   "generate": "Generate",
   "minimize": "Minimize",
-  "close": "Close"
+  "close": "Close",
+  "keep-game-updated": "Keep this game updated automatically",
+  "add-desktop-shortcut": "Add desktop shortcut for",
+  "select-path": "Select path",
+  "options": "Options",
+  "location": "Location",
+  "download-size": "Download Size",
+  "installation-size": "Installation Size",
+  "installation": "Installation",
+  "install": "Install"
 }

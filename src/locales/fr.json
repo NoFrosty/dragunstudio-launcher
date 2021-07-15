@@ -33,11 +33,10 @@
   "show-in-explorer": "Afficher dans l'explorateur",
   "repair": "Réparer",
   "news": "Nouveauté",
-  "settings": "Parametre",
+  "settings": "Paramètre",
   "email-offer-label": "Recevoir des nouvelles et des offres spéciales.",
   "read-accept-label": "J'ai lu et j'accepte",
   "privacy": "Politique de confidentialité.",
-  "Install": "Installer",
   "check-for-updates": "Vérifiez les mises à jour",
   "logout": "Déconnexion",
   "not-implemented-feature": "Cette fonctionnalité n'est pas encore implémentée.",
@@ -57,5 +56,14 @@
   "verification-code-sent": "Nous avons envoyé un code de vérification à votre email. Veuillez vérifier vos emails et vos spams.",
   "generate": "Générer",
   "minimize": "Réduire",
-  "close": "Fermer"
+  "close": "Fermer",
+  "keep-game-updated": "Gardez ce jeu mis à jour automatiquement",
+  "add-desktop-shortcut": "Ajouter un raccourci sur le bureau pour",
+  "select-path": "Select path",
+  "options": "Options",
+  "location": "Localisation",
+  "download-size": "Taille de téléchargement",
+  "installation-size": "Taille de l'installation",
+  "installation": "Installation",
+  "install": "Installer"
 }
