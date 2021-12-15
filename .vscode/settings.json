@@ -4,5 +4,8 @@
     "editor.rulers": [
         120
     ],
-    "vetur.format.options.tabSize": 4
+    "vetur.format.options.tabSize": 4,
+    "i18n-ally.localesPaths": [
+        "src/locales"
+    ]
 }

@@ -2771,17 +2771,17 @@ browserslist@^4.14.5, browserslist@^4.16.4, browserslist@^4.3.4, browserslist@^4
     escalade "^3.1.1"
     node-releases "^1.1.71"
 
-bsdiff-node@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/bsdiff-node/-/bsdiff-node-2.3.1.tgz#e87adb90d781712868e470a6b60528ac47b6f85b"
-  integrity sha512-IUqcE9Wv133phAUVBh30zSg8KgBtv5TMWxW35YvgUTzMRxUEjLGrc7wL+snj6D4pSid87xEh9rWdTEtypgLmWw==
+bsdiff-node@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/bsdiff-node/-/bsdiff-node-2.4.0.tgz#c6bf7620525283cc7a31ca0fc2d60cf21328add0"
+  integrity sha512-HhJnFQWc2nCyx8j7LVV3beN2cnIDq0i2PKIuAEfI9Iiz2ot8B4LryMqSmw0+rNgDwtEmHUNBKoKHWKlkDDmh7Q==
   dependencies:
-    nan "^2.14.2"
+    nan "^2.15.0"
 
-buefy@^0.9.8:
-  version "0.9.8"
-  resolved "https://registry.yarnpkg.com/buefy/-/buefy-0.9.8.tgz#51fb52bf3bcf4b8db7668f0ca17f1a5e8cf7f499"
-  integrity sha512-VBGAD6WtmgpPdiRnBXaTleS3ifpNu9rbInAr54YL8KJw1RhCb8JtGYYYVRjllnDQmN0jQjC5lYoPR9KpfTe+Cw==
+buefy@^0.9.13:
+  version "0.9.13"
+  resolved "https://registry.yarnpkg.com/buefy/-/buefy-0.9.13.tgz#fa530257fc47a8cb00d1e36faa93bbeba4aefce0"
+  integrity sha512-W8QhvAz+YlKhxDQe/oag4Fl/zYTvXOPoNVr4pseYDR7r52Ta6s51iedBdvw4It68Sq+g7mcxIzwK7mv3PR6O4g==
   dependencies:
     bulma "0.9.3"
 
@@ -8145,10 +8145,15 @@ mz@^2.4.0:
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
 
-nan@^2.12.1, nan@^2.13.2, nan@^2.14.2:
+nan@^2.12.1, nan@^2.13.2:
   version "2.14.2"
   resolved "https://registry.npmjs.org/nan/-/nan-2.14.2.tgz"
   integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
+
+nan@^2.15.0:
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.15.0.tgz#3f34a473ff18e15c1b5626b62903b5ad6e665fee"
+  integrity sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==
 
 nanomatch@^1.2.9:
   version "1.2.13"
