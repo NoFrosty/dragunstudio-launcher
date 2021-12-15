@@ -28,76 +28,44 @@
                     </div>
                 </ValidationObserver>
                 <ValidationObserver ref="observer" v-slot="{ passes }" v-if="state==1">
-                    <b-field grouped>
-                            <p class="control is-expanded">
-                                <ValidationProvider rules="required|digits:1" name="Value" v-slot="{ errors, valid }">
-                                    <b-field 
-                                    :message="errors"
-                                    :type="{ 'is-danger': errors[0], 'is-success': valid }" >
-                                        <b-input
-                                            placeholder="0"
-                                            name="verif0"
-                                            v-model="verif0"
-                                            size="is-medium"
-                                            expanded>
-                                        </b-input>
-                                    </b-field>
-                                </ValidationProvider>
-                            </p>
-                            <p class="control is-expanded">
-                                <ValidationProvider rules="required|digits:1" name="Value" v-slot="{ errors, valid }">
-                                    <b-field 
-                                    :message="errors"
-                                    :type="{ 'is-danger': errors[0], 'is-success': valid }">
-                                        <b-input
-                                            placeholder="0"
-                                            name="verif1"
-                                            v-model="verif1"
-                                            size="is-medium"
-                                            expanded>
-                                        </b-input>
-                                    </b-field>
-                                </ValidationProvider>
-                            </p>
-                            <p class="control is-expanded">
-                                <ValidationProvider rules="required|digits:1" name="Value" v-slot="{ errors, valid }">
-                                    <b-field 
-                                    :message="errors"
-                                    :type="{ 'is-danger': errors[0], 'is-success': valid }" expanded>
-                                        <b-input
-                                            placeholder="0"
-                                            name="verif2"
-                                            v-model="verif2"
-                                            size="is-medium"
-                                            position="is-centered"
-                                            expanded>
-                                        </b-input>
-                                    </b-field>
-                                </ValidationProvider>
-                            </p>
-                            <p class="control is-expanded">
-                                <ValidationProvider rules="required|digits:1" name="Value" v-slot="{ errors, valid }">
-                                    <b-field 
-                                    :message="errors"
-                                    :type="{ 'is-danger': errors[0], 'is-success': valid }" expanded>
-                                        <b-input
-                                            placeholder="0"
-                                            name="verif3"
-                                            v-model="verif3"
-                                            size="is-medium"
-                                            expanded>
-                                        </b-input>
-                                    </b-field>
-                                </ValidationProvider>
-                            </p>
-                        </b-field>
-                        <div class="field">
-                            <b-tooltip :label="$t('not-implemented-feature')"
-                                position="is-right">
-                                <router-link to="" class="has-text-white">{{$t('didnt-received-code')}} <router-link to="" class="has-text-primary">{{$t('resend')}}</router-link>.</router-link>
-                            </b-tooltip>
-                            
-                        </div>
+                    <b-field class="field-verif-code" grouped >
+                        <!--
+                            <b-field
+                            v-for="(key, i) in verificationKeyFieldsTest"
+                            :key="i">
+                                <b-input
+                                    placeholder="0"
+                                    name="verif0"
+                                    :data-length="1"
+                                    :data-index="i"
+                                    size="is-large"
+                                    custom-class="input-verif-code"
+                                    @input="handleVerificationInputTest({i, $event})"
+                                    :ref="`input-${i}`">
+                                </b-input>
+                            </b-field>-->
+                            <b-field
+                            v-for="(key, i) in verificationKeyFields"
+                            :key="i">
+                                <b-input
+                                    placeholder="0"
+                                    name="verif0"
+                                    :data-length="1"
+                                    :data-index="i"
+                                    size="is-large"
+                                    custom-class="input-verif-code"
+                                    @input="handleVerificationInput({i, $event})"
+                                    :ref="`input-${i}`">
+                                </b-input>
+                            </b-field>
+                    </b-field>
+                    <div class="field">
+                        <b-tooltip :label="$t('not-implemented-feature')"
+                            position="is-right">
+                            <router-link to="" class="has-text-white">{{$t('didnt-received-code')}} <router-link to="" class="has-text-primary">{{$t('resend')}}</router-link>.</router-link>
+                        </b-tooltip>
+                        
+                    </div>
                     <div class="field">
                         <div class="level">
                             <div>
@@ -159,7 +127,7 @@
         </div>
     </section>
 </template>
-<script>
+<script lang="ts">
     import { authenticationService, notificationManager } from '@/services/services'
     import { ValidationObserver, ValidationProvider } from "vee-validate";
 
@@ -171,9 +139,27 @@
                 verif1: null,
                 verif2: null,
                 verif3: null,
+                verif4: null,
+                verif5: null,
                 state: 0,
                 password: null,
-                passwordConfirmation: null
+                passwordConfirmation: null,
+                verificationKeyFieldsTest: [
+                    { length: 1, value: 0 },
+                    { length: 1, value: 0 },
+                    { length: 1, value: 0 },
+                    { length: 1, value: 0 },
+                    { length: 1, value: 0 },
+                    { length: 1, value: 0 }
+                ],
+                verificationKeyFields: [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
             }
         },
         components: {
@@ -198,6 +184,29 @@
             },
             back: function(){
                 this.state--;
+            },
+            handleVerificationInput(e:{i: number, $event: number}) {
+                this.verificationKeyFields[e.i] = e.$event;
+                // Grab data-length value
+                if (this.getlength(this.verificationKeyFields[e.i]) == 1) {
+                    try {
+                    this.$refs[`input-${parseInt(e.i + 1)}`][0].focus();
+                    } catch (e) {console.log(this.verificationKeyFields)}
+                    return;
+                }
+            },
+            handleVerificationInputTest(e:{i: number, $event: number}) {
+                this.verificationKeyFieldsTest[e.i].value = e.$event;
+                // Grab data-length value
+                if (this.getlength(this.verificationKeyFieldsTest[e.i].value) == 1) {
+                    try {
+                    this.$refs[`input-${parseInt(e.i + 1)}`][0].focus();
+                    } catch (e) {console.log(e)}
+                    return;
+                }
+            },
+            getlength: function(n: number) {
+                return n.toString().length;
             }
         },
         mounted: async function() {
@@ -207,3 +216,23 @@
         }
     }
 </script>
+
+<style lang="scss">
+
+.input-verif-code{
+    padding-right: 0em !important;
+    padding-left: 0em !important;
+    margin: 0em 0.2em !important;
+    text-align: center;
+    width: 2.2em !important;
+}
+.field-verif-code .is-grouped{
+    justify-content: center !important;
+    .field:not(:last-child){
+        margin-right: 0em !important;
+    }
+    .field{
+        margin-top: 1.75rem !important;
+    }
+}
+</style>
