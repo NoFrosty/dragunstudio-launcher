@@ -29,7 +29,7 @@
     "@fortawesome/vue-fontawesome": "^2.0.6",
     "auto-launch": "^5.0.5",
     "awilix": "^4.3.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "bsdiff-node": "^2.4.0",
     "buefy": "^0.9.13",
     "core-js": "^2.6.11",
