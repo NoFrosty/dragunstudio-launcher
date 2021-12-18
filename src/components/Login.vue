@@ -96,8 +96,9 @@
             attemptSignIn: async function() {
                 var isLogged = await authenticationService.AttemptSignIn({
                     email: this.email,
-                    password: this.password
-                }, this.staySignedIn);
+                    password: this.password,
+                    staySignedIn: this.staySignedIn
+                });
                 if(isLogged) {
                     this.$router.push({ name: "launcher" });
                 }

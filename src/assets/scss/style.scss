@@ -141,11 +141,16 @@ body{
         }
     }
 }
+.modal .animation-content {
+    z-index: 1;
+}
 
 .popup{
     background-color: #1C1B20;
     height: 30em;
     border: 1px solid $primary;
+    display: flex;
+    flex-direction: row;
     .modal-close-btn{
         position: absolute;
         right: 0.5em;
@@ -179,6 +184,15 @@ body{
                 text-transform: none !important;
                 align-self: center;
             }
+        }
+    }
+
+    &.popup-account-settings{
+        padding: 3em;
+        height: 45em;
+        .notification{
+                background-color: lighten(#1C1B20, 5%);
+                border: 1px solid $primary;
         }
     }
 }
@@ -225,4 +239,15 @@ body{
 
 .update-available{
     -webkit-animation: colorChanger 0.5s infinite alternate;  
+}
+
+.account-settings{
+    .control.is-expanded{
+        .select{
+            width: 100%;
+            select{
+                width: inherit;
+            }
+        }
+    }
 }

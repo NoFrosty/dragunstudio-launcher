@@ -12,16 +12,17 @@ class AuthenticationService extends RendererServiceBase {
         }
     }
 
-    async AttemptSignIn(credentials: {email : string, password : string}, staySignedIn: boolean) : Promise<boolean> {
+    async AttemptSignIn(credentials: {email : string, password : string, staySignedIn: boolean}) : Promise<boolean> {
         const parameters = {
             Email: credentials.email,
-            Password: credentials.password
+            Password: credentials.password,
+            RememberMe: credentials.staySignedIn
         };
         try {
             const loginResult = await axios.post(process.env.VUE_APP_API_LINK + "/authenticate", parameters);
             if (loginResult.data.isSuccessfull) {
                 this.store.dispatch('signIn', { 
-                    jwt: staySignedIn ? loginResult.data.token : null,
+                    jwt: credentials.staySignedIn ? loginResult.data.token : null,
                     username: loginResult.data.username
                 });
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + loginResult.data.token;
@@ -48,7 +49,7 @@ class AuthenticationService extends RendererServiceBase {
             Password: credentials.password
         };
         try {
-            signUpResult = await axios.post(process.env.VUE_APP_API_LINK + "/users", parameters);
+            signUpResult = await axios.post(process.env.VUE_APP_API_LINK + "/accounts", parameters);
             return signUpResult.data;
         }
         catch {

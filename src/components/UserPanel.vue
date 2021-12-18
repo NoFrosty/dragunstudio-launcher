@@ -17,11 +17,21 @@
         <b-icon pack="fas" icon="plug"></b-icon>
         {{$t('go-online')}}
         </b-dropdown-item>
-                                    <b-dropdown-item value="settings">
+
+
+            <b-dropdown-item value="settings" @click="openSettings">
         <b-tooltip :label="$t('not-implemented-feature')"
                                     position="is-left">
             <b-icon pack="fas" icon="cog"></b-icon>
             {{$t('settings')}}
+        </b-tooltip>
+            </b-dropdown-item>
+
+            <b-dropdown-item value="accountsSettings" @click="openAccountSettings">
+        <b-tooltip :label="$t('not-implemented-feature')"
+                                    position="is-left">
+            <b-icon pack="fas" icon="cog"></b-icon>
+            {{$t('account-settings')}}
         </b-tooltip>
             </b-dropdown-item>
         
@@ -34,7 +44,8 @@
 
 <script>
     import { authenticationService } from '@/services/services'
-
+    import Settings from './Settings.vue'
+    import {eventBus} from '@/services/services'
     export default {
         data() {
                 return {
@@ -56,7 +67,16 @@
             },
             goOnline: async function() {
                 this.$router.push({ name: "boot" })
-            }
+            },
+            openSettings() {
+                eventBus.emitter.emit("on-settings-open");
+            },
+            openAccountSettings() {
+                eventBus.emitter.emit("on-accountsettings-open");
+            },
         },
+        components: {
+            Settings
+        }
     }
 </script>
