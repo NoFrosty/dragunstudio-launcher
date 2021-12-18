@@ -1,14 +1,13 @@
 <template>
-  <GameViewTabs />
+	<GameViewTabs />
 </template>
 
 <script>
-    import GameViewTabs from "./components/GameViewTabs.vue";
-    export default {
-        components: {
-            GameViewTabs
-        },
-        computed: {
-        }
-    };
+import GameViewTabs from "./components/GameViewTabs.vue";
+export default {
+    components: {
+        GameViewTabs
+    },
+    computed: {}
+};
 </script>

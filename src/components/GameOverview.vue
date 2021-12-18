@@ -1,13 +1,16 @@
 <template>
-    <div>
-        <section>
-            <b-modal :active.sync="isNewsModalActive" class="popup-news">
-               <FullNews/>
-            </b-modal>
-        </section>
-        <!--
+	<div>
+		<section>
+			<b-modal
+				:active.sync="isNewsModalActive"
+				class="popup-news"
+			>
+				<FullNews />
+			</b-modal>
+		</section>
+		<!--
         <section class="overview-news">
-            
+
             <div class="game-overview-right">
                 <div class="game-overview-right-line">
                     <div class="card large">
@@ -38,8 +41,8 @@
                 </div>
             </div>
             -->
-            <div class="overview-panel">
-                <!--
+		<div class="overview-panel">
+			<!--
                 <div class="overview-panel-left">
                     <div class="scrollable" v-if="news">
                         <p class="title is-3">News</p>
@@ -89,91 +92,127 @@
                                 </b-carousel-item>           
                             </b-carousel>
                 -->
-                <div class="tile is-ancestor" v-if="articles">
-                    <div class="tile is-vertical is-6" v-if="articles.length > 0">
-                        <div class="tile is-parent">
-                            <article class="tile is-child box">
-                                <p class="title">{{articles[0].title}}</p>
-                                <p class="subtitle">{{articles[0].publishDate}}</p>
-                                <span class="tag is-primary">
-                                    {{articles[0].applicationId}}
-                                </span>
-                            </article>
-                        </div>
-                    </div>
-                    <div class="tile is-vertical" v-if="articles.length > 1">
-                        <div class="tile is-parent" v-if="articles.length > 1">
-                            <article class="tile is-child box">
-                                <p class="title">{{articles[1].title}}</p>
-                                <p class="subtitle">{{articles[1].publishDate}}</p>
-                                <span class="tag is-primary">
-                                    {{articles[1].applicationId}}
-                                </span>
-                            </article>
-                        </div>
-                        <div class="tile" v-if="articles.length > 2">
-                            <div class="tile is-parent">
-                                <article class="tile is-child box">
-                                    <p class="title">{{articles[2].title}}</p>
-                                    <p class="subtitle">{{articles[2].publishDate}}</p>
-                                    <span class="tag is-primary">
-                                        {{articles[2].applicationId}}
-                                    </span>
-                                </article>
-                            </div>
-                            <div class="tile is-parent" v-if="articles.length > 3">
-                                <article class="tile is-child box">
-                                    <p class="title">{{articles[3].title}}</p>
-                                    <p class="subtitle">{{articles[3].publishDate}}</p>
-                                    <span class="tag is-primary">
-                                        {{articles[3].applicationId}}
-                                    </span>
-                                </article>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <ApplicationUpdateProgress v-if="isUpdating" />
-    </div>
+			<div
+				v-if="articles"
+				class="tile is-ancestor"
+			>
+				<div
+					v-if="articles.length > 0"
+					class="tile is-vertical is-6"
+				>
+					<div class="tile is-parent">
+						<article class="tile is-child box">
+							<p class="title">
+								{{ articles[0].title }}
+							</p>
+							<p class="subtitle">
+								{{ articles[0].publishDate }}
+							</p>
+							<span class="tag is-primary">
+								{{ articles[0].applicationId }}
+							</span>
+						</article>
+					</div>
+				</div>
+				<div
+					v-if="articles.length > 1"
+					class="tile is-vertical"
+				>
+					<div
+						v-if="articles.length > 1"
+						class="tile is-parent"
+					>
+						<article class="tile is-child box">
+							<p class="title">
+								{{ articles[1].title }}
+							</p>
+							<p class="subtitle">
+								{{ articles[1].publishDate }}
+							</p>
+							<span class="tag is-primary">
+								{{ articles[1].applicationId }}
+							</span>
+						</article>
+					</div>
+					<div
+						v-if="articles.length > 2"
+						class="tile"
+					>
+						<div class="tile is-parent">
+							<article class="tile is-child box">
+								<p class="title">
+									{{ articles[2].title }}
+								</p>
+								<p class="subtitle">
+									{{ articles[2].publishDate }}
+								</p>
+								<span class="tag is-primary">
+									{{ articles[2].applicationId }}
+								</span>
+							</article>
+						</div>
+						<div
+							v-if="articles.length > 3"
+							class="tile is-parent"
+						>
+							<article class="tile is-child box">
+								<p class="title">
+									{{ articles[3].title }}
+								</p>
+								<p class="subtitle">
+									{{ articles[3].publishDate }}
+								</p>
+								<span class="tag is-primary">
+									{{ articles[3].applicationId }}
+								</span>
+							</article>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<ApplicationUpdateProgress v-if="isUpdating" />
+	</div>
 </template>
-<script>
-    import axios from 'axios';
-    import FullNews from '@/components/FullNews.vue'
-    import ApplicationUpdateProgress from '@/components/ApplicationUpdateProgress.vue'
-    import { InstallationActionType } from '@/models/ApplicationStatus'
 
-    export default {
-        props: {
-            applicationId: null
-        },
-        data() {
-            return {
-                isNewsModalActive: false,
-                articles: null
-            }
-        },
-        computed: {
-            isSignedIn: function() {
-                return this.$store.state.isSignedIn;
-            },
-            isUpdating() {
-                let status = this.$store.state.applicationStatuses.find(x => x.applicationId == this.applicationId);
-                if (status) {
-                    return status.currentActionType == InstallationActionType.Update;
-                }
-                return false;
-            }
-        },
-        methods: {
-        },
-        mounted: async function () {
-            let articleResponse = await axios.get(process.env.VUE_APP_API_LINK + '/article');
-            this.articles = articleResponse.data;
-        },
-        components: {
-            ApplicationUpdateProgress,
-            FullNews
+<script>
+import axios from 'axios';
+import FullNews from '@/components/FullNews.vue'
+import ApplicationUpdateProgress from '@/components/ApplicationUpdateProgress.vue'
+import {
+    InstallationActionType
+} from '@/models/ApplicationStatus'
+
+export default {
+    components: {
+        ApplicationUpdateProgress,
+        FullNews
+    },
+    props: {
+        applicationId: null
+    },
+    data() {
+        return {
+            isNewsModalActive: false,
+            articles: null
         }
-    }
+    },
+    computed: {
+        isSignedIn: function () {
+            return this.$store.state.isSignedIn;
+        },
+        isUpdating() {
+            let status = this.$store.state.applicationStatuses.find(x => x.applicationId == this.applicationId);
+            if (status) {
+                return status.currentActionType == InstallationActionType.Update;
+            }
+            return false;
+        }
+    },
+    mounted: async function () {
+        let articleResponse = await axios.get(process.env.VUE_APP_API_LINK + '/article');
+        this.articles = articleResponse.data;
+    },
+    methods: {}
+}
 </script>

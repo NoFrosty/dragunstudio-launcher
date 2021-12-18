@@ -1,29 +1,45 @@
 <template>
-    <div class="overview-download">
-        <nav class="level" >
-            <!-- Left side -->
-            <div class="level-left" v-if="totalReceived || totalToReceive">
-                <p class="level-item">{{totalReceived}}/{{totalToReceive}}</p>
-            </div>
-            <!-- Right side -->
-            <div class="level-right">
-                <p class="level-item">{{speed}}</p>
-            </div>
-        </nav>
-        <div class="update-progress">
-            <b-progress class="update-progress-bar" type="is-primary" :precision="2" :value="percentage" show-value format="percent"></b-progress>
-            <!--
+	<div class="overview-download">
+		<nav class="level">
+			<!-- Left side -->
+			<div
+				v-if="totalReceived || totalToReceive"
+				class="level-left"
+			>
+				<p class="level-item">
+					{{ totalReceived }}/{{ totalToReceive }}
+				</p>
+			</div>
+			<!-- Right side -->
+			<div class="level-right">
+				<p class="level-item">
+					{{ speed }}
+				</p>
+			</div>
+		</nav>
+		<div class="update-progress">
+			<b-progress
+				class="update-progress-bar"
+				type="is-primary"
+				:precision="2"
+				:value="percentage"
+				show-value
+				format="percent"
+			/>
+			<!--
             <a class="update-progress-control">
                 <b-icon pack="fas" icon="pause" size="is-medium" type="is-primary"></b-icon>
             </a>
             -->
-        </div>
-    </div>
+		</div>
+	</div>
 </template>
 
 <script>
 import humanize from 'humanize'
-import { eventBus } from '@/services/services'
+import {
+    eventBus
+} from '@/services/services'
 export default {
     data() {
         return {
@@ -33,9 +49,13 @@ export default {
             speed: 0
         }
     },
+    mounted: async function () {
+        eventBus.subscribe('on-update-progress', this.onProgress);
+        eventBus.subscribe('on-update-finish', this.onFinish);
+    },
     methods: {
         onProgress(progress) {
-            if(progress){
+            if (progress) {
                 this.percentage = progress.downloadedSize / progress.totalFileSize * 100;
                 this.totalReceived = humanize.filesize(progress.downloadedSize);
                 this.speed = humanize.filesize(progress.speed) + '/s';
@@ -45,10 +65,6 @@ export default {
         onFinish(progress) {
             this.onProgress(progress);
         }
-    },
-    mounted: async function () {
-        eventBus.subscribe('on-update-progress', this.onProgress);
-        eventBus.subscribe('on-update-finish', this.onFinish);
     }
 };
 </script>

@@ -1,27 +1,29 @@
 <template>
-  <a
-    class="column-is-fixed is-23  column is-paddingless details-news-article"
-    @click="openArticle()"
-  >
-    <div class="details-news-text-container">
-      <b-taglist class="is-marginless">
-        <b-tag type="is-primary">Gameplay Update</b-tag>
-      </b-taglist>
-      <h1 class="has-text-white">{{ article.title }}</h1>
-      <p class="has-text-white">{{ timeCalc }}</p>
-    </div>
-  </a>
+	<a
+		class="column-is-fixed is-23  column is-paddingless details-news-article"
+		@click="openArticle()"
+	>
+		<div class="details-news-text-container">
+			<b-taglist class="is-marginless">
+				<b-tag type="is-primary">Gameplay Update</b-tag>
+			</b-taglist>
+			<h1 class="has-text-white">{{ article.title }}</h1>
+			<p class="has-text-white">{{ timeCalc }}</p>
+		</div>
+	</a>
 </template>
 
 <script>
 import moment from 'moment'
-import {eventBus} from '@/services/services'
+import {
+    eventBus
+} from '@/services/services'
 
 export default {
     props: {
-        article:null
+        article: null
     },
-    computed:{
+    computed: {
         timeCalc() {
             //let date = new Date(this.article.publishDate)
             return moment(this.article.publishDate).fromNow();
